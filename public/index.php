@@ -8,14 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
+<div id="preloader">
+  <div class="loader"></div>
+  <p>Loading Archive...</p>
+</div>
+
 <style>
 /* ---------- GLOBAL ---------- */
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:'Poppins', sans-serif;
-  background:#ffffff;
-  color:#111;
+  background: var(--bg);
+  color: var(--text);
   overflow-x: hidden;
 }
 
@@ -24,25 +29,73 @@ body{
   --grey:#e6e6e6;
   --offwhite:#f8f8f8;
   --accent: #ff3c00;
+  --bg: #ffffff;
+  --text: #111;
+  --header-bg: #fff;
 }
+
+/* Preloader */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--black);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-family: 'Poppins', sans-serif;
+}
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--accent);
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Dark Mode */
+body.dark {
+    --black: #fff;
+    --grey: #333;
+    --offwhite: #222;
+    --accent: #ff3c00;
+    --bg: #111;
+    --text: #fff;
+    --header-bg: #111;
+}
+body.dark .hero { background: #000; color: #fff; }
+body.dark .top-bar { background: #fff; color: #111; }
+body.dark .mobile-menu { background: #222; }
+body.dark .audio-player { background: #222; }
+body.dark .newsletter { background: #222; border-color: #fff; }
+body.dark .newsletter input { border-color: #fff; color: #fff; background: #333; }
+body.dark footer { background: #222; }
 
 /* ---------- TOP BAR ---------- */
 .top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 8s linear infinite; font-size:14px; white-space: nowrap;}
+.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
 @keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
 
 /* ---------- HEADER & HAMBURGER ---------- */
 header{
-  display:flex; 
-  align-items:center; 
-  justify-content:space-between; 
-  padding:15px 5%; 
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 5%;
   border-bottom:1px solid #ddd;
-  background: #fff;
+  background: var(--header-bg);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
+
+.header-left { display: flex; align-items: center; gap: 10px; }
+.header-center { flex: 1; display: flex; justify-content: center; }
+.header-right { display: flex; align-items: center; gap: 10px; }
 
 .logo-container {
   perspective: 1200px;
@@ -65,13 +118,32 @@ header{
   100% { transform: rotateY(360deg); }
 }
 
-nav ul{list-style:none; display:flex; gap:28px;}
+nav ul{list-style:none; display:none; gap:28px;}
 nav a{text-decoration:none; color:#111; font-weight:600; text-transform: uppercase; font-size: 13px;}
 .cart{font-weight:700;}
+#theme-toggle {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: var(--text);
+}
+#theme-toggle:hover { transform: scale(1.1); }
+
+#search {
+    padding: 8px 12px;
+    border: 1px solid var(--black);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+}
+#search::placeholder { color: var(--grey); }
 
 /* Hamburger Button */
 .hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 6px;
   cursor: pointer;
@@ -128,6 +200,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   opacity: 0.5;
   filter: grayscale(100%) contrast(1.1);
   z-index: 1;
+  will-change: transform;
 }
 
 .stream {
@@ -148,7 +221,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   content: " ";
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
               linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
   background-size: 100% 4px, 3px 100%;
   z-index: 3;
@@ -242,7 +315,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   border-radius: 0 15px 15px 15px;
   padding: 40px;
   box-shadow: 12px 12px 0px var(--black);
-  margin-top: -2px; 
+  margin-top: -2px;
   position: relative;
   z-index: 1;
   transition: all 0.4s ease;
@@ -312,25 +385,237 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 
 .products{width:80%;margin:80px auto;}
 .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
-.product{border:1px solid #ddd; padding:16px;}
-.product img{width:100%; margin-bottom: 10px;}
+.product{border:1px solid #ddd; padding:16px; opacity: 0; animation: fadeInUp 0.5s ease-out forwards;}
+.product img{width:100%; margin-bottom: 10px; transition: transform 0.3s;}
+.product:hover img { transform: scale(1.05); }
 
-.carousel{margin:100px 0; overflow:hidden; white-space:nowrap; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 20px 0;}
-.carousel-track{display:inline-flex; animation: slideImages 28s linear infinite;}
-.carousel img{width:260px; height:320px; object-fit:cover; margin-right:18px;}
-@keyframes slideImages{ 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+/* FIXED CAROUSEL - NO DELAY */
+.carousel {
+  margin: 100px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 20px 0;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.carousel-track {
+  display: inline-flex;
+  animation: slideImages 20s linear infinite;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.carousel img {
+  width: 260px;
+  height: 320px;
+  object-fit: cover;
+  margin-right: 18px;
+  display: block;
+  opacity: 1 !important;
+  visibility: visible !important;
+  flex-shrink: 0;
+}
+
+@keyframes slideImages {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
 
 .newsletter{width:80%; margin:80px auto; padding:60px; background:var(--offwhite); text-align:center; border: 2px solid #000;}
 footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-align: center; font-size: 13px; text-transform: uppercase;}
 
-/* Mobile Fix */
-@media (max-width: 768px) {
-  nav { display: none; }
-  .hamburger { display: flex; }
-  .folder-content { grid-template-columns: 1fr; }
-  .categories { grid-template-columns: 1fr; }
-  .grid { grid-template-columns: repeat(2, 1fr); }
-  .terminal-data { display: none; }
+/* Scroll Progress Bar */
+#progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--accent);
+    z-index: 1000;
+}
+
+/* Cursor Follower */
+#cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease-out;
+}
+
+/* Product Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+.modal.show { display: flex; }
+.modal-content {
+    background: var(--bg);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    text-align: center;
+}
+.modal img { width: 100%; max-height: 300px; object-fit: cover; }
+.close { float: right; font-size: 28px; cursor: pointer; }
+
+/* Toast Notification */
+#toast {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: var(--accent);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.3s;
+    z-index: 1500;
+}
+#toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero Content Animation */
+.hero-content { animation: fadeInUp 2s ease-out; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Carousel Pause on Hover */
+.carousel-track:hover { animation-play-state: paused; }
+
+/* Hamburger Animation */
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
+
+/* Back to Top Button */
+#back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+#back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* Manifesto Section */
+.manifesto {
+  width: 80%;
+  margin: 80px auto;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--offwhite);
+  padding: 40px;
+  border: 2px solid var(--black);
+  box-shadow: 8px 8px 0px var(--black);
+}
+
+/* Process Section */
+.process {
+  width: 80%;
+  margin: 80px auto;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--text);
+  border: 2px solid var(--black);
+  padding: 40px;
+  background: var(--offwhite);
+  box-shadow: 8px 8px 0px var(--black);
+}
+.process h3 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 20px;
+}
+.process ol {
+  list-style: none;
+  padding: 0;
+  counter-reset: step-counter;
+}
+.process li {
+  margin-bottom: 10px;
+  font-weight: 400;
+  position: relative;
+  padding-left: 30px;
+  text-align: left;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+}
+.process li::before {
+  content: counter(step-counter) ". ";
+  counter-increment: step-counter;
+  position: absolute;
+  left: 0;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Carousel Overlay */
+.carousel {
+  position: relative;
+}
+.carousel-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  z-index: 10;
+  pointer-events: none;
+  letter-spacing: 1px;
+  line-height: 1.4;
+  background: rgba(0,0,0,0.4);
+  padding: 15px;
+  border-radius: 6px;
+}
+.carousel-overlay p {
+  margin: 0;
 }
 </style>
 </head>
@@ -338,29 +623,27 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 <body>
 
 <div class="top-bar">
-  <p>Live free, Die with money ~ Live free, Die with money — Fashion, Media, Music Archive</p>
+  <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
 <header>
-  <div class="logo-container">
-    <img src="images/lg.jpeg" class="logo-3d" alt="Logo">
+  <div class="header-left">
+    <input type="text" id="search" placeholder="Search products...">
+    <button id="theme-toggle">🌑</button>
   </div>
-  
-  <nav>
-    <ul>
-      <li><a href="#fashion">Shop</a></li>
-      <li><a href="#media">Media</a></li>
-      <li><a href="#music">Music</a></li>
-    </ul>
-  </nav>
-
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+  <div class="header-center">
+    <div class="logo-container">
+      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
+    </div>
   </div>
-
-  <div class="cart">CART (0)</div>
+  <div class="header-right">
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="cart">CART (0)</div>
+  </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
@@ -383,10 +666,14 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   </div>
 
   <div class="hero-content">
-    <h1>TOTALITY<br>ARCHIVE</h1>
+    <h1 id="typewriter"></h1>
     <p class="tagline">Fashion / Media / Sound Archive</p>
     <a href="#fashion" class="btn-hero">Initialize Explorer</a>
   </div>
+</section>
+
+<section class="manifesto">
+  <p>Discover unique streetwear and vintage fashion pieces curated from the heart of urban culture. Each item tells a story of style, individuality, and raw expression. Shop our collection of one-of-a-kind garments that blend fashion, media, and music influences.</p>
 </section>
 
 <div class="folder-section" id="fashion">
@@ -396,8 +683,8 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
       <div class="folder-image"><img src="images/banner2.jpeg" alt="Fashion"></div>
       <div class="folder-text">
         <h3>Fashion Archive</h3>
-        <p>Explore our premium silhouettes and industrial textiles. Sustainable quality for the modern culture.</p>
-        <a href="#" class="btn">Shop Collection</a>
+        <p>Curated vintage and second-hand garments pulled from real streets and private collections. Each piece carries time, movement, and memory. Once released, it never returns.</p>
+        <a href="#" class="btn">Enter Archive</a>
       </div>
     </div>
   </div>
@@ -410,8 +697,8 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
       <div class="folder-image"><img src="images/banner3.jpeg" alt="Media"></div>
       <div class="folder-text">
         <h3>Visual Media</h3>
-        <p>Cinematic documentation and editorial photography. View our latest visual projects.</p>
-        <a href="#" class="btn">View Gallery</a>
+        <p>Cinematic documentation of street culture in motion. Editorials, short films, and visual records captured without performance or polish. Raw, intentional, honest.</p>
+        <a href="#" class="btn">Open Visual Log</a>
       </div>
     </div>
   </div>
@@ -424,10 +711,11 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
       <div class="folder-image"><img src="images/banner1.jpeg" alt="Music"></div>
       <div class="folder-text">
         <h3>Audio Archive</h3>
-        <p>The soundscape of the brand. Listen to our latest collaborative audio releases below.</p>
-        
+        <p>The sound of the underground, broadcast and preserved. Collaborations, live sessions, and cultural frequencies transmitted through Streets Radio 3000.</p>
+       
         <div class="audio-player">
           <p style="font-size: 10px; font-weight: 800; color: #888;">NOW PLAYING: BRAND_TRACK_V1.MP3</p>
+          <p style="font-size: 10px; font-weight: 800; color: #888;">LIVE SIGNAL — SOUTH AFRICA<br>FREQUENCY: 3000<br>STATUS: TRANSMITTING</p>
           <div class="player-controls">
             <button class="play-btn" id="master-play">▶</button>
             <div class="progress-bar" id="progress-container">
@@ -437,47 +725,95 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
           <audio id="main-audio" src="music/brand_track.mp3"></audio>
         </div>
 
-        <a href="#" class="btn">Listen Now</a>
+        <a href="#" class="btn">Tune In</a>
       </div>
     </div>
   </div>
 </div>
 
 <section class="categories">
-  <div class="category">MEN</div>
-  <div class="category">WOMEN</div>
-  <div class="category">NEW ARRIVALS</div>
+  <div class="category">MENS ARCHIVE</div>
+  <div class="category">WOMENS ARCHIVE</div>
+  <div class="category">RECENTLY RECOVERED</div>
 </section>
 
 <section class="products">
   <h2 style="margin-bottom: 30px; text-transform: uppercase; font-weight: 800;">Featured</h2>
   <div class="grid">
-    <div class="product"><img src="images/banner1.jpeg"><p>Product Name</p><strong>R 799</strong></div>
-    <div class="product"><img src="images/banner2.jpeg"><p>Product Name</p><strong>R 899</strong></div>
-    <div class="product"><img src="images/banner3.jpeg"><p>Product Name</p><strong>R 999</strong></div>
-    <div class="product"><img src="images/banner1.jpeg"><p>Product Name</p><strong>R 1099</strong></div>
+    <div class="product"><img src="images/banner1.jpeg" loading="lazy"><p>ARCHIVE PIECE #014<br>Found in Johannesburg<br>One of One</p><strong>R 799</strong></div>
+    <div class="product"><img src="images/banner2.jpeg" loading="lazy"><p>ARCHIVE PIECE #027<br>Found in Cape Town<br>One of One</p><strong>R 899</strong></div>
+    <div class="product"><img src="images/banner3.jpeg" loading="lazy"><p>ARCHIVE PIECE #089<br>Found in Pretoria<br>One of One</p><strong>R 999</strong></div>
+    <div class="product"><img src="images/banner1.jpeg" loading="lazy"><p>ARCHIVE PIECE #156<br>Found in Durban<br>One of One</p><strong>R 1099</strong></div>
   </div>
 </section>
 
 <section class="carousel">
+  <div class="carousel-overlay">
+    <p>NEW ARRIVALS<br>SHOP NOW</p>
+  </div>
   <div class="carousel-track">
-    <img src="images/banner2.jpeg"><img src="images/banner3.jpeg"><img src="images/banner1.jpeg">
-    <img src="images/banner2.jpeg"><img src="images/banner3.jpeg"><img src="images/banner1.jpeg">
+    <img src="images/banner2.jpeg" loading="eager" width="260" height="320" alt="Fashion">
+    <img src="images/banner3.jpeg" loading="eager" width="260" height="320" alt="Media">
+    <img src="images/banner1.jpeg" loading="eager" width="260" height="320" alt="Music">
+    <img src="images/banner2.jpeg" loading="eager" width="260" height="320" alt="Fashion">
+    <img src="images/banner3.jpeg" loading="eager" width="260" height="320" alt="Media">
+    <img src="images/banner1.jpeg" loading="eager" width="260" height="320" alt="Music">
   </div>
 </section>
 
+<section class="process">
+  <h3>Our Curatorial Process</h3>
+  <ol>
+    <li>Sourcing authentic streetwear and vintage pieces from urban collections.</li>
+    <li>Carefully selecting items that embody unique style and cultural significance.</li>
+    <li>Documenting each piece's story through photos and media.</li>
+    <li>Making them available in our online archive for fashion enthusiasts.</li>
+  </ol>
+</section>
+
 <section class="newsletter">
-  <h3>Join our newsletter</h3>
+  <h3>Join the Archive</h3>
+  <p style="margin-bottom: 20px; font-size: 14px;">Receive new releases, broadcasts, and recovered pieces before they go public.</p>
   <input type="email" placeholder="Enter your email" style="padding:15px; border:1px solid #000; width:250px;">
-  <button class="btn" style="margin-top:0; margin-left: 10px; background: #000; color: #fff; border: none;">Subscribe</button>
+  <button class="btn" style="margin-top:0; margin-left: 10px; background: #000; color: #fff; border: none;">Subscribe to Archive</button>
 </section>
 
 <footer>
+  <p>STREETS ARCHIVES — SOUTH AFRICA<br>FASHION • SOUND • VISUAL RECORDS<br>EST. 2026</p>
   <p>Privacy • Shipping • Returns • Contact</p>
-  <p>©️ Your Brand 2026</p>
 </footer>
 
+<div id="progress"></div>
+<div id="cursor"></div>
+<div id="toast">Theme Changed!</div>
+
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <img id="modalImg" src="" alt="Product">
+    <h3 id="modalTitle">Product Title</h3>
+    <p id="modalDesc">Product description here.</p>
+    <strong id="modalPrice">R 799</strong>
+  </div>
+</div>
+
+<button id="back-to-top">↑</button>
+
 <script>
+// Preload carousel images to prevent delay
+function preloadCarouselImages() {
+  const carouselImages = [
+    'images/banner1.jpeg',
+    'images/banner2.jpeg', 
+    'images/banner3.jpeg'
+  ];
+  
+  carouselImages.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}
+
 // Toggle Mobile Menu
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -486,7 +822,18 @@ function toggleMenu() {
   mobileMenu.classList.toggle('active');
 }
 
-hamburger.addEventListener('click', toggleMenu);
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    toggleMenu();
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target) && mobileMenu.classList.contains('active')) {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('active');
+  }
+});
 
 // Reveal Folders on Scroll
 const folderObserver = new IntersectionObserver((entries) => {
@@ -503,8 +850,18 @@ const progressFill = document.getElementById('progress-bar');
 const progressContainer = document.getElementById('progress-container');
 
 playBtn.addEventListener('click', () => {
-    if (audio.paused) { audio.play(); playBtn.innerText = 'II'; } 
-    else { audio.pause(); playBtn.innerText = '▶'; }
+    if (audio.paused) { 
+      audio.play(); 
+      playBtn.innerText = 'II'; 
+      playBtn.style.background = '#ff3c00';
+      playBtn.style.color = '#fff';
+    }
+    else { 
+      audio.pause(); 
+      playBtn.innerText = '▶'; 
+      playBtn.style.background = '#fff';
+      playBtn.style.color = '#000';
+    }
 });
 
 audio.addEventListener('timeupdate', () => {
@@ -517,6 +874,212 @@ progressContainer.addEventListener('click', (e) => {
     const clickX = e.offsetX;
     audio.currentTime = (clickX / width) * audio.duration;
 });
+
+// Typewriter Effect
+const typewriter = document.getElementById('typewriter');
+const lines = ["ARCHIVE THE STREETS", "CULTURE HAS A MEMORY"];
+let lineIndex = 0;
+let charIndex = 0;
+
+function typeWriter() {
+    if (lineIndex < lines.length) {
+        if (charIndex < lines[lineIndex].length) {
+            typewriter.innerHTML += lines[lineIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(typeWriter, 100);
+        } else {
+            typewriter.innerHTML += '<br>';
+            lineIndex++;
+            charIndex = 0;
+            setTimeout(typeWriter, 500);
+        }
+    }
+}
+typeWriter();
+
+// Smooth Scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+            // Close mobile menu if open
+            if (mobileMenu.classList.contains('active')) {
+              hamburger.classList.remove('active');
+              mobileMenu.classList.remove('active');
+            }
+        }
+    });
+});
+
+// Back to Top Button
+const backToTopBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+    } else {
+        backToTopBtn.style.display = 'none';
+    }
+});
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Preloader
+window.addEventListener('load', () => {
+    document.getElementById('preloader').style.display = 'none';
+    preloadCarouselImages(); // Preload carousel images
+    
+    // Stagger Products
+    document.querySelectorAll('.product').forEach((el, i) => {
+        el.style.animationDelay = (i * 0.1) + 's';
+    });
+});
+
+// Theme Toggle - Changed to use black/white moon/sun emojis
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    // Changed from yellow moon/sun to black/white
+    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
+    
+    // Show toast
+    const toast = document.getElementById('toast');
+    toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+    
+    // Update audio player background in dark mode
+    const audioPlayer = document.querySelector('.audio-player');
+    if (audioPlayer) {
+        if (document.body.classList.contains('dark')) {
+            audioPlayer.style.background = '#222';
+        } else {
+            audioPlayer.style.background = '#000';
+        }
+    }
+});
+
+// Initialize theme based on system preference
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.body.classList.add('dark');
+    themeToggle.textContent = '☀';
+}
+
+// Product Modal
+document.querySelectorAll('.product').forEach(product => {
+    product.addEventListener('click', () => {
+        const img = product.querySelector('img').src;
+        const title = product.querySelector('p').textContent;
+        const price = product.querySelector('strong').textContent;
+        
+        document.getElementById('modalImg').src = img;
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalPrice').textContent = price;
+        document.getElementById('modalDesc').textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
+        
+        document.getElementById('productModal').classList.add('show');
+    });
+});
+
+document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('productModal').classList.remove('show');
+});
+
+// Search Functionality
+document.getElementById('search').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('.product').forEach(product => {
+        const title = product.querySelector('p').textContent.toLowerCase();
+        if (title.includes(query)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+});
+
+// Parallax Effect
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const heroCollage = document.querySelector('.hero-collage');
+    if (heroCollage) {
+        heroCollage.style.transform = `translateY(${scrolled * 0.3}px)`;
+    }
+    // Scroll Progress
+    const scrollPercent = (scrolled / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progress').style.width = scrollPercent + '%';
+});
+
+// Cursor Follower
+document.addEventListener('mousemove', (e) => {
+    const cursor = document.getElementById('cursor');
+    cursor.style.left = e.clientX - 10 + 'px';
+    cursor.style.top = e.clientY - 10 + 'px';
+});
+
+// Add cursor effects on interactive elements
+const interactiveElements = document.querySelectorAll('a, button, .category, .product, .play-btn');
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        document.getElementById('cursor').style.transform = 'scale(1.5)';
+        document.getElementById('cursor').style.background = '#fff';
+    });
+    el.addEventListener('mouseleave', () => {
+        document.getElementById('cursor').style.transform = 'scale(1)';
+        document.getElementById('cursor').style.background = 'var(--accent)';
+    });
+});
+
+// Newsletter form submission
+const newsletterForm = document.querySelector('.newsletter');
+const newsletterInput = newsletterForm.querySelector('input');
+const newsletterBtn = newsletterForm.querySelector('.btn');
+
+newsletterBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (newsletterInput.value && newsletterInput.value.includes('@')) {
+        alert('Thank you for subscribing to our newsletter!');
+        newsletterInput.value = '';
+    } else {
+        alert('Please enter a valid email address.');
+    }
+});
+
+// Add enter key support for newsletter
+newsletterInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        newsletterBtn.click();
+    }
+});
+
+// Category click effects
+document.querySelectorAll('.category').forEach(category => {
+    category.addEventListener('click', () => {
+        category.style.background = 'var(--accent)';
+        category.style.color = '#fff';
+        category.style.borderColor = 'var(--accent)';
+        setTimeout(() => {
+            category.style.background = '';
+            category.style.color = '';
+            category.style.borderColor = '';
+        }, 300);
+    });
+});
+
+// Prevent right click on images (optional)
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
+});
+
+// Initialize carousel animation
+const carouselTrack = document.querySelector('.carousel-track');
+carouselTrack.style.animation = 'slideImages 20s linear infinite';
 </script>
 
 </body>
