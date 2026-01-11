@@ -32,6 +32,7 @@ body{
   --bg: #ffffff;
   --text: #111;
   --header-bg: #fff;
+   --transition: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Preloader */
@@ -625,6 +626,237 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 .carousel-overlay p {
   margin: 0;
 }
+
+/* ---------- FLOATING CONTACT FORM ---------- */
+.floating-contact-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000 !important; /* Increased z-index */
+}
+
+.contact-toggle-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(255, 60, 0, 0.4);
+    transition: all 0.3s var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001 !important; /* Increased z-index */
+    position: relative;
+}
+
+.contact-toggle-btn:hover {
+    transform: scale(1.1);
+    background: var(--black);
+    box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
+}
+
+.contact-toggle-btn.active {
+    transform: rotate(45deg);
+    background: var(--black);
+}
+
+.contact-panel {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 380px;
+    background: var(--header-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000 !important; /* Increased z-index */
+}
+
+.contact-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.contact-panel h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.contact-panel p {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 14px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
+    font-size: 14px;
+    transition: all 0.3s var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255, 60, 0, 0.05);
+}
+
+.contact-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.contact-form button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
+    font-size: 13px;
+}
+
+.contact-form button:hover {
+    background: var(--black);
+    transform: translateY(-2px);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s var(--transition);
+}
+
+.social-link:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.contact-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s var(--transition);
+}
+
+.contact-close:hover {
+    opacity: 1;
+    color: var(--accent);
+    transform: rotate(90deg);
+}
+
+/* Dark mode adjustments */
+body.dark .contact-panel {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .contact-form input,
+body.dark .contact-form textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+body.dark .social-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-contact-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .contact-panel {
+        width: 320px;
+        right: -10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-contact-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .contact-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .contact-panel {
+        width: calc(100vw - 40px);
+        right: -15px;
+        padding: 25px;
+    }
+    
+    .contact-panel h3 {
+        font-size: 20px;
+    }
+}
 </style>
 </head>
 
@@ -681,7 +913,8 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 </section>
 
 <section class="manifesto">
-  <p>Discover unique streetwear and vintage fashion pieces curated from the heart of urban culture. Each item tells a story of style, individuality, and raw expression. Shop our collection of one-of-a-kind garments that blend fashion, media, and music influences.</p>
+  <p>Discover unique streetwear and vintage fashion pieces curated from the heart of urban culture. Each item tells a story of style, individuality, and raw expression. Shop our collection of one-of-a-kind garments that blend fashion, media, and music influences.</p><br>
+  <a href="../views/layouts/about.php" class="btn-hero">About Us</a>
 </section>
 
 <div class="folder-section" id="fashion">
@@ -1088,7 +1321,126 @@ document.querySelectorAll('img').forEach(img => {
 // Initialize carousel animation
 const carouselTrack = document.querySelector('.carousel-track');
 carouselTrack.style.animation = 'slideImages 20s linear infinite';
+
+// Floating Contact Form
+document.addEventListener('DOMContentLoaded', () => {
+
+const contactToggle = document.getElementById('contactToggle');
+const contactPanel = document.getElementById('contactPanel');
+const contactClose = document.getElementById('contactClose');
+const contactForm = document.getElementById('contactForm');
+
+if (contactToggle && contactPanel) {
+    // Toggle contact panel
+    contactToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        contactToggle.classList.toggle('active');
+        contactPanel.classList.toggle('active');
+    });
+    
+    // Close panel with X button
+    if (contactClose) {
+        contactClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactToggle.classList.remove('active');
+            contactPanel.classList.remove('active');
+        });
+    }
+    
+    // Close panel when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
+            contactToggle.classList.remove('active');
+            contactPanel.classList.remove('active');
+        }
+    });
+    
+    // Prevent clicks inside panel from closing it
+    contactPanel.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // Form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+
+            if (data.email && data.message) {
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+
+                submitBtn.textContent = 'SENT ✓';
+                submitBtn.style.background = 'var(--black)';
+
+                contactForm.reset();
+
+                setTimeout(() => {
+                    contactToggle.classList.remove('active');
+                    contactPanel.classList.remove('active');
+
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.style.background = 'var(--accent)';
+                    }, 1000);
+                }, 1500);
+
+                console.log('Form submitted:', data);
+            }
+        });
+    }
+
+    // Prevent panel from closing when form is clicked
+    if (contactForm) {
+        contactForm.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+}
+
+});
+
 </script>
 
+<!-- Floating Contact Form -->
+<div class="floating-contact-container">
+    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
+        ✉️
+    </button>
+    
+    <div class="contact-panel" id="contactPanel">
+        <button class="contact-close" id="contactClose">&times;</button>
+        
+        <h3>CONTACT ARCHIVES</h3>
+        <p>Send us a message directly or connect through our social channels.</p>
+        
+        <form class="contact-form" id="contactForm">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <textarea placeholder="Your Message..." required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+        
+        <div class="social-links">
+            <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+                📸
+            </a>
+            <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
+                𝕏
+            </a>
+            <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
+                🎵
+            </a>
+            <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
+                ▶️
+            </a>
+            <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
+                ✉️
+            </a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

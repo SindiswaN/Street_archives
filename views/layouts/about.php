@@ -34,74 +34,6 @@ body{
   position: relative;
 }
 
-/* Enhanced Grainy Background Overlay for entire site */
-body::before {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
-  opacity: 0.5;
-  z-index: -1;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-body.dark::before {
-  opacity: 0.4;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.12'/%3E%3C/svg%3E");
-}
-
-/* Additional grain layer for more texture */
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grainFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grainFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.3;
-  z-index: -1;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-}
-
-body.dark::after {
-  opacity: 0.2;
-  mix-blend-mode: screen;
-}
-
-/* Preloader */
-#preloader {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--black);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    font-family: 'Inter', sans-serif;
-    transition: opacity 0.5s var(--transition);
-}
-.loader {
-    width: 60px;
-    height: 60px;
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    border-top: 3px solid var(--accent);
-    border-radius: 50%;
-    animation: spin 1s var(--transition) infinite;
-    margin-bottom: 20px;
-}
-@keyframes spin { 
-  0% { transform: rotate(0deg); } 
-  100% { transform: rotate(360deg); } 
-}
-
 /* Dark Mode */
 body.dark {
   --black: #ffffff;
@@ -308,10 +240,9 @@ body.dark .hamburger:hover {
   overflow: hidden;
   color: #fff;
   padding: 0 5%;
-  isolation: isolate;
 }
 
-/* Video Background */
+/* Video Background - FIXED */
 .hero-video-background {
   position: absolute;
   top: 0;
@@ -319,27 +250,22 @@ body.dark .hamburger:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 0;
+  z-index: 1;
   filter: grayscale(100%) contrast(120%) brightness(0.4);
 }
 
-/* Video Overlay */
+/* Video Overlay - Simplified */
 .hero-video-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0.9) 0%, 
-    rgba(0, 0, 0, 0.7) 30%, 
-    rgba(0, 0, 0, 0.5) 50%, 
-    rgba(0, 0, 0, 0.7) 70%, 
-    rgba(0, 0, 0, 0.9) 100%);
-  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
 }
 
-/* Scanlines effect */
+/* Scanlines effect - optional, keeping it minimal */
 .about-hero::after {
   content: "";
   position: absolute;
@@ -352,9 +278,9 @@ body.dark .hamburger:hover {
     rgba(0, 0, 0, 0.25) 50%
   );
   background-size: 100% 4px;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
-  opacity: 0.3;
+  opacity: 0.15;
 }
 
 .about-hero-content {
@@ -397,7 +323,7 @@ body.dark .hamburger:hover {
   font-family: 'Space Mono', monospace;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.7);
-  z-index: 3;
+  z-index: 10;
   text-transform: uppercase;
   line-height: 1.8;
   letter-spacing: 1px;
@@ -422,7 +348,7 @@ body.dark .hamburger:hover {
   position: absolute;
   bottom: 40px;
   right: 40px;
-  z-index: 3;
+  z-index: 10;
   display: flex;
   gap: 10px;
 }
@@ -454,33 +380,6 @@ body.dark .hamburger:hover {
   margin: 100px auto;
   position: relative;
   z-index: 2;
-}
-
-/* Grain effect on content sections */
-.vision-mission, .manifesto-about, .founder-section, .timeline, .pillars-section, .gallery-section, .stats-grid, .scope-section, .ggb-section, .newsletter {
-  position: relative;
-  overflow: hidden;
-}
-
-.vision-mission::before, .manifesto-about::before, .founder-section::before, .pillars-section::before, .stats-grid::before, .scope-content::before, .ggb-section::before, .newsletter::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
-  opacity: 0.3;
-  z-index: 0;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-body.dark .vision-mission::before, body.dark .manifesto-about::before, body.dark .founder-section::before, 
-body.dark .pillars-section::before, body.dark .stats-grid::before, body.dark .scope-content::before, 
-body.dark .ggb-section::before, body.dark .newsletter::before {
-  opacity: 0.2;
-  mix-blend-mode: screen;
 }
 
 /* Vision & Mission Section */
@@ -1139,61 +1038,6 @@ body.dark .ggb-section::before, body.dark .newsletter::before {
   transform: translateX(5px);
 }
 
-/* GirlsGoneBoss Section */
-.ggb-section {
-  background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%);
-  color: #fff;
-  padding: 100px 5%;
-  margin: 100px 0;
-  text-align: center;
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  z-index: 1;
-}
-
-.ggb-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-.ggb-content h2 {
-  font-size: 40px;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 40px;
-  letter-spacing: 3px;
-  background: linear-gradient(to right, #fff, #ff7d5c);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.ggb-content p {
-  font-size: 18px;
-  line-height: 1.9;
-  max-width: 800px;
-  margin: 0 auto 40px;
-  opacity: 0.85;
-}
-
-.ggb-tagline {
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-top: 50px;
-  letter-spacing: 4px;
-  font-family: 'Space Mono', monospace;
-  position: relative;
-  display: inline-block;
-  padding: 20px 40px;
-  border: 2px solid var(--accent);
-  border-radius: 8px;
-  background: rgba(255, 60, 0, 0.1);
-}
-
 /* Newsletter */
 .newsletter {
   width: 80%;
@@ -1417,14 +1261,6 @@ footer p:last-child {
   }
   
   .stats-grid { padding: 50px; }
-  
-  .hero-video-background {
-    display: none;
-  }
-  
-  .hero-background {
-    display: block;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1474,8 +1310,7 @@ footer p:last-child {
   .manifesto-about h2,
   .timeline h2,
   .pillars-section h2,
-  .scope-section h2,
-  .ggb-content h2 {
+  .scope-section h2 {
     font-size: 32px;
   }
   
@@ -1553,7 +1388,7 @@ footer p:last-child {
   </div>
   <div class="header-center">
     <div class="logo-container">
-      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Streets Archives Logo">
+      <img src="../../public/images/NORMALLOGO.jpeg" class="logo-3d" alt="Streets Archives Logo">
     </div>
   </div>
   <div class="header-right">
@@ -1578,17 +1413,12 @@ footer p:last-child {
 </div>
 
 <section class="about-hero">
-  <!-- Video Background -->
+  <!-- Video Background - SIMPLE PATH -->
   <video autoplay muted loop playsinline class="hero-video-background" id="heroVideo">
-    <source src="images/about.mp4" type="video/mp4">
-    <source src="images/media1.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+        <source src="../../public/images/about.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
   </video>
   
-  <!-- Fallback image background for mobile -->
-  <div class="hero-background" style="display: none;"></div>
-  
-  <!-- Video overlay -->
   <div class="hero-video-overlay"></div>
   
   <div class="hero-terminal">
@@ -1596,12 +1426,6 @@ footer p:last-child {
     <span>STATUS: ACTIVE</span>
     <span>ENCRYPTION: AES-256</span>
     <span>CULTURE OVER COMMODITY</span>
-  </div>
-  
-  <!-- Video Controls -->
-  <div class="video-controls">
-    <button class="video-btn" id="playPauseBtn">⏵</button>
-    <button class="video-btn" id="muteBtn">🔊</button>
   </div>
   
   <div class="about-hero-content">
@@ -1714,10 +1538,10 @@ footer p:last-child {
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2025</div>
-        <div class="timeline-title">GIRLSGONE BOSS TALK SHOW</div>
-        <div class="timeline-desc">Expansion into media with entrepreneurial-focused content celebrating women in street culture.</div>
+        <div class="timeline-title">MEDIA EXPANSION</div>
+        <div class="timeline-desc">Expansion into digital media and content creation focusing on street culture documentation.</div>
         <div class="timeline-image">
-          <img src="https://images.unsplash.com/photo-1551836026-d5c2a0e1b3c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Talk show recording">
+          <img src="https://images.unsplash.com/photo-1551836026-d5c2a0e1b3c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Media production">
         </div>
       </div>
       
@@ -1756,9 +1580,9 @@ footer p:last-child {
       </div>
       
       <div class="pillar">
-        <div class="pillar-icon">🎤</div>
-        <h3>MEDIA & EVENTS</h3>
-        <p>From the GirlsGone Boss Talk Show to immersive cultural experiences, we create platforms for authentic expression and entrepreneurial spirit.</p>
+        <div class="pillar-icon">🌐</div>
+        <h3>DIGITAL PRESENCE</h3>
+        <p>Online platforms and digital archives that document and amplify street culture through web presence and social media.</p>
       </div>
     </div>
   </section>
@@ -1833,16 +1657,6 @@ footer p:last-child {
     </div>
   </section>
 
-  <!-- GirlsGoneBoss Section -->
-  <section class="ggb-section">
-    <div class="ggb-content">
-      <h2>GIRLSGONE BOSS TALK SHOW</h2>
-      <p>An extension of our media pillar, GirlsGone Boss is a platform celebrating female entrepreneurship and creative leadership within street culture. We amplify voices, share stories of hustle, and document the journey of building empires from the ground up.</p>
-      <p>Live free, die with money isn't just a tagline — it's a philosophy we embody through every conversation, every collaboration, every piece we archive.</p>
-      <div class="ggb-tagline">LIVE FREE, DIE WITH MONEY</div>
-    </div>
-  </section>
-
   <!-- Newsletter -->
   <section class="newsletter">
     <h3>Join the Archive</h3>
@@ -1874,17 +1688,35 @@ window.addEventListener('load', () => {
     }, 500);
 });
 
-// Video Background Controls
+// FIXED Video Background Controls - SIMPLIFIED
 const heroVideo = document.getElementById('heroVideo');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const muteBtn = document.getElementById('muteBtn');
 
-if (heroVideo) {
+// Initialize video controls
+if (heroVideo && playPauseBtn && muteBtn) {
+    // Set initial button states
+    playPauseBtn.textContent = '⏸';
+    muteBtn.textContent = '🔊';
+    
+    // Try to autoplay the video
+    const playPromise = heroVideo.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.log('Autoplay prevented, showing play button');
+            playPauseBtn.textContent = '⏵';
+        });
+    }
+    
     // Play/Pause functionality
     playPauseBtn.addEventListener('click', () => {
         if (heroVideo.paused) {
-            heroVideo.play();
-            playPauseBtn.textContent = '⏸';
+            heroVideo.play().then(() => {
+                playPauseBtn.textContent = '⏸';
+            }).catch(error => {
+                console.log('Play failed:', error);
+            });
         } else {
             heroVideo.pause();
             playPauseBtn.textContent = '⏵';
@@ -1899,15 +1731,17 @@ if (heroVideo) {
 
     // Update button state when video ends
     heroVideo.addEventListener('ended', () => {
-        playPauseBtn.textContent = '⏵';
+        heroVideo.currentTime = 0; // Reset to start
+        heroVideo.play(); // Auto-restart
     });
+}
 
-    // Video autoplay fallback for mobile
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        heroVideo.muted = true;
-        heroVideo.play();
-        muteBtn.textContent = '🔇';
-    }
+// Fallback if video fails to load
+if (heroVideo) {
+    heroVideo.addEventListener('error', () => {
+        console.log('Video failed to load, showing fallback');
+        // The poster image will show automatically
+    });
 }
 
 // Toggle Mobile Menu
@@ -1920,30 +1754,34 @@ function toggleMenu() {
   document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
 }
 
-hamburger.addEventListener('click', toggleMenu);
+if (hamburger) {
+    hamburger.addEventListener('click', toggleMenu);
+}
 
 // Close mobile menu when clicking links
 document.querySelectorAll('.mobile-menu a').forEach(link => {
-  link.addEventListener('click', toggleMenu);
+    link.addEventListener('click', toggleMenu);
 });
 
 // Theme Toggle
 const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
-    themeToggle.setAttribute('aria-label', document.body.classList.contains('dark') ? 'Switch to light mode' : 'Switch to dark mode');
-    
-    // Save preference to localStorage
-    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-});
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
+        themeToggle.setAttribute('aria-label', document.body.classList.contains('dark') ? 'Switch to light mode' : 'Switch to dark mode');
+        
+        // Save preference to localStorage
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
 
-// Initialize theme
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !savedTheme)) {
-    document.body.classList.add('dark');
-    themeToggle.textContent = '☀';
-    themeToggle.setAttribute('aria-label', 'Switch to light mode');
+    // Initialize theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !savedTheme)) {
+        document.body.classList.add('dark');
+        themeToggle.textContent = '☀';
+        themeToggle.setAttribute('aria-label', 'Switch to light mode');
+    }
 }
 
 // Back to Top Button
@@ -1958,15 +1796,17 @@ window.addEventListener('scroll', () => {
     }
 });
 
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
 // Newsletter form submission
 const newsletterInput = document.querySelector('.newsletter input');
 const newsletterBtn = document.querySelector('.newsletter .btn');
 
-if (newsletterBtn) {
+if (newsletterBtn && newsletterInput) {
     newsletterBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (newsletterInput.value && newsletterInput.value.includes('@')) {
@@ -2011,7 +1851,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 document.querySelectorAll('.timeline-item, .pillar, .stat-item, .manifesto-about, .pillars-section, .scope-content, .gallery-item, .vision-card, .mission-card, .founder-section').forEach(el => {
-  observer.observe(el);
+    if (el) observer.observe(el);
 });
 
 // Smooth scrolling for anchor links
@@ -2051,53 +1891,6 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// Terminal text animation
-const terminalText = document.querySelector('.hero-terminal');
-if (terminalText) {
-    const spans = terminalText.querySelectorAll('span');
-    spans.forEach((span, index) => {
-        span.style.animationDelay = `${index * 0.5}s`;
-        span.style.opacity = '0.7';
-    });
-}
-
-// Gallery image lazy loading
-const galleryImages = document.querySelectorAll('.gallery-item img, .timeline-image img, .manifesto-image img');
-const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src || img.src;
-            imageObserver.unobserve(img);
-        }
-    });
-}, { rootMargin: '50px' });
-
-galleryImages.forEach(img => {
-    if (img.dataset.src) {
-        imageObserver.observe(img);
-    }
-});
-
-// Floating icons animation
-const floatingIcons = document.querySelectorAll('.vision-icon, .mission-icon');
-floatingIcons.forEach(icon => {
-    icon.style.animationDelay = `${Math.random() * 2}s`;
-});
-
-// Image hover effect enhancement
-document.querySelectorAll('.gallery-item, .manifesto-image, .timeline-image').forEach(item => {
-    item.addEventListener('mouseenter', () => {
-        item.style.zIndex = '10';
-    });
-    
-    item.addEventListener('mouseleave', () => {
-        setTimeout(() => {
-            item.style.zIndex = '1';
-        }, 300);
-    });
-});
-
 // Stats counter animation
 const stats = document.querySelectorAll('.stat-number');
 const statsObserver = new IntersectionObserver((entries) => {
@@ -2123,31 +1916,6 @@ const statsObserver = new IntersectionObserver((entries) => {
 stats.forEach(stat => {
     if (!stat.textContent.includes('∞')) {
         statsObserver.observe(stat);
-    }
-});
-
-// Random grain animation
-function animateGrain() {
-    const noise = document.querySelector('body::before');
-    if (noise) {
-        setInterval(() => {
-            const x = Math.random() * 10;
-            const y = Math.random() * 10;
-            noise.style.transform = `translate(${x}px, ${y}px)`;
-        }, 5000);
-    }
-}
-
-animateGrain();
-
-// Video autoplay detection
-document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('heroVideo');
-    if (video) {
-        video.play().catch(error => {
-            console.log('Video autoplay failed:', error);
-            playPauseBtn.textContent = '⏵';
-        });
     }
 });
 </script>
