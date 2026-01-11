@@ -213,9 +213,9 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 }
 .stream:hover { flex: 1.4; filter: grayscale(0%); opacity: 0.9; }
 
-.s-fashion { background-image: url('images/banner2.jpeg'); }
-.s-media { background-image: url('images/banner3.jpeg'); }
-.s-music { background-image: url('images/banner1.jpeg'); }
+.s-fashion { background-image: url('images/image6.jpg'); }
+.s-media { background-image: url('images/image5.jpg'); }
+.s-music { background-image: url('images/image1.jpg'); }
 
 .hero::before {
   content: " ";
@@ -334,6 +334,14 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 }
 
 .folder-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+  border: 1px solid #ddd;
+}
+
+.folder-image video {
   width: 100%;
   height: auto;
   border-radius: 4px;
@@ -680,7 +688,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   <div class="folder-tab"><span>DIR_FASHION</span></div>
   <div class="folder-body">
     <div class="folder-content">
-      <div class="folder-image"><img src="images/banner2.jpeg" alt="Fashion"></div>
+      <div class="folder-image"><img src="images/image5.jpg" alt="Fashion"></div>
       <div class="folder-text">
         <h3>Fashion Archive</h3>
         <p>Curated vintage and second-hand garments pulled from real streets and private collections. Each piece carries time, movement, and memory. Once released, it never returns.</p>
@@ -694,7 +702,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   <div class="folder-tab"><span>DIR_MEDIA</span></div>
   <div class="folder-body">
     <div class="folder-content">
-      <div class="folder-image"><img src="images/banner3.jpeg" alt="Media"></div>
+      <div class="folder-image"><video src="images/media.mp4" autoplay loop muted playsinline></video></div>
       <div class="folder-text">
         <h3>Visual Media</h3>
         <p>Cinematic documentation of street culture in motion. Editorials, short films, and visual records captured without performance or polish. Raw, intentional, honest.</p>
@@ -708,7 +716,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   <div class="folder-tab"><span>DIR_MUSIC</span></div>
   <div class="folder-body">
     <div class="folder-content">
-      <div class="folder-image"><img src="images/banner1.jpeg" alt="Music"></div>
+      <div class="folder-image"><video src="images/music.mov" autoplay loop muted playsinline></div>
       <div class="folder-text">
         <h3>Audio Archive</h3>
         <p>The sound of the underground, broadcast and preserved. Collaborations, live sessions, and cultural frequencies transmitted through Streets Radio 3000.</p>
@@ -740,10 +748,10 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 <section class="products">
   <h2 style="margin-bottom: 30px; text-transform: uppercase; font-weight: 800;">Featured</h2>
   <div class="grid">
-    <div class="product"><img src="images/banner1.jpeg" loading="lazy"><p>ARCHIVE PIECE #014<br>Found in Johannesburg<br>One of One</p><strong>R 799</strong></div>
-    <div class="product"><img src="images/banner2.jpeg" loading="lazy"><p>ARCHIVE PIECE #027<br>Found in Cape Town<br>One of One</p><strong>R 899</strong></div>
-    <div class="product"><img src="images/banner3.jpeg" loading="lazy"><p>ARCHIVE PIECE #089<br>Found in Pretoria<br>One of One</p><strong>R 999</strong></div>
-    <div class="product"><img src="images/banner1.jpeg" loading="lazy"><p>ARCHIVE PIECE #156<br>Found in Durban<br>One of One</p><strong>R 1099</strong></div>
+    <div class="product"><img src="images/image5.jpg" loading="lazy"><p>ARCHIVE PIECE #014<br>Found in Johannesburg<br>One of One</p><strong>R 799</strong></div>
+    <div class="product"><img src="images/image2.jpg" loading="lazy"><p>ARCHIVE PIECE #027<br>Found in Cape Town<br>One of One</p><strong>R 899</strong></div>
+    <div class="product"><img src="images/image7.jpg" loading="lazy"><p>ARCHIVE PIECE #089<br>Found in Pretoria<br>One of One</p><strong>R 999</strong></div>
+    <div class="product"><img src="images/image1.jpg" loading="lazy"><p>ARCHIVE PIECE #156<br>Found in Durban<br>One of One</p><strong>R 1099</strong></div>
   </div>
 </section>
 
@@ -752,12 +760,12 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     <p>NEW ARRIVALS<br>SHOP NOW</p>
   </div>
   <div class="carousel-track">
-    <img src="images/banner2.jpeg" loading="eager" width="260" height="320" alt="Fashion">
-    <img src="images/banner3.jpeg" loading="eager" width="260" height="320" alt="Media">
-    <img src="images/banner1.jpeg" loading="eager" width="260" height="320" alt="Music">
-    <img src="images/banner2.jpeg" loading="eager" width="260" height="320" alt="Fashion">
-    <img src="images/banner3.jpeg" loading="eager" width="260" height="320" alt="Media">
-    <img src="images/banner1.jpeg" loading="eager" width="260" height="320" alt="Music">
+    <img src="images/image6.jpg" loading="eager" width="260" height="320" alt="Fashion">
+    <img src="images/image7.jpg" loading="eager" width="260" height="320" alt="Media">
+    <img src="images/image5.jpg" loading="eager" width="260" height="320" alt="Music">
+    <img src="images/image1.jpg" loading="eager" width="260" height="320" alt="Fashion">
+    <img src="images/image3.jpg" loading="eager" width="260" height="320" alt="Media">
+    <img src="images/image4.jpg" loading="eager" width="260" height="320" alt="Music">
   </div>
 </section>
 
