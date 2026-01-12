@@ -22,6 +22,55 @@ body{
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
+  position: relative; /* Needed for grain positioning */
+}
+
+/* INTENSIFIED GRAIN OVERLAY - FIXED VERSION */
+.grain-overlay {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Much more visible grain texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+  opacity: 0.25; /* Increased opacity for better visibility */
+  z-index: 9999; /* Very high z-index to ensure it's on top */
+  pointer-events: none; /* Allows clicking through */
+  mix-blend-mode: overlay; /* Better blending with content */
+  animation: grain-move 8s steps(10) infinite;
+}
+
+/* Alternative grain effect - even more visible */
+.grain-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  animation: grain-drift 15s linear infinite;
+}
+
+@keyframes grain-move {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -2%); }
+  20% { transform: translate(-3%, 1%); }
+  30% { transform: translate(2%, -1%); }
+  40% { transform: translate(-1%, 2%); }
+  50% { transform: translate(1%, -3%); }
+  60% { transform: translate(-2%, 1%); }
+  70% { transform: translate(3%, 2%); }
+  80% { transform: translate(-1%, -2%); }
+  90% { transform: translate(2%, 1%); }
+}
+
+@keyframes grain-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-50%, -50%); }
 }
 
 :root{
@@ -44,7 +93,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: 10000; /* Above grain overlay */
     font-family: 'Poppins', sans-serif;
 }
 .loader {
@@ -74,11 +123,30 @@ body.dark .audio-player { background: #222; }
 body.dark .newsletter { background: #222; border-color: #fff; }
 body.dark .newsletter input { border-color: #fff; color: #fff; background: #333; }
 body.dark footer { background: #222; }
+/* Dark mode grain adjustment */
+body.dark .grain-overlay {
+  opacity: 0.35; /* Even more visible in dark mode */
+  mix-blend-mode: soft-light;
+}
 
 /* ---------- TOP BAR ---------- */
-.top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
-@keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+.top-bar{
+  background:var(--black); 
+  color:white; 
+  padding:10px 0; 
+  overflow:hidden;
+  position: relative;
+  z-index: 100;
+}
+.top-bar p{
+  animation: scrollText 35s linear infinite; 
+  font-size:14px; 
+  white-space: nowrap;
+}
+@keyframes scrollText{ 
+  0%{transform:translateX(100%);} 
+  100%{transform:translateX(-100%);} 
+}
 
 /* ---------- HEADER & HAMBURGER ---------- */
 header{
@@ -213,7 +281,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 }
 .stream:hover { flex: 1.4; filter: grayscale(0%); opacity: 0.9; }
 
-.s-fashion { background-image: url('images/image6.jpg'); }
+.s-fashion { background-image: url('images/image7.jpg'); }
 .s-media { background-image: url('images/image5.jpg'); }
 .s-music { background-image: url('images/image1.jpg'); }
 
@@ -222,7 +290,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
-              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 255, 0, 0.03));
   background-size: 100% 4px, 3px 100%;
   z-index: 3;
   pointer-events: none;
@@ -387,15 +455,50 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 .progress-fill { width: 0%; height: 100%; background: var(--accent); }
 
 /* ---------- CATEGORIES, PRODUCTS, CAROUSEL ---------- */
-.categories{ width:80%; margin:80px auto; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.category{ background:#f2f2f2; padding:60px 20px; border:1px solid #ddd; text-align:center; font-weight:700; cursor: pointer; transition: .3s;}
-.category:hover{background:#eee; border-color: #000;}
+.categories{ 
+  width:80%; 
+  margin:80px auto; 
+  display:grid; 
+  grid-template-columns:repeat(3,1fr); 
+  gap:20px; 
+}
+.category{ 
+  background:#f2f2f2; 
+  padding:60px 20px; 
+  border:1px solid #ddd; 
+  text-align:center; 
+  font-weight:700; 
+  cursor: pointer; 
+  transition: .3s;
+}
+.category:hover{
+  background:#eee; 
+  border-color: #000;
+}
 
-.products{width:80%;margin:80px auto;}
-.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
-.product{border:1px solid #ddd; padding:16px; opacity: 0; animation: fadeInUp 0.5s ease-out forwards;}
-.product img{width:100%; margin-bottom: 10px; transition: transform 0.3s;}
-.product:hover img { transform: scale(1.05); }
+.products{
+  width:80%;
+  margin:80px auto;
+}
+.grid{
+  display:grid; 
+  grid-template-columns:repeat(4,1fr); 
+  gap:20px;
+}
+.product{
+  border:1px solid #ddd; 
+  padding:16px; 
+  opacity: 0; 
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+.product img{
+  width:100%; 
+  margin-bottom: 10px; 
+  transition: transform 0.3s;
+}
+.product:hover img { 
+  transform: scale(1.05); 
+}
 
 /* FIXED CAROUSEL - NO DELAY */
 .carousel {
@@ -434,8 +537,23 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-.newsletter{width:80%; margin:80px auto; padding:60px; background:var(--offwhite); text-align:center; border: 2px solid #000;}
-footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-align: center; font-size: 13px; text-transform: uppercase;}
+.newsletter{
+  width:80%; 
+  margin:80px auto; 
+  padding:60px; 
+  background:var(--offwhite); 
+  text-align:center; 
+  border: 2px solid #000;
+}
+footer{
+  background:#111; 
+  color:white; 
+  padding:50px 5%; 
+  margin-top:60px; 
+  text-align: center; 
+  font-size: 13px; 
+  text-transform: uppercase;
+}
 
 /* Scroll Progress Bar */
 #progress {
@@ -445,7 +563,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     width: 0%;
     height: 4px;
     background: var(--accent);
-    z-index: 1000;
+    z-index: 10001; /* Above grain overlay */
 }
 
 /* Cursor Follower */
@@ -456,7 +574,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: var(--accent);
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 10002; /* Above grain overlay */
     transition: transform 0.1s ease-out;
 }
 
@@ -493,7 +611,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     opacity: 0;
     transform: translateY(100px);
     transition: all 0.3s;
-    z-index: 1500;
+    z-index: 10002; /* Above grain overlay */
 }
 #toast.show {
     opacity: 1;
@@ -529,7 +647,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   font-size: 20px;
   cursor: pointer;
   display: none;
-  z-index: 100;
+  z-index: 10002; /* Above grain overlay */
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   transition: all 0.3s ease;
 }
@@ -625,10 +743,42 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 .carousel-overlay p {
   margin: 0;
 }
+
+/* Additional grain effect for specific sections */
+.hero::after, 
+.folder-body::after,
+.manifesto::after,
+.process::after,
+.newsletter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+  opacity: 0.12;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Make sure the grain is visible on dark backgrounds */
+.hero::after {
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
 </style>
 </head>
 
 <body>
+<!-- Grain Overlay - This must be inside body but before other content -->
+<div class="grain-overlay"></div>
+
+<div id="preloader">
+  <div class="loader"></div>
+  <p>Loading Archive...</p>
+</div>
 
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
@@ -670,7 +820,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   <div class="terminal-data">
     <span>STATUS: ACTIVE</span>
     <span>ENCRYPTION: AES-256</span>
-    <span>LOC: SOUTH_AFRICA_HQ</span>
+    <span>LOC: SOUTH_AF_HQ</span>
   </div>
 
   <div class="hero-content">
@@ -808,14 +958,21 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 <button id="back-to-top">↑</button>
 
 <script>
+// Add grain overlay to the DOM if it doesn't exist
+if (!document.querySelector('.grain-overlay')) {
+  const grainOverlay = document.createElement('div');
+  grainOverlay.className = 'grain-overlay';
+  document.body.prepend(grainOverlay);
+}
+
 // Preload carousel images to prevent delay
 function preloadCarouselImages() {
   const carouselImages = [
     'images/banner1.jpeg',
-    'images/banner2.jpeg', 
+    'images/banner2.jpeg',
     'images/banner3.jpeg'
   ];
-  
+ 
   carouselImages.forEach(src => {
     const img = new Image();
     img.src = src;
@@ -858,15 +1015,15 @@ const progressFill = document.getElementById('progress-bar');
 const progressContainer = document.getElementById('progress-container');
 
 playBtn.addEventListener('click', () => {
-    if (audio.paused) { 
-      audio.play(); 
-      playBtn.innerText = 'II'; 
+    if (audio.paused) {
+      audio.play();
+      playBtn.innerText = 'II';
       playBtn.style.background = '#ff3c00';
       playBtn.style.color = '#fff';
     }
-    else { 
-      audio.pause(); 
-      playBtn.innerText = '▶'; 
+    else {
+      audio.pause();
+      playBtn.innerText = '▶';
       playBtn.style.background = '#fff';
       playBtn.style.color = '#000';
     }
@@ -940,26 +1097,38 @@ backToTopBtn.addEventListener('click', () => {
 window.addEventListener('load', () => {
     document.getElementById('preloader').style.display = 'none';
     preloadCarouselImages(); // Preload carousel images
-    
+   
     // Stagger Products
     document.querySelectorAll('.product').forEach((el, i) => {
         el.style.animationDelay = (i * 0.1) + 's';
     });
 });
 
-// Theme Toggle - Changed to use black/white moon/sun emojis
+// Theme Toggle - Enhanced for grain visibility
 const themeToggle = document.getElementById('theme-toggle');
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark');
     // Changed from yellow moon/sun to black/white
     themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
-    
+   
+    // Adjust grain opacity based on theme
+    const grainOverlay = document.querySelector('.grain-overlay');
+    if (grainOverlay) {
+      if (document.body.classList.contains('dark')) {
+        grainOverlay.style.opacity = '0.35'; // More visible in dark mode
+        grainOverlay.style.mixBlendMode = 'soft-light';
+      } else {
+        grainOverlay.style.opacity = '0.25'; // Slightly less in light mode
+        grainOverlay.style.mixBlendMode = 'overlay';
+      }
+    }
+   
     // Show toast
     const toast = document.getElementById('toast');
     toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2000);
-    
+   
     // Update audio player background in dark mode
     const audioPlayer = document.querySelector('.audio-player');
     if (audioPlayer) {
@@ -975,6 +1144,20 @@ themeToggle.addEventListener('click', () => {
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.body.classList.add('dark');
     themeToggle.textContent = '☀';
+    
+    // Set initial grain opacity for dark mode
+    const grainOverlay = document.querySelector('.grain-overlay');
+    if (grainOverlay) {
+      grainOverlay.style.opacity = '0.35';
+      grainOverlay.style.mixBlendMode = 'soft-light';
+    }
+} else {
+  // Set initial grain opacity for light mode
+  const grainOverlay = document.querySelector('.grain-overlay');
+  if (grainOverlay) {
+    grainOverlay.style.opacity = '0.25';
+    grainOverlay.style.mixBlendMode = 'overlay';
+  }
 }
 
 // Product Modal
@@ -983,12 +1166,12 @@ document.querySelectorAll('.product').forEach(product => {
         const img = product.querySelector('img').src;
         const title = product.querySelector('p').textContent;
         const price = product.querySelector('strong').textContent;
-        
+       
         document.getElementById('modalImg').src = img;
         document.getElementById('modalTitle').textContent = title;
         document.getElementById('modalPrice').textContent = price;
         document.getElementById('modalDesc').textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
-        
+       
         document.getElementById('productModal').classList.add('show');
     });
 });
@@ -1088,6 +1271,15 @@ document.querySelectorAll('img').forEach(img => {
 // Initialize carousel animation
 const carouselTrack = document.querySelector('.carousel-track');
 carouselTrack.style.animation = 'slideImages 20s linear infinite';
+
+// Additional grain visibility enhancement
+document.addEventListener('DOMContentLoaded', () => {
+  // Force grain overlay to be visible
+  const grainOverlay = document.querySelector('.grain-overlay');
+  if (grainOverlay) {
+    grainOverlay.style.display = 'block';
+  }
+});
 </script>
 
 </body>
