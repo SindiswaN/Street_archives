@@ -1,9 +1,15 @@
+<?php
+$pageTitle = 'About';
+require_once(__DIR__ . '/../app/config.php');
+$cartCount = getCartCount(); 
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Streets Archives — About</title>
+<title>STREETS ARCHIVES - <?php echo $pageTitle; ?></title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -1388,7 +1394,7 @@ footer p:last-child {
   </div>
   <div class="header-center">
     <div class="logo-container">
-      <img src="../../public/images/NORMALLOGO.jpeg" class="logo-3d" alt="Streets Archives Logo">
+      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Streets Archives Logo">
     </div>
   </div>
   <div class="header-right">
@@ -1415,7 +1421,7 @@ footer p:last-child {
 <section class="about-hero">
   <!-- Video Background - SIMPLE PATH -->
   <video autoplay muted loop playsinline class="hero-video-background" id="heroVideo">
-        <source src="../../public/images/about.mp4" type="video/mp4">
+        <source src="images/about.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
   

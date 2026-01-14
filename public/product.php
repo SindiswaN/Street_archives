@@ -1,10 +1,19 @@
 <?php
-$pageTitle = 'Home';
-require_once(__DIR__ . '/../app/config.php');
-$cartCount = getCartCount(); // Get cart count
+$pageTitle = 'Product';
+require_once 'config.php';
+
+// Get product ID from URL
+$productId = isset($_GET['id']) ? $_GET['id'] : '014';
+$product = getProductById($productId);
+
+if (!$product) {
+    // Redirect to shop if product not found
+    header('Location: shop.php');
+    exit();
+}
+
+$cartCount = getCartCount();
 ?>
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -864,10 +873,238 @@ body.dark .social-link {
         font-size: 20px;
     }
 }
+.product-detail-container {
+    width: 85%;
+    max-width: 1100px;
+    margin: 100px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border: 2px solid var(--black);
+}
+
+.thumbnail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    border-color: var(--accent);
+}
+
+.product-info {
+    padding: 20px 0;
+}
+
+.product-category {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.product-name {
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.product-price-large {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.product-description-long {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    color: #444;
+}
+
+.product-attributes {
+    margin-bottom: 30px;
+}
+
+.attribute {
+    margin-bottom: 15px;
+}
+
+.attribute label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.size-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.size-option {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.size-option:hover,
+.size-option.selected {
+    background: var(--black);
+    color: white;
+}
+
+.size-option.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.quantity-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--black);
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-input {
+    width: 60px;
+    height: 40px;
+    border: 2px solid var(--black);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.action-btn {
+    padding: 15px 30px;
+    border: 2px solid var(--black);
+    background: var(--black);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 13px;
+    letter-spacing: 1px;
+    flex: 1;
+}
+
+.action-btn.secondary {
+    background: transparent;
+    color: var(--black);
+}
+
+.action-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.product-meta-info {
+    border-top: 1px solid var(--grey);
+    padding-top: 20px;
+    font-size: 12px;
+    color: #666;
+}
+
+.meta-item {
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.meta-label {
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.related-products {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 2px solid var(--black);
+}
+
+/* Responsive product page */
+@media (max-width: 768px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .main-image {
+        height: 300px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .product-name {
+        font-size: 24px;
+    }
+}
 </style>
 </head>
 
 <body>
+
+<div id="preloader">
+  <div class="loader"></div>
+  <p>Loading Archive...</p>
+</div>
 
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
@@ -879,9 +1116,11 @@ body.dark .social-link {
     <button id="theme-toggle">🌑</button>
   </div>
   <div class="header-center">
-    <div class="logo-container">
-      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
-    </div>
+    <a href="index.php">
+      <div class="logo-container">
+        <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
+      </div>
+    </a>
   </div>
   <div class="header-right">
     <div class="hamburger" id="hamburger">
@@ -889,143 +1128,137 @@ body.dark .social-link {
       <span></span>
       <span></span>
     </div>
-    <div class="cart">CART (0)</div>
+    <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
   </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="shop.php" onclick="toggleMenu()">Shop</a>
-  <a href="media.php" onclick="toggleMenu()">Media</a>
-  <a href="music.php" onclick="toggleMenu()">Music</a>
-  <a href="cart.php" onclick="toggleMenu()">Cart (<?php echo $cartCount; ?>)</a>
+  <a href="index.php">Home</a>
+  <a href="shop.php">Shop</a>
+  <a href="music.php">Music</a>
+  <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
 </div>
 
-<section class="hero">
-  <div class="hero-collage">
-    <div class="stream s-fashion"></div>
-    <div class="stream s-media"></div>
-    <div class="stream s-music"></div>
-  </div>
-
-  <div class="terminal-data">
-    <span>STATUS: ACTIVE</span>
-    <span>ENCRYPTION: AES-256</span>
-    <span>LOC: SOUTH_AFRICA_HQ</span>
-  </div>
-
-  <div class="hero-content">
-    <h1 id="typewriter"></h1>
-    <p class="tagline">Fashion / Media / Sound Archive</p>
-    <a href="#fashion" class="btn-hero">Initialize Explorer</a>
-  </div>
-</section>
-
-<section class="manifesto">
-  <p>Discover unique streetwear and vintage fashion pieces curated from the heart of urban culture. Each item tells a story of style, individuality, and raw expression. Shop our collection of one-of-a-kind garments that blend fashion, media, and music influences.</p><br>
-  <a href="about.php" class="btn-hero">About Us</a>
-</section>
-
-<div class="folder-section" id="fashion">
-  <div class="folder-tab"><span>DIR_FASHION</span></div>
-  <div class="folder-body">
-    <div class="folder-content">
-      <div class="folder-image"><img src="images/image5.jpg" alt="Fashion"></div>
-      <div class="folder-text">
-        <h3>Fashion Archive</h3>
-        <p>Curated vintage and second-hand garments pulled from real streets and private collections. Each piece carries time, movement, and memory. Once released, it never returns.</p>
-        <a href="shop.php" class="btn-hero">Enter Archive</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="folder-section" id="media">
-  <div class="folder-tab"><span>DIR_MEDIA</span></div>
-  <div class="folder-body">
-    <div class="folder-content">
-      <div class="folder-image"><video src="images/media.mp4" autoplay loop muted playsinline></video></div>
-      <div class="folder-text">
-        <h3>Visual Media</h3>
-        <p>Cinematic documentation of street culture in motion. Editorials, short films, and visual records captured without performance or polish. Raw, intentional, honest.</p>
-        <a href="#" class="btn">Open Visual Log</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="folder-section" id="music">
-  <div class="folder-tab"><span>DIR_MUSIC</span></div>
-  <div class="folder-body">
-    <div class="folder-content">
-      <div class="folder-image"><video src="images/music.mov" autoplay loop muted playsinline></div>
-      <div class="folder-text">
-        <h3>Audio Archive</h3>
-        <p>The sound of the underground, broadcast and preserved. Collaborations, live sessions, and cultural frequencies transmitted through Streets Radio 3000.</p>
-       
-        <div class="audio-player">
-          <p style="font-size: 10px; font-weight: 800; color: #888;">NOW PLAYING: BRAND_TRACK_V1.MP3</p>
-          <p style="font-size: 10px; font-weight: 800; color: #888;">LIVE SIGNAL — SOUTH AFRICA<br>FREQUENCY: 3000<br>STATUS: TRANSMITTING</p>
-          <div class="player-controls">
-            <button class="play-btn" id="master-play">▶️</button>
-            <div class="progress-bar" id="progress-container">
-                <div class="progress-fill" id="progress-bar"></div>
-            </div>
-          </div>
-          <audio id="main-audio" src="music/brand_track.mp3"></audio>
+<section class="product-detail-container">
+    <div class="product-gallery">
+        <img id="main-image" src="images/<?php echo $product['images'][0]; ?>" alt="<?php echo $product['name']; ?>" class="main-image">
+        <div class="thumbnail-grid">
+            <?php foreach ($product['images'] as $index => $image): ?>
+            <img src="images/<?php echo $image; ?>" 
+                 alt="Thumbnail <?php echo $index + 1; ?>" 
+                 class="thumbnail <?php echo $index === 0 ? 'active' : ''; ?>"
+                 data-image="images/<?php echo $image; ?>">
+            <?php endforeach; ?>
         </div>
-
-        <a href="#" class="btn">Tune In</a>
-      </div>
     </div>
-  </div>
-</div>
-
-<section class="categories">
-  <div class="category">MENS ARCHIVE</div>
-  <div class="category">WOMENS ARCHIVE</div>
-  <div class="category">RECENTLY RECOVERED</div>
+    
+    <div class="product-info">
+        <div class="product-category"><?php echo strtoupper($product['category'] ?? 'ARCHIVE'); ?> • <?php echo strtoupper($product['type']); ?></div>
+        <h1 class="product-name"><?php echo $product['name']; ?></h1>
+        <div class="product-price-large"><?php echo $product['price']; ?></div>
+        
+        <div class="product-description-long">
+            <p><?php echo $product['description']; ?></p>
+            <p>Each archive piece is unique and will never be reproduced. This item comes with a certificate of authenticity and archive documentation.</p>
+        </div>
+        
+        <div class="product-attributes">
+            <?php if ($product['type'] === 'fashion'): ?>
+            <div class="attribute">
+                <label>SIZE</label>
+                <div class="size-options">
+                    <div class="size-option" data-size="XS">XS</div>
+                    <div class="size-option selected" data-size="S">S</div>
+                    <div class="size-option" data-size="M">M</div>
+                    <div class="size-option" data-size="L">L</div>
+                    <div class="size-option disabled" data-size="XL">XL</div>
+                </div>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (isset($product['condition'])): ?>
+            <div class="attribute">
+                <label>CONDITION</label>
+                <div style="font-weight: 600; color: var(--accent);"><?php echo $product['condition']; ?></div>
+            </div>
+            <?php endif; ?>
+            
+            <div class="attribute">
+                <label>QUANTITY</label>
+                <div class="quantity-selector">
+                    <button class="quantity-btn" id="decrease-qty">-</button>
+                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                    <button class="quantity-btn" id="increase-qty">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn" id="add-to-cart">ADD TO CART</button>
+            <button class="action-btn secondary" id="add-to-wishlist">ADD TO WISHLIST</button>
+        </div>
+        
+        <div class="product-meta-info">
+            <?php if (isset($product['location'])): ?>
+            <div class="meta-item">
+                <span class="meta-label">LOCATION:</span>
+                <span><?php echo $product['location']; ?>, South Africa</span>
+            </div>
+            <?php endif; ?>
+            
+            <div class="meta-item">
+                <span class="meta-label">RECOVERED:</span>
+                <span>December 2025</span>
+            </div>
+            
+            <?php if (isset($product['material'])): ?>
+            <div class="meta-item">
+                <span class="meta-label">MATERIAL:</span>
+                <span><?php echo $product['material']; ?></span>
+            </div>
+            <?php endif; ?>
+            
+            <div class="meta-item">
+                <span class="meta-label">ARCHIVE #:</span>
+                <span>SA-2025-<?php echo $productId; ?></span>
+            </div>
+            
+            <div class="meta-item">
+                <span class="meta-label">SHIPPING:</span>
+                <span>Free shipping in South Africa</span>
+            </div>
+        </div>
+    </div>
 </section>
 
-<section class="products">
-  <h2 style="margin-bottom: 30px; text-transform: uppercase; font-weight: 800;">Featured</h2>
-  <div class="grid">
-    <div class="product"><img src="images/image5.jpg" loading="lazy"><p>ARCHIVE PIECE #014<br>Found in Johannesburg<br>One of One</p><strong>R 799</strong></div>
-    <div class="product"><img src="images/image2.jpg" loading="lazy"><p>ARCHIVE PIECE #027<br>Found in Cape Town<br>One of One</p><strong>R 899</strong></div>
-    <div class="product"><img src="images/image7.jpg" loading="lazy"><p>ARCHIVE PIECE #089<br>Found in Pretoria<br>One of One</p><strong>R 999</strong></div>
-    <div class="product"><img src="images/image1.jpg" loading="lazy"><p>ARCHIVE PIECE #156<br>Found in Durban<br>One of One</p><strong>R 1099</strong></div>
-  </div>
-</section>
+<?php 
+// Get related products (same category, excluding current)
+$relatedProducts = array_filter($products, function($p) use ($product) {
+    return $p['id'] !== $product['id'] && 
+           (isset($product['category']) ? $p['category'] === $product['category'] : true) &&
+           $p['type'] === $product['type'];
+});
 
-<section class="carousel">
-  <div class="carousel-overlay">
-    <p>NEW ARRIVALS<br>SHOP NOW</p>
-  </div>
-  <div class="carousel-track">
-    <img src="images/image6.jpg" loading="eager" width="260" height="320" alt="Fashion">
-    <img src="images/image7.jpg" loading="eager" width="260" height="320" alt="Media">
-    <img src="images/image5.jpg" loading="eager" width="260" height="320" alt="Music">
-    <img src="images/image1.jpg" loading="eager" width="260" height="320" alt="Fashion">
-    <img src="images/image3.jpg" loading="eager" width="260" height="320" alt="Media">
-    <img src="images/image4.jpg" loading="eager" width="260" height="320" alt="Music">
-  </div>
-</section>
+// Limit to 4 products
+$relatedProducts = array_slice($relatedProducts, 0, 4);
+?>
 
-<section class="process">
-  <h3>Our Curatorial Process</h3>
-  <ol>
-    <li>Sourcing authentic streetwear and vintage pieces from urban collections.</li>
-    <li>Carefully selecting items that embody unique style and cultural significance.</li>
-    <li>Documenting each piece's story through photos and media.</li>
-    <li>Making them available in our online archive for fashion enthusiasts.</li>
-  </ol>
+<?php if (!empty($relatedProducts)): ?>
+<section class="related-products">
+    <div class="products">
+        <h2 style="margin-bottom: 30px; text-transform: uppercase; font-weight: 800;">Related Archive Pieces</h2>
+        <div class="grid">
+            <?php foreach ($relatedProducts as $relatedProduct): ?>
+            <div class="product" onclick="window.location.href='product.php?id=<?php echo $relatedProduct['id']; ?>'">
+                <img src="images/<?php echo $relatedProduct['images'][0]; ?>" loading="lazy" alt="<?php echo $relatedProduct['name']; ?>">
+                <p><?php echo $relatedProduct['name']; ?><br>Found in <?php echo $relatedProduct['location']; ?><br>One of One</p>
+                <strong><?php echo $relatedProduct['price']; ?></strong>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
 </section>
-
-<section class="newsletter">
-  <h3>Join the Archive</h3>
-  <p style="margin-bottom: 20px; font-size: 14px;">Receive new releases, broadcasts, and recovered pieces before they go public.</p>
-  <input type="email" placeholder="Enter your email" style="padding:15px; border:1px solid #000; width:250px;">
-  <button class="btn" style="margin-top:0; margin-left: 10px; background: #000; color: #fff; border: none;">Subscribe to Archive</button>
-</section>
+<?php endif; ?>
 
 <footer>
   <p>STREETS ARCHIVES — SOUTH AFRICA<br>FASHION • SOUND • VISUAL RECORDS<br>EST. 2026</p>
@@ -1034,382 +1267,131 @@ body.dark .social-link {
 
 <div id="progress"></div>
 <div id="cursor"></div>
-<div id="toast">Theme Changed!</div>
-
-<div class="modal" id="productModal">
-  <div class="modal-content">
-    <span class="close" id="closeModal">&times;</span>
-    <img id="modalImg" src="" alt="Product">
-    <h3 id="modalTitle">Product Title</h3>
-    <p id="modalDesc">Product description here.</p>
-    <strong id="modalPrice">R 799</strong>
-  </div>
-</div>
+<div id="toast"></div>
+<div class="cart-notification" id="cartNotification">Item added to cart!</div>
 
 <button id="back-to-top">↑</button>
 
 <script>
-// Preload carousel images to prevent delay
-function preloadCarouselImages() {
-  const carouselImages = [
-    'images/banner1.jpeg',
-    'images/banner2.jpeg', 
-    'images/banner3.jpeg'
-  ];
-  
-  carouselImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-}
-
-// Toggle Mobile Menu
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-
-function toggleMenu() {
-  mobileMenu.classList.toggle('active');
-}
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    toggleMenu();
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', (e) => {
-  if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target) && mobileMenu.classList.contains('active')) {
-    hamburger.classList.remove('active');
-    mobileMenu.classList.remove('active');
-  }
-});
-
-// Reveal Folders on Scroll
-const folderObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) { entry.target.classList.add("show"); }
-  });
-}, { threshold: 0.15 });
-document.querySelectorAll(".folder-section").forEach(f => folderObserver.observe(f));
-
-// Audio Player functionality
-const audio = document.getElementById('main-audio');
-const playBtn = document.getElementById('master-play');
-const progressFill = document.getElementById('progress-bar');
-const progressContainer = document.getElementById('progress-container');
-
-playBtn.addEventListener('click', () => {
-    if (audio.paused) { 
-      audio.play(); 
-      playBtn.innerText = 'II'; 
-      playBtn.style.background = '#ff3c00';
-      playBtn.style.color = '#fff';
-    }
-    else { 
-      audio.pause(); 
-      playBtn.innerText = '▶️'; 
-      playBtn.style.background = '#fff';
-      playBtn.style.color = '#000';
-    }
-});
-
-audio.addEventListener('timeupdate', () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressFill.style.width = percent + '%';
-});
-
-progressContainer.addEventListener('click', (e) => {
-    const width = progressContainer.clientWidth;
-    const clickX = e.offsetX;
-    audio.currentTime = (clickX / width) * audio.duration;
-});
-
-// Typewriter Effect
-const typewriter = document.getElementById('typewriter');
-const lines = ["ARCHIVE THE STREETS", "CULTURE HAS A MEMORY"];
-let lineIndex = 0;
-let charIndex = 0;
-
-function typeWriter() {
-    if (lineIndex < lines.length) {
-        if (charIndex < lines[lineIndex].length) {
-            typewriter.innerHTML += lines[lineIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(typeWriter, 100);
-        } else {
-            typewriter.innerHTML += '<br>';
-            lineIndex++;
-            charIndex = 0;
-            setTimeout(typeWriter, 500);
-        }
-    }
-}
-typeWriter();
-
-// Smooth Scrolling
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-            // Close mobile menu if open
-            if (mobileMenu.classList.contains('active')) {
-              hamburger.classList.remove('active');
-              mobileMenu.classList.remove('active');
-            }
+// Product page specific JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    // Thumbnail click functionality
+    document.querySelectorAll('.thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', function() {
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('main-image').src = this.getAttribute('data-image');
+        });
+    });
+    
+    // Quantity selector
+    const quantityInput = document.getElementById('quantity');
+    document.getElementById('decrease-qty').addEventListener('click', () => {
+        if (quantityInput.value > 1) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
         }
     });
-});
-
-// Back to Top Button
-const backToTopBtn = document.getElementById('back-to-top');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopBtn.style.display = 'block';
-    } else {
-        backToTopBtn.style.display = 'none';
-    }
-});
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Preloader
-window.addEventListener('load', () => {
-    document.getElementById('preloader').style.display = 'none';
-    preloadCarouselImages(); // Preload carousel images
     
-    // Stagger Products
-    document.querySelectorAll('.product').forEach((el, i) => {
-        el.style.animationDelay = (i * 0.1) + 's';
-    });
-});
-
-// Theme Toggle - Changed to use black/white moon/sun emojis
-const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    // Changed from yellow moon/sun to black/white
-    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
-    
-    // Show toast
-    const toast = document.getElementById('toast');
-    toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-    
-    // Update audio player background in dark mode
-    const audioPlayer = document.querySelector('.audio-player');
-    if (audioPlayer) {
-        if (document.body.classList.contains('dark')) {
-            audioPlayer.style.background = '#222';
-        } else {
-            audioPlayer.style.background = '#000';
+    document.getElementById('increase-qty').addEventListener('click', () => {
+        if (quantityInput.value < parseInt(quantityInput.max)) {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
         }
-    }
-});
-
-// Initialize theme based on system preference
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.body.classList.add('dark');
-    themeToggle.textContent = '☀';
-}
-
-// Product Modal
-document.querySelectorAll('.product').forEach(product => {
-    product.addEventListener('click', () => {
-        const img = product.querySelector('img').src;
-        const title = product.querySelector('p').textContent;
-        const price = product.querySelector('strong').textContent;
+    });
+    
+    // Size selection
+    document.querySelectorAll('.size-option:not(.disabled)').forEach(size => {
+        size.addEventListener('click', function() {
+            document.querySelectorAll('.size-option').forEach(s => s.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+    
+    // Add to cart
+    document.getElementById('add-to-cart').addEventListener('click', function() {
+        const productId = '<?php echo $productId; ?>';
+        const productName = '<?php echo addslashes($product['name']); ?>';
+        const price = '<?php echo $product['price']; ?>';
+        const image = 'images/<?php echo $product['images'][0]; ?>';
+        const type = '<?php echo $product['type']; ?>';
         
-        document.getElementById('modalImg').src = img;
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalPrice').textContent = price;
-        document.getElementById('modalDesc').textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
-        
-        document.getElementById('productModal').classList.add('show');
-    });
-});
-
-document.getElementById('closeModal').addEventListener('click', () => {
-    document.getElementById('productModal').classList.remove('show');
-});
-
-// Search Functionality
-document.getElementById('search').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    document.querySelectorAll('.product').forEach(product => {
-        const title = product.querySelector('p').textContent.toLowerCase();
-        if (title.includes(query)) {
-            product.style.display = 'block';
+        let size = 'M';
+        if (type === 'fashion') {
+            size = document.querySelector('.size-option.selected').getAttribute('data-size');
         } else {
-            product.style.display = 'none';
+            size = 'Digital';
         }
-    });
-});
-
-// Parallax Effect
-window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const heroCollage = document.querySelector('.hero-collage');
-    if (heroCollage) {
-        heroCollage.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-    // Scroll Progress
-    const scrollPercent = (scrolled / (document.body.scrollHeight - window.innerHeight)) * 100;
-    document.getElementById('progress').style.width = scrollPercent + '%';
-});
-
-// Cursor Follower
-document.addEventListener('mousemove', (e) => {
-    const cursor = document.getElementById('cursor');
-    cursor.style.left = e.clientX - 10 + 'px';
-    cursor.style.top = e.clientY - 10 + 'px';
-});
-
-// Add cursor effects on interactive elements
-const interactiveElements = document.querySelectorAll('a, button, .category, .product, .play-btn');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        document.getElementById('cursor').style.transform = 'scale(1.5)';
-        document.getElementById('cursor').style.background = '#fff';
-    });
-    el.addEventListener('mouseleave', () => {
-        document.getElementById('cursor').style.transform = 'scale(1)';
-        document.getElementById('cursor').style.background = 'var(--accent)';
-    });
-});
-
-// Newsletter form submission
-const newsletterForm = document.querySelector('.newsletter');
-const newsletterInput = newsletterForm.querySelector('input');
-const newsletterBtn = newsletterForm.querySelector('.btn');
-
-newsletterBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (newsletterInput.value && newsletterInput.value.includes('@')) {
-        alert('Thank you for subscribing to our newsletter!');
-        newsletterInput.value = '';
-    } else {
-        alert('Please enter a valid email address.');
-    }
-});
-
-// Add enter key support for newsletter
-newsletterInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        newsletterBtn.click();
-    }
-});
-
-// Category click effects
-document.querySelectorAll('.category').forEach(category => {
-    category.addEventListener('click', () => {
-        category.style.background = 'var(--accent)';
-        category.style.color = '#fff';
-        category.style.borderColor = 'var(--accent)';
+        
+        const quantity = parseInt(quantityInput.value);
+        
+        addToCart(productId, productName, price, image, size, quantity, type);
+        
+        // Show success message
+        const originalText = this.textContent;
+        this.textContent = 'ADDED TO CART ✓';
+        this.style.background = 'var(--accent)';
+        
         setTimeout(() => {
-            category.style.background = '';
-            category.style.color = '';
-            category.style.borderColor = '';
-        }, 300);
+            this.textContent = originalText;
+            this.style.background = '';
+        }, 2000);
+    });
+    
+    // Add to wishlist
+    document.getElementById('add-to-wishlist').addEventListener('click', function() {
+        const originalText = this.textContent;
+        this.textContent = 'ADDED TO WISHLIST ✓';
+        this.style.background = 'var(--accent)';
+        this.style.color = 'white';
+        
+        setTimeout(() => {
+            this.textContent = originalText;
+            this.style.background = '';
+            this.style.color = '';
+        }, 2000);
     });
 });
 
-// Prevent right click on images (optional)
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
-});
-
-// Initialize carousel animation
-const carouselTrack = document.querySelector('.carousel-track');
-carouselTrack.style.animation = 'slideImages 20s linear infinite';
-
-// Floating Contact Form
-document.addEventListener('DOMContentLoaded', () => {
-
-const contactToggle = document.getElementById('contactToggle');
-const contactPanel = document.getElementById('contactPanel');
-const contactClose = document.getElementById('contactClose');
-const contactForm = document.getElementById('contactForm');
-
-if (contactToggle && contactPanel) {
-    // Toggle contact panel
-    contactToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        contactToggle.classList.toggle('active');
-        contactPanel.classList.toggle('active');
-    });
+// Add to cart function (same as shop.php)
+function addToCart(productId, name, price, image, size, quantity, type) {
+    // Create form data
+    const formData = new FormData();
+    formData.append('product_id', productId);
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('image', image);
+    formData.append('size', size);
+    formData.append('quantity', quantity);
+    formData.append('type', type);
     
-    // Close panel with X button
-    if (contactClose) {
-        contactClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        });
-    }
-    
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
+    // Send AJAX request
+    fetch('add_to_cart.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update cart count
+            document.querySelectorAll('.cart').forEach(cart => {
+                cart.textContent = `CART (${data.cartCount})`;
+            });
+            
+            // Show notification
+            const notification = document.getElementById('cartNotification');
+            notification.textContent = `${name} added to cart!`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
-    
-    // Prevent clicks inside panel from closing it
-    contactPanel.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-    
-    // Form submission
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-
-            if (data.email && data.message) {
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-
-                submitBtn.textContent = 'SENT ✓';
-                submitBtn.style.background = 'var(--black)';
-
-                contactForm.reset();
-
-                setTimeout(() => {
-                    contactToggle.classList.remove('active');
-                    contactPanel.classList.remove('active');
-
-                    setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.style.background = 'var(--accent)';
-                    }, 1000);
-                }, 1500);
-
-                console.log('Form submitted:', data);
-            }
-        });
-    }
-
-    // Prevent panel from closing when form is clicked
-    if (contactForm) {
-        contactForm.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    }
 }
 
-});
-
+// COPY ALL YOUR EXISTING JAVASCRIPT FUNCTIONS FROM INDEX.PHP HERE
 </script>
 
 <!-- Floating Contact Form -->
@@ -1450,5 +1432,7 @@ if (contactToggle && contactPanel) {
         </div>
     </div>
 </div>
+
+<script src="js/main.js"></script>
 </body>
 </html>

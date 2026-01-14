@@ -1,10 +1,6 @@
 <?php
-$pageTitle = 'Home';
-require_once(__DIR__ . '/../app/config.php');
-$cartCount = getCartCount(); // Get cart count
+$pageTitle = 'Media';
 ?>
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,11 +10,6 @@ $cartCount = getCartCount(); // Get cart count
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<div id="preloader">
-  <div class="loader"></div>
-  <p>Loading Archive...</p>
-</div>
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -54,6 +45,7 @@ body{
     justify-content: center;
     z-index: 9999;
     font-family: 'Poppins', sans-serif;
+    transition: opacity 0.5s ease;
 }
 .loader {
     width: 50px;
@@ -864,10 +856,221 @@ body.dark .social-link {
         font-size: 20px;
     }
 }
+
+.media-hero {
+    height: 70vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('images/image5.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 60px;
+}
+
+.media-hero h1 {
+    font-size: 72px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+}
+
+.media-hero p {
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.video-grid {
+    width: 90%;
+    max-width: 1400px;
+    margin: 60px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.video-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.video-card:hover {
+    transform: translateY(-10px);
+}
+
+.video-thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid var(--black);
+    transition: 0.3s;
+}
+
+.video-card:hover .video-thumbnail {
+    transform: scale(1.05);
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.video-card:hover .video-overlay {
+    opacity: 1;
+}
+
+.play-icon {
+    font-size: 40px;
+    color: white;
+}
+
+.video-info {
+    padding: 15px;
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    border-top: none;
+}
+
+.video-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.video-date {
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.video-duration {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.documentary-section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 80px auto;
+    text-align: center;
+}
+
+.documentary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.documentary-card {
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    padding: 30px;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.documentary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 0px var(--black);
+}
+
+.documentary-card h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.documentary-card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.documentary-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 11px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.media-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.media-link {
+    padding: 15px 30px;
+    border: 2px solid var(--black);
+    background: var(--black);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.media-link:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.media-link.secondary {
+    background: transparent;
+    color: var(--black);
+}
 </style>
 </head>
 
 <body>
+
+<div id="preloader">
+  <div class="loader"></div>
+  <p>Loading Archive...</p>
+</div>
+
+<!-- Preloader hiding script -->
+<script>
+window.addEventListener('load', function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500);
+    }
+});
+
+if (document.readyState === 'complete') {
+    document.getElementById('preloader').style.display = 'none';
+}
+</script>
 
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
@@ -875,13 +1078,15 @@ body.dark .social-link {
 
 <header>
   <div class="header-left">
-    <input type="text" id="search" placeholder="Search products...">
+    <input type="text" id="search" placeholder="Search media...">
     <button id="theme-toggle">🌑</button>
   </div>
   <div class="header-center">
-    <div class="logo-container">
-      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
-    </div>
+    <a href="index.php">
+      <div class="logo-container">
+        <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
+      </div>
+    </a>
   </div>
   <div class="header-right">
     <div class="hamburger" id="hamburger">
@@ -894,138 +1099,146 @@ body.dark .social-link {
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="shop.php" onclick="toggleMenu()">Shop</a>
-  <a href="media.php" onclick="toggleMenu()">Media</a>
-  <a href="music.php" onclick="toggleMenu()">Music</a>
-  <a href="cart.php" onclick="toggleMenu()">Cart (<?php echo $cartCount; ?>)</a>
+  <a href="index.php">Home</a>
+  <a href="shop.php">Shop</a>
+  <a href="media.php">Media</a>
+  <a href="music.php">Music</a>
 </div>
 
-<section class="hero">
-  <div class="hero-collage">
-    <div class="stream s-fashion"></div>
-    <div class="stream s-media"></div>
-    <div class="stream s-music"></div>
-  </div>
-
-  <div class="terminal-data">
-    <span>STATUS: ACTIVE</span>
-    <span>ENCRYPTION: AES-256</span>
-    <span>LOC: SOUTH_AFRICA_HQ</span>
-  </div>
-
-  <div class="hero-content">
-    <h1 id="typewriter"></h1>
-    <p class="tagline">Fashion / Media / Sound Archive</p>
-    <a href="#fashion" class="btn-hero">Initialize Explorer</a>
+<section class="media-hero">
+  <div>
+    <h1>VISUAL<br>MEDIA</h1>
+    <p>Documentation of Street Culture</p>
   </div>
 </section>
 
 <section class="manifesto">
-  <p>Discover unique streetwear and vintage fashion pieces curated from the heart of urban culture. Each item tells a story of style, individuality, and raw expression. Shop our collection of one-of-a-kind garments that blend fashion, media, and music influences.</p><br>
-  <a href="about.php" class="btn-hero">About Us</a>
+  <p>Raw, unfiltered visual records of urban culture in motion. Our media archive captures the essence of street life through editorials, short films, and documentary photography.</p>
+  <p>No scripts. No sets. Just real moments captured in real places with real people.</p>
 </section>
 
-<div class="folder-section" id="fashion">
-  <div class="folder-tab"><span>DIR_FASHION</span></div>
+<div class="folder-section show">
+  <div class="folder-tab"><span>RECENT_UPLOADS</span></div>
   <div class="folder-body">
     <div class="folder-content">
-      <div class="folder-image"><img src="images/image5.jpg" alt="Fashion"></div>
+      <div class="folder-image">
+        <video src="images/media.mp4" autoplay loop muted playsinline></video>
+      </div>
       <div class="folder-text">
-        <h3>Fashion Archive</h3>
-        <p>Curated vintage and second-hand garments pulled from real streets and private collections. Each piece carries time, movement, and memory. Once released, it never returns.</p>
-        <a href="shop.php" class="btn-hero">Enter Archive</a>
+        <h3>STREET DOCUMENTATION</h3>
+        <p>Latest visual records from the streets of South Africa. Each video captures authentic moments of urban culture, fashion, and community.</p>
+        <a href="#videos" class="btn">Watch Latest</a>
       </div>
     </div>
   </div>
 </div>
 
-<div class="folder-section" id="media">
-  <div class="folder-tab"><span>DIR_MEDIA</span></div>
-  <div class="folder-body">
-    <div class="folder-content">
-      <div class="folder-image"><video src="images/media.mp4" autoplay loop muted playsinline></video></div>
-      <div class="folder-text">
-        <h3>Visual Media</h3>
-        <p>Cinematic documentation of street culture in motion. Editorials, short films, and visual records captured without performance or polish. Raw, intentional, honest.</p>
-        <a href="#" class="btn">Open Visual Log</a>
-      </div>
+<section class="video-grid" id="videos">
+  <div class="video-card" onclick="playVideo('JHB Street Style', 'A day in the life of Johannesburg street fashion')">
+    <img src="images/image5.jpg" alt="JHB Street Style" class="video-thumbnail">
+    <div class="video-overlay">
+      <span class="play-icon">▶</span>
+    </div>
+    <div class="video-info">
+      <div class="video-title">JHB STREET STYLE</div>
+      <div class="video-date">December 2025</div>
+      <div class="video-duration">12:45</div>
     </div>
   </div>
-</div>
-
-<div class="folder-section" id="music">
-  <div class="folder-tab"><span>DIR_MUSIC</span></div>
-  <div class="folder-body">
-    <div class="folder-content">
-      <div class="folder-image"><video src="images/music.mov" autoplay loop muted playsinline></div>
-      <div class="folder-text">
-        <h3>Audio Archive</h3>
-        <p>The sound of the underground, broadcast and preserved. Collaborations, live sessions, and cultural frequencies transmitted through Streets Radio 3000.</p>
-       
-        <div class="audio-player">
-          <p style="font-size: 10px; font-weight: 800; color: #888;">NOW PLAYING: BRAND_TRACK_V1.MP3</p>
-          <p style="font-size: 10px; font-weight: 800; color: #888;">LIVE SIGNAL — SOUTH AFRICA<br>FREQUENCY: 3000<br>STATUS: TRANSMITTING</p>
-          <div class="player-controls">
-            <button class="play-btn" id="master-play">▶️</button>
-            <div class="progress-bar" id="progress-container">
-                <div class="progress-fill" id="progress-bar"></div>
-            </div>
-          </div>
-          <audio id="main-audio" src="music/brand_track.mp3"></audio>
-        </div>
-
-        <a href="#" class="btn">Tune In</a>
-      </div>
+  
+  <div class="video-card" onclick="playVideo('Cape Town Underground', 'Exploring the underground scene in Cape Town')">
+    <img src="images/image7.jpg" alt="Cape Town Underground" class="video-thumbnail">
+    <div class="video-overlay">
+      <span class="play-icon">▶</span>
+    </div>
+    <div class="video-info">
+      <div class="video-title">CAPE TOWN UNDERGROUND</div>
+      <div class="video-date">November 2025</div>
+      <div class="video-duration">18:20</div>
     </div>
   </div>
-</div>
-
-<section class="categories">
-  <div class="category">MENS ARCHIVE</div>
-  <div class="category">WOMENS ARCHIVE</div>
-  <div class="category">RECENTLY RECOVERED</div>
+  
+  <div class="video-card" onclick="playVideo('Durban Vintage Markets', 'Vintage hunting in Durban markets')">
+    <img src="images/image1.jpg" alt="Durban Vintage Markets" class="video-thumbnail">
+    <div class="video-overlay">
+      <span class="play-icon">▶</span>
+    </div>
+    <div class="video-info">
+      <div class="video-title">DURBAN VINTAGE MARKETS</div>
+      <div class="video-date">October 2025</div>
+      <div class="video-duration">24:10</div>
+    </div>
+  </div>
+  
+  <div class="video-card" onclick="playVideo('Pretoria Archive Dig', 'Finding vintage pieces in Pretoria')">
+    <img src="images/image2.jpg" alt="Pretoria Archive Dig" class="video-thumbnail">
+    <div class="video-overlay">
+      <span class="play-icon">▶</span>
+    </div>
+    <div class="video-info">
+      <div class="video-title">PRETORIA ARCHIVE DIG</div>
+      <div class="video-date">September 2025</div>
+      <div class="video-duration">15:30</div>
+    </div>
+  </div>
 </section>
 
-<section class="products">
-  <h2 style="margin-bottom: 30px; text-transform: uppercase; font-weight: 800;">Featured</h2>
-  <div class="grid">
-    <div class="product"><img src="images/image5.jpg" loading="lazy"><p>ARCHIVE PIECE #014<br>Found in Johannesburg<br>One of One</p><strong>R 799</strong></div>
-    <div class="product"><img src="images/image2.jpg" loading="lazy"><p>ARCHIVE PIECE #027<br>Found in Cape Town<br>One of One</p><strong>R 899</strong></div>
-    <div class="product"><img src="images/image7.jpg" loading="lazy"><p>ARCHIVE PIECE #089<br>Found in Pretoria<br>One of One</p><strong>R 999</strong></div>
-    <div class="product"><img src="images/image1.jpg" loading="lazy"><p>ARCHIVE PIECE #156<br>Found in Durban<br>One of One</p><strong>R 1099</strong></div>
+<section class="documentary-section">
+  <h2 style="margin-bottom: 20px; text-transform: uppercase; font-weight: 800;">DOCUMENTARY SERIES</h2>
+  <p style="margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">In-depth explorations of South African street culture through long-form documentaries.</p>
+  
+  <div class="documentary-grid">
+    <div class="documentary-card">
+      <h3>THE ARCHIVE PROCESS</h3>
+      <p>Follow our team as we source, document, and preserve vintage pieces from across South Africa. See the behind-the-scenes of how archive pieces are recovered.</p>
+      <div class="documentary-stats">
+        <span>45:20</span>
+        <span>4K RESOLUTION</span>
+        <span>2025</span>
+      </div>
+    </div>
+    
+    <div class="documentary-card">
+      <h3>STREET CULTURE EVOLUTION</h3>
+      <p>Documenting the evolution of street fashion in South Africa from the 90s to present day. Interviews with pioneers and current influencers.</p>
+      <div class="documentary-stats">
+        <span>58:10</span>
+        <span>DOCUMENTARY</span>
+        <span>2025</span>
+      </div>
+    </div>
+    
+    <div class="documentary-card">
+      <h3>SOUND OF THE STREETS</h3>
+      <p>Exploring the connection between street fashion and underground music scenes in South Africa's major cities.</p>
+      <div class="documentary-stats">
+        <span>36:45</span>
+        <span>MUSIC + FASHION</span>
+        <span>2024</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="carousel">
   <div class="carousel-overlay">
-    <p>NEW ARRIVALS<br>SHOP NOW</p>
+    <p>BEHIND THE SCENES<br>PHOTO ARCHIVE</p>
   </div>
   <div class="carousel-track">
-    <img src="images/image6.jpg" loading="eager" width="260" height="320" alt="Fashion">
-    <img src="images/image7.jpg" loading="eager" width="260" height="320" alt="Media">
-    <img src="images/image5.jpg" loading="eager" width="260" height="320" alt="Music">
-    <img src="images/image1.jpg" loading="eager" width="260" height="320" alt="Fashion">
-    <img src="images/image3.jpg" loading="eager" width="260" height="320" alt="Media">
-    <img src="images/image4.jpg" loading="eager" width="260" height="320" alt="Music">
+    <img src="images/image6.jpg" loading="eager" width="260" height="320" alt="BTS 1">
+    <img src="images/image7.jpg" loading="eager" width="260" height="320" alt="BTS 2">
+    <img src="images/image5.jpg" loading="eager" width="260" height="320" alt="BTS 3">
+    <img src="images/image1.jpg" loading="eager" width="260" height="320" alt="BTS 4">
+    <img src="images/image3.jpg" loading="eager" width="260" height="320" alt="BTS 5">
+    <img src="images/image4.jpg" loading="eager" width="260" height="320" alt="BTS 6">
   </div>
 </section>
 
-<section class="process">
-  <h3>Our Curatorial Process</h3>
-  <ol>
-    <li>Sourcing authentic streetwear and vintage pieces from urban collections.</li>
-    <li>Carefully selecting items that embody unique style and cultural significance.</li>
-    <li>Documenting each piece's story through photos and media.</li>
-    <li>Making them available in our online archive for fashion enthusiasts.</li>
-  </ol>
-</section>
-
-<section class="newsletter">
-  <h3>Join the Archive</h3>
-  <p style="margin-bottom: 20px; font-size: 14px;">Receive new releases, broadcasts, and recovered pieces before they go public.</p>
-  <input type="email" placeholder="Enter your email" style="padding:15px; border:1px solid #000; width:250px;">
-  <button class="btn" style="margin-top:0; margin-left: 10px; background: #000; color: #fff; border: none;">Subscribe to Archive</button>
-</section>
+<div class="media-links">
+  <a href="https://youtube.com" target="_blank" class="media-link">VIEW ON YOUTUBE</a>
+  <a href="https://vimeo.com" target="_blank" class="media-link secondary">VIEW ON VIMEO</a>
+  <a href="https://instagram.com" target="_blank" class="media-link secondary">FOLLOW ON INSTAGRAM</a>
+</div>
 
 <footer>
   <p>STREETS ARCHIVES — SOUTH AFRICA<br>FASHION • SOUND • VISUAL RECORDS<br>EST. 2026</p>
@@ -1034,421 +1247,52 @@ body.dark .social-link {
 
 <div id="progress"></div>
 <div id="cursor"></div>
-<div id="toast">Theme Changed!</div>
-
-<div class="modal" id="productModal">
-  <div class="modal-content">
-    <span class="close" id="closeModal">&times;</span>
-    <img id="modalImg" src="" alt="Product">
-    <h3 id="modalTitle">Product Title</h3>
-    <p id="modalDesc">Product description here.</p>
-    <strong id="modalPrice">R 799</strong>
-  </div>
-</div>
-
-<button id="back-to-top">↑</button>
+<div id="toast"></div>
+<div id="back-to-top">↑</div>
 
 <script>
-// Preload carousel images to prevent delay
-function preloadCarouselImages() {
-  const carouselImages = [
-    'images/banner1.jpeg',
-    'images/banner2.jpeg', 
-    'images/banner3.jpeg'
-  ];
-  
-  carouselImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
+// Video play function
+function playVideo(title, description) {
+    alert('Playing: ' + title + '\n\n' + description);
 }
 
-// Toggle Mobile Menu
+// Mobile menu toggle
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
-function toggleMenu() {
-  mobileMenu.classList.toggle('active');
+if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+    });
 }
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    toggleMenu();
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', (e) => {
-  if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target) && mobileMenu.classList.contains('active')) {
-    hamburger.classList.remove('active');
-    mobileMenu.classList.remove('active');
-  }
-});
-
-// Reveal Folders on Scroll
-const folderObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) { entry.target.classList.add("show"); }
-  });
-}, { threshold: 0.15 });
-document.querySelectorAll(".folder-section").forEach(f => folderObserver.observe(f));
-
-// Audio Player functionality
-const audio = document.getElementById('main-audio');
-const playBtn = document.getElementById('master-play');
-const progressFill = document.getElementById('progress-bar');
-const progressContainer = document.getElementById('progress-container');
-
-playBtn.addEventListener('click', () => {
-    if (audio.paused) { 
-      audio.play(); 
-      playBtn.innerText = 'II'; 
-      playBtn.style.background = '#ff3c00';
-      playBtn.style.color = '#fff';
-    }
-    else { 
-      audio.pause(); 
-      playBtn.innerText = '▶️'; 
-      playBtn.style.background = '#fff';
-      playBtn.style.color = '#000';
-    }
-});
-
-audio.addEventListener('timeupdate', () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressFill.style.width = percent + '%';
-});
-
-progressContainer.addEventListener('click', (e) => {
-    const width = progressContainer.clientWidth;
-    const clickX = e.offsetX;
-    audio.currentTime = (clickX / width) * audio.duration;
-});
-
-// Typewriter Effect
-const typewriter = document.getElementById('typewriter');
-const lines = ["ARCHIVE THE STREETS", "CULTURE HAS A MEMORY"];
-let lineIndex = 0;
-let charIndex = 0;
-
-function typeWriter() {
-    if (lineIndex < lines.length) {
-        if (charIndex < lines[lineIndex].length) {
-            typewriter.innerHTML += lines[lineIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(typeWriter, 100);
-        } else {
-            typewriter.innerHTML += '<br>';
-            lineIndex++;
-            charIndex = 0;
-            setTimeout(typeWriter, 500);
-        }
-    }
-}
-typeWriter();
-
-// Smooth Scrolling
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-            // Close mobile menu if open
-            if (mobileMenu.classList.contains('active')) {
-              hamburger.classList.remove('active');
-              mobileMenu.classList.remove('active');
-            }
-        }
-    });
-});
-
-// Back to Top Button
-const backToTopBtn = document.getElementById('back-to-top');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopBtn.style.display = 'block';
-    } else {
-        backToTopBtn.style.display = 'none';
-    }
-});
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Preloader
-window.addEventListener('load', () => {
-    document.getElementById('preloader').style.display = 'none';
-    preloadCarouselImages(); // Preload carousel images
-    
-    // Stagger Products
-    document.querySelectorAll('.product').forEach((el, i) => {
-        el.style.animationDelay = (i * 0.1) + 's';
-    });
-});
-
-// Theme Toggle - Changed to use black/white moon/sun emojis
+// Theme toggle
 const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    // Changed from yellow moon/sun to black/white
-    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
-    
-    // Show toast
-    const toast = document.getElementById('toast');
-    toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-    
-    // Update audio player background in dark mode
-    const audioPlayer = document.querySelector('.audio-player');
-    if (audioPlayer) {
-        if (document.body.classList.contains('dark')) {
-            audioPlayer.style.background = '#222';
-        } else {
-            audioPlayer.style.background = '#000';
-        }
-    }
-});
+if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
+}
 
-// Initialize theme based on system preference
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+// Load saved theme
+if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
-    themeToggle.textContent = '☀';
 }
 
-// Product Modal
-document.querySelectorAll('.product').forEach(product => {
-    product.addEventListener('click', () => {
-        const img = product.querySelector('img').src;
-        const title = product.querySelector('p').textContent;
-        const price = product.querySelector('strong').textContent;
-        
-        document.getElementById('modalImg').src = img;
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalPrice').textContent = price;
-        document.getElementById('modalDesc').textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
-        
-        document.getElementById('productModal').classList.add('show');
+// Search functionality
+const searchInput = document.getElementById('search');
+if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        // Search logic can be added here
+        console.log('Searching for:', query);
     });
-});
-
-document.getElementById('closeModal').addEventListener('click', () => {
-    document.getElementById('productModal').classList.remove('show');
-});
-
-// Search Functionality
-document.getElementById('search').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    document.querySelectorAll('.product').forEach(product => {
-        const title = product.querySelector('p').textContent.toLowerCase();
-        if (title.includes(query)) {
-            product.style.display = 'block';
-        } else {
-            product.style.display = 'none';
-        }
-    });
-});
-
-// Parallax Effect
-window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const heroCollage = document.querySelector('.hero-collage');
-    if (heroCollage) {
-        heroCollage.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-    // Scroll Progress
-    const scrollPercent = (scrolled / (document.body.scrollHeight - window.innerHeight)) * 100;
-    document.getElementById('progress').style.width = scrollPercent + '%';
-});
-
-// Cursor Follower
-document.addEventListener('mousemove', (e) => {
-    const cursor = document.getElementById('cursor');
-    cursor.style.left = e.clientX - 10 + 'px';
-    cursor.style.top = e.clientY - 10 + 'px';
-});
-
-// Add cursor effects on interactive elements
-const interactiveElements = document.querySelectorAll('a, button, .category, .product, .play-btn');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        document.getElementById('cursor').style.transform = 'scale(1.5)';
-        document.getElementById('cursor').style.background = '#fff';
-    });
-    el.addEventListener('mouseleave', () => {
-        document.getElementById('cursor').style.transform = 'scale(1)';
-        document.getElementById('cursor').style.background = 'var(--accent)';
-    });
-});
-
-// Newsletter form submission
-const newsletterForm = document.querySelector('.newsletter');
-const newsletterInput = newsletterForm.querySelector('input');
-const newsletterBtn = newsletterForm.querySelector('.btn');
-
-newsletterBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (newsletterInput.value && newsletterInput.value.includes('@')) {
-        alert('Thank you for subscribing to our newsletter!');
-        newsletterInput.value = '';
-    } else {
-        alert('Please enter a valid email address.');
-    }
-});
-
-// Add enter key support for newsletter
-newsletterInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        newsletterBtn.click();
-    }
-});
-
-// Category click effects
-document.querySelectorAll('.category').forEach(category => {
-    category.addEventListener('click', () => {
-        category.style.background = 'var(--accent)';
-        category.style.color = '#fff';
-        category.style.borderColor = 'var(--accent)';
-        setTimeout(() => {
-            category.style.background = '';
-            category.style.color = '';
-            category.style.borderColor = '';
-        }, 300);
-    });
-});
-
-// Prevent right click on images (optional)
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
-});
-
-// Initialize carousel animation
-const carouselTrack = document.querySelector('.carousel-track');
-carouselTrack.style.animation = 'slideImages 20s linear infinite';
-
-// Floating Contact Form
-document.addEventListener('DOMContentLoaded', () => {
-
-const contactToggle = document.getElementById('contactToggle');
-const contactPanel = document.getElementById('contactPanel');
-const contactClose = document.getElementById('contactClose');
-const contactForm = document.getElementById('contactForm');
-
-if (contactToggle && contactPanel) {
-    // Toggle contact panel
-    contactToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        contactToggle.classList.toggle('active');
-        contactPanel.classList.toggle('active');
-    });
-    
-    // Close panel with X button
-    if (contactClose) {
-        contactClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        });
-    }
-    
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        }
-    });
-    
-    // Prevent clicks inside panel from closing it
-    contactPanel.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-    
-    // Form submission
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-
-            if (data.email && data.message) {
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-
-                submitBtn.textContent = 'SENT ✓';
-                submitBtn.style.background = 'var(--black)';
-
-                contactForm.reset();
-
-                setTimeout(() => {
-                    contactToggle.classList.remove('active');
-                    contactPanel.classList.remove('active');
-
-                    setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.style.background = 'var(--accent)';
-                    }, 1000);
-                }, 1500);
-
-                console.log('Form submitted:', data);
-            }
-        });
-    }
-
-    // Prevent panel from closing when form is clicked
-    if (contactForm) {
-        contactForm.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    }
 }
-
-});
-
 </script>
 
-<!-- Floating Contact Form -->
-<div class="floating-contact-container">
-    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
-        ✉️
-    </button>
-    
-    <div class="contact-panel" id="contactPanel">
-        <button class="contact-close" id="contactClose">&times;</button>
-        
-        <h3>CONTACT ARCHIVES</h3>
-        <p>Send us a message directly or connect through our social channels.</p>
-        
-        <form class="contact-form" id="contactForm">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Your Message..." required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-        
-        <div class="social-links">
-            <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                📸
-            </a>
-            <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                𝕏
-            </a>
-            <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                🎵
-            </a>
-            <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                ▶️
-            </a>
-            <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                ✉️
-            </a>
-        </div>
-    </div>
-</div>
+<script src="../js/main.js"></script>
+
 </body>
 </html>
