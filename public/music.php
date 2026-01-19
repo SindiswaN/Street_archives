@@ -1255,8 +1255,9 @@ if (document.readyState === 'complete') {
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.php">Home</a>
-  <a href="shop.php">Shop</a>
-  <a href="music.php">Music</a>
+  <a href="about.php">About Us</a>
+  <a href="fashion.php">Fashion</a>
+  <a href="media.php">Media</a>
   <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
 </div>
 

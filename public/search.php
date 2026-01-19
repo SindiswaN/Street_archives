@@ -1,6 +1,16 @@
 <?php
-$pageTitle = 'Cart';
+// search.php
 require_once(__DIR__ . '/../app/config.php');
+
+$pageTitle = 'Search Results';
+$query = $_GET['q'] ?? '';
+
+if (empty($query)) {
+    header('Location: index.php');
+    exit;
+}
+
+// $results = searchAll($query);   will need to remove comment (just reminding myself.)
 $cartCount = getCartCount();
 ?>
 <!doctype html>
@@ -8,7 +18,7 @@ $cartCount = getCartCount();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>STREETS ARCHIVES - <?php echo $pageTitle; ?></title>
+<title>STREETS ARCHIVES - Search Results for "<?php echo htmlspecialchars($query); ?>"</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -47,7 +57,6 @@ body{
     justify-content: center;
     z-index: 9999;
     font-family: 'Poppins', sans-serif;
-    transition: opacity 0.5s ease;
 }
 .loader {
     width: 50px;
@@ -858,226 +867,187 @@ body.dark .social-link {
         font-size: 20px;
     }
 }
-.cart-container {
+
+.search-results {
     width: 85%;
     max-width: 1100px;
     margin: 100px auto;
 }
 
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.search-header {
     margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 2px solid var(--black);
 }
 
-.cart-header h1 {
+.search-header h1 {
     font-size: 32px;
     font-weight: 800;
     text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
-.cart-count {
-    font-size: 14px;
-    font-weight: 700;
+.search-query {
     color: var(--accent);
+    font-weight: 700;
+}
+
+.results-count {
+    font-size: 14px;
+    color: #888;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.cart-items {
-    margin-bottom: 40px;
-}
-
-.cart-item {
+.result-item {
     display: grid;
-    grid-template-columns: 100px 2fr 1fr 1fr 1fr;
+    grid-template-columns: 100px 2fr 1fr 1fr;
     gap: 20px;
     align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--grey);
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 2px solid var(--offwhite);
+    transition: all 0.3s ease;
 }
 
-.cart-item-image img {
+.result-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.result-image img {
     width: 80px;
     height: 80px;
     object-fit: cover;
     border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.cart-item-details h4 {
+.result-details h3 {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 5px;
     text-transform: uppercase;
 }
 
-.cart-item-details p {
+.result-details p {
     font-size: 12px;
     color: #888;
+    margin-bottom: 5px;
+}
+
+.result-type {
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
 }
 
-.cart-item-quantity {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.type-fashion { background: #ff3c00; color: white; }
+.type-music { background: #00a8ff; color: white; }
+.type-media { background: #9c88ff; color: white; }
 
-.cart-item-quantity button {
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--black);
-    background: none;
-    cursor: pointer;
+.result-price {
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cart-item-quantity input {
-    width: 40px;
-    text-align: center;
-    border: 1px solid var(--grey);
-    font-weight: 700;
-}
-
-.cart-item-price {
-    font-weight: 700;
-    color: var(--accent);
     font-size: 16px;
 }
 
-.cart-item-remove {
-    color: #ff4444;
-    cursor: pointer;
+.result-action a {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--black);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
     font-size: 11px;
     text-transform: uppercase;
-    font-weight: 700;
     letter-spacing: 1px;
+    transition: 0.3s;
 }
 
-.cart-empty {
+.result-action a:hover {
+    background: var(--accent);
+}
+
+.no-results {
     text-align: center;
     padding: 100px 0;
 }
 
-.cart-empty h2 {
+.no-results h2 {
+    font-size: 24px;
+    font-weight: 700;
     margin-bottom: 20px;
     color: #888;
-    font-weight: 400;
 }
 
-.cart-summary {
-    background: var(--offwhite);
-    padding: 30px;
+.search-again {
+    margin-top: 30px;
+}
+
+.search-again input {
+    padding: 12px;
     border: 2px solid var(--black);
-    margin-top: 40px;
-}
-
-.summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
+    width: 300px;
 }
 
-.summary-row.total {
-    font-size: 18px;
-    font-weight: 700;
-    border-top: 2px solid var(--black);
-    padding-top: 15px;
-    margin-top: 15px;
-}
-
-.checkout-btn {
-    width: 100%;
-    padding: 15px;
+.search-again button {
+    padding: 12px 24px;
     background: var(--black);
     color: white;
     border: none;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
+    font-size: 12px;
     cursor: pointer;
-    transition: 0.3s;
-    margin-top: 20px;
-    letter-spacing: 1px;
-    font-size: 13px;
+    margin-left: 10px;
 }
 
-.checkout-btn:hover {
+.search-again button:hover {
     background: var(--accent);
 }
 
-.continue-shopping {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    border: 2px solid var(--black);
-    background: transparent;
-    color: var(--black);
-    text-decoration: none;
-    font-weight: 700;
-    text-transform: uppercase;
-    transition: 0.3s;
-    font-size: 12px;
+/* Dark mode adjustments */
+body.dark .result-item {
+    border-color: #333;
+    background: #222;
 }
 
-.continue-shopping:hover {
-    background: var(--black);
+body.dark .search-again input {
+    background: #333;
+    border-color: #444;
     color: white;
 }
 
-/* Dark mode adjustments for cart */
-body.dark .cart-summary {
-    background: #222;
-    border-color: #333;
-}
-
-body.dark .cart-item {
-    border-bottom-color: #333;
-}
-
-body.dark .cart-item-quantity button {
-    border-color: #333;
-}
-
-body.dark .continue-shopping {
-    border-color: #fff;
-    color: #fff;
-}
-
-body.dark .continue-shopping:hover {
-    background: #fff;
-    color: #111;
-}
-
-/* Responsive cart */
 @media (max-width: 768px) {
-    .cart-item {
+    .result-item {
         grid-template-columns: 80px 1fr;
-        grid-template-rows: auto auto auto;
+        grid-template-rows: auto auto;
         gap: 10px;
-        padding: 15px 0;
     }
     
-    .cart-item-quantity,
-    .cart-item-price,
-    .cart-item-remove {
+    .result-price,
+    .result-action {
         grid-column: 2;
     }
     
-    .cart-header {
+    .search-again {
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
         gap: 10px;
     }
     
-    .cart-header h1 {
-        font-size: 24px;
+    .search-again input,
+    .search-again button {
+        width: 100%;
+        margin: 0;
     }
 }
 </style>
@@ -1085,35 +1055,18 @@ body.dark .continue-shopping:hover {
 
 <body>
 
-<div id="preloader">
-  <div class="loader"></div>
-  <p>Loading Archive...</p>
-</div>
-
-<!-- Preloader hiding script -->
-<script>
-window.addEventListener('load', function() {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        preloader.style.opacity = '0';
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
-    }
-});
-
-if (document.readyState === 'complete') {
-    document.getElementById('preloader').style.display = 'none';
-}
-</script>
-
+<!-- Your header HTML (same as index.php) -->
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
 <header>
   <div class="header-left">
-    <input type="text" id="search" placeholder="Search products...">
+    <!-- Search form that goes to search.php -->
+    <form action="search.php" method="GET" style="display: inline;">
+      <input type="text" id="search" name="q" placeholder="Search products, music, media..." 
+             value="<?php echo htmlspecialchars($query); ?>">
+    </form>
     <button id="theme-toggle">🌑</button>
   </div>
   <div class="header-center">
@@ -1135,75 +1088,58 @@ if (document.readyState === 'complete') {
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.php">Home</a>
-  <a href="about.php">About Us</a>
-  <a href="fashion.php">Fashion</a>
-  <a href="music.php">Music</a>
+  <a href="shop.php">Shop</a>
   <a href="media.php">Media</a>
+  <a href="music.php">Music</a>
+  <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
 </div>
 
-<section class="cart-container">
-    <div class="cart-header">
-        <h1>YOUR ARCHIVE CART</h1>
-        <div class="cart-count"><?php echo $cartCount; ?> ITEMS</div>
+<section class="search-results">
+    <div class="search-header">
+        <h1>SEARCH RESULTS</h1>
+        <p>Showing results for: <span class="search-query">"<?php echo htmlspecialchars($query); ?>"</span></p>
+        <div class="results-count"><?php echo count($results); ?> ITEMS FOUND</div>
     </div>
     
-    <?php if (empty($_SESSION['cart'])): ?>
-    <div class="cart-empty">
-        <h2>YOUR CART IS EMPTY</h2>
-        <p style="margin-bottom: 30px; color: #888;">Browse our archive and add items to your cart.</p>
-        <a href="shop.php" class="continue-shopping">CONTINUE SHOPPING</a>
+    <?php if (empty($results)): ?>
+    <div class="no-results">
+        <h2>No results found for "<?php echo htmlspecialchars($query); ?>"</h2>
+        <p>Try searching for something else or browse our categories:</p>
+        <div style="margin: 30px 0;">
+            <a href="shop.php" class="btn" style="margin-right: 10px;">SHOP FASHION</a>
+            <a href="music.php" class="btn" style="margin-right: 10px;">BROWSE MUSIC</a>
+            <a href="media.php" class="btn">WATCH MEDIA</a>
+        </div>
+        
+        <div class="search-again">
+            <form action="search.php" method="GET">
+                <input type="text" name="q" placeholder="Try another search...">
+                <button type="submit">SEARCH</button>
+            </form>
+        </div>
     </div>
     <?php else: ?>
-    <div class="cart-items">
-        <?php 
-        $subtotal = 0;
-        foreach ($_SESSION['cart'] as $index => $item): 
-            // Extract numeric price
-            preg_match('/R (\d+)/', $item['price'], $matches);
-            $price_numeric = isset($matches[1]) ? intval($matches[1]) : 0;
-            $item_total = $price_numeric * $item['quantity'];
-            $subtotal += $item_total;
-        ?>
-        <div class="cart-item" id="cart-item-<?php echo $index; ?>">
-            <div class="cart-item-image">
-                <img src="<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>">
+    <div class="results-list">
+        <?php foreach ($results as $item): ?>
+        <div class="result-item">
+            <div class="result-image">
+                <img src="<?php echo $item['image']; ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
             </div>
-            <div class="cart-item-details">
-                <h4><?php echo $item['name']; ?></h4>
-                <p>Size: <?php echo $item['size']; ?></p>
-                <p>Type: <?php echo ucfirst($item['type']); ?></p>
+            <div class="result-details">
+                <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                <p><?php echo htmlspecialchars($item['description']); ?></p>
+                <span class="result-type type-<?php echo $item['type']; ?>">
+                    <?php echo strtoupper($item['type']); ?>
+                </span>
             </div>
-            <div class="cart-item-price">
+            <div class="result-price">
                 <?php echo $item['price']; ?>
             </div>
-            <div class="cart-item-quantity">
-                <button onclick="updateQuantity(<?php echo $index; ?>, -1)">-</button>
-                <input type="number" value="<?php echo $item['quantity']; ?>" min="1" 
-                       onchange="updateQuantity(<?php echo $index; ?>, 0, this.value)">
-                <button onclick="updateQuantity(<?php echo $index; ?>, 1)">+</button>
-            </div>
-            <div class="cart-item-remove" onclick="removeItem(<?php echo $index; ?>)">
-                REMOVE
+            <div class="result-action">
+                <a href="<?php echo $item['link']; ?>"><?php echo $item['action']; ?></a>
             </div>
         </div>
         <?php endforeach; ?>
-    </div>
-    
-    <div class="cart-summary">
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <span>R <?php echo number_format($subtotal, 2); ?></span>
-        </div>
-        <div class="summary-row">
-            <span>Shipping</span>
-            <span>FREE</span>
-        </div>
-        <div class="summary-row total">
-            <span>TOTAL</span>
-            <span>R <?php echo number_format($subtotal, 2); ?></span>
-        </div>
-        <button class="checkout-btn" onclick="checkout()">PROCEED TO CHECKOUT</button>
-        <a href="shop.php" class="continue-shopping" style="display: block; text-align: center; margin-top: 15px;">CONTINUE SHOPPING</a>
     </div>
     <?php endif; ?>
 </section>
@@ -1213,104 +1149,369 @@ if (document.readyState === 'complete') {
   <p>Privacy • Shipping • Returns • Contact</p>
 </footer>
 
-<div id="progress"></div>
-<div id="cursor"></div>
-<div id="toast"></div>
-
-<button id="back-to-top">↑</button>
-
 <script>
-function updateQuantity(index, change, newValue = null) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'update_cart.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            if (response.success) {
-                location.reload();
+// Preload carousel images to prevent delay
+function preloadCarouselImages() {
+  const carouselImages = [
+    'images/banner1.jpeg',
+    'images/banner2.jpeg', 
+    'images/banner3.jpeg'
+  ];
+  
+  carouselImages.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}
+
+// Toggle Mobile Menu
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+function toggleMenu() {
+  mobileMenu.classList.toggle('active');
+}
+
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    toggleMenu();
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target) && mobileMenu.classList.contains('active')) {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('active');
+  }
+});
+
+// Reveal Folders on Scroll
+const folderObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add("show"); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll(".folder-section").forEach(f => folderObserver.observe(f));
+
+// Audio Player functionality
+const audio = document.getElementById('main-audio');
+const playBtn = document.getElementById('master-play');
+const progressFill = document.getElementById('progress-bar');
+const progressContainer = document.getElementById('progress-container');
+
+playBtn.addEventListener('click', () => {
+    if (audio.paused) { 
+      audio.play(); 
+      playBtn.innerText = 'II'; 
+      playBtn.style.background = '#ff3c00';
+      playBtn.style.color = '#fff';
+    }
+    else { 
+      audio.pause(); 
+      playBtn.innerText = '▶️'; 
+      playBtn.style.background = '#fff';
+      playBtn.style.color = '#000';
+    }
+});
+
+audio.addEventListener('timeupdate', () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progressFill.style.width = percent + '%';
+});
+
+progressContainer.addEventListener('click', (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    audio.currentTime = (clickX / width) * audio.duration;
+});
+
+// Typewriter Effect
+const typewriter = document.getElementById('typewriter');
+const lines = ["ARCHIVE THE STREETS", "CULTURE HAS A MEMORY"];
+let lineIndex = 0;
+let charIndex = 0;
+
+function typeWriter() {
+    if (lineIndex < lines.length) {
+        if (charIndex < lines[lineIndex].length) {
+            typewriter.innerHTML += lines[lineIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(typeWriter, 100);
+        } else {
+            typewriter.innerHTML += '<br>';
+            lineIndex++;
+            charIndex = 0;
+            setTimeout(typeWriter, 500);
+        }
+    }
+}
+typeWriter();
+
+// Smooth Scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+            // Close mobile menu if open
+            if (mobileMenu.classList.contains('active')) {
+              hamburger.classList.remove('active');
+              mobileMenu.classList.remove('active');
             }
         }
-    };
-    
-    let quantity;
-    if (newValue !== null) {
-        quantity = parseInt(newValue);
+    });
+});
+
+// Back to Top Button
+const backToTopBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
     } else {
-        const currentInput = document.querySelector(`#cart-item-${index} input`);
-        quantity = parseInt(currentInput.value) + change;
-        if (quantity < 1) quantity = 1;
+        backToTopBtn.style.display = 'none';
+    }
+});
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Preloader
+window.addEventListener('load', () => {
+    document.getElementById('preloader').style.display = 'none';
+    preloadCarouselImages(); // Preload carousel images
+    
+    // Stagger Products
+    document.querySelectorAll('.product').forEach((el, i) => {
+        el.style.animationDelay = (i * 0.1) + 's';
+    });
+});
+
+// Theme Toggle - Changed to use black/white moon/sun emojis
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    // Changed from yellow moon/sun to black/white
+    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
+    
+    // Show toast
+    const toast = document.getElementById('toast');
+    toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+    
+    // Update audio player background in dark mode
+    const audioPlayer = document.querySelector('.audio-player');
+    if (audioPlayer) {
+        if (document.body.classList.contains('dark')) {
+            audioPlayer.style.background = '#222';
+        } else {
+            audioPlayer.style.background = '#000';
+        }
+    }
+});
+
+// Initialize theme based on system preference
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.body.classList.add('dark');
+    themeToggle.textContent = '☀';
+}
+
+// Product Modal
+document.querySelectorAll('.product').forEach(product => {
+    product.addEventListener('click', () => {
+        const img = product.querySelector('img').src;
+        const title = product.querySelector('p').textContent;
+        const price = product.querySelector('strong').textContent;
+        
+        document.getElementById('modalImg').src = img;
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalPrice').textContent = price;
+        document.getElementById('modalDesc').textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
+        
+        document.getElementById('productModal').classList.add('show');
+    });
+});
+
+document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('productModal').classList.remove('show');
+});
+
+// Search Functionality
+document.getElementById('search').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('.product').forEach(product => {
+        const title = product.querySelector('p').textContent.toLowerCase();
+        if (title.includes(query)) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+});
+
+// Parallax Effect
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const heroCollage = document.querySelector('.hero-collage');
+    if (heroCollage) {
+        heroCollage.style.transform = `translateY(${scrolled * 0.3}px)`;
+    }
+    // Scroll Progress
+    const scrollPercent = (scrolled / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progress').style.width = scrollPercent + '%';
+});
+
+// Cursor Follower
+document.addEventListener('mousemove', (e) => {
+    const cursor = document.getElementById('cursor');
+    cursor.style.left = e.clientX - 10 + 'px';
+    cursor.style.top = e.clientY - 10 + 'px';
+});
+
+// Add cursor effects on interactive elements
+const interactiveElements = document.querySelectorAll('a, button, .category, .product, .play-btn');
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        document.getElementById('cursor').style.transform = 'scale(1.5)';
+        document.getElementById('cursor').style.background = '#fff';
+    });
+    el.addEventListener('mouseleave', () => {
+        document.getElementById('cursor').style.transform = 'scale(1)';
+        document.getElementById('cursor').style.background = 'var(--accent)';
+    });
+});
+
+// Newsletter form submission
+const newsletterForm = document.querySelector('.newsletter');
+const newsletterInput = newsletterForm.querySelector('input');
+const newsletterBtn = newsletterForm.querySelector('.btn');
+
+newsletterBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (newsletterInput.value && newsletterInput.value.includes('@')) {
+        alert('Thank you for subscribing to our newsletter!');
+        newsletterInput.value = '';
+    } else {
+        alert('Please enter a valid email address.');
+    }
+});
+
+// Add enter key support for newsletter
+newsletterInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        newsletterBtn.click();
+    }
+});
+
+// Category click effects
+document.querySelectorAll('.category').forEach(category => {
+    category.addEventListener('click', () => {
+        category.style.background = 'var(--accent)';
+        category.style.color = '#fff';
+        category.style.borderColor = 'var(--accent)';
+        setTimeout(() => {
+            category.style.background = '';
+            category.style.color = '';
+            category.style.borderColor = '';
+        }, 300);
+    });
+});
+
+// Prevent right click on images (optional)
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
+});
+
+// Initialize carousel animation
+const carouselTrack = document.querySelector('.carousel-track');
+carouselTrack.style.animation = 'slideImages 20s linear infinite';
+
+// Floating Contact Form
+document.addEventListener('DOMContentLoaded', () => {
+
+const contactToggle = document.getElementById('contactToggle');
+const contactPanel = document.getElementById('contactPanel');
+const contactClose = document.getElementById('contactClose');
+const contactForm = document.getElementById('contactForm');
+
+if (contactToggle && contactPanel) {
+    // Toggle contact panel
+    contactToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        contactToggle.classList.toggle('active');
+        contactPanel.classList.toggle('active');
+    });
+    
+    // Close panel with X button
+    if (contactClose) {
+        contactClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactToggle.classList.remove('active');
+            contactPanel.classList.remove('active');
+        });
     }
     
-    xhr.send(`index=${index}&quantity=${quantity}`);
-}
+    // Close panel when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
+            contactToggle.classList.remove('active');
+            contactPanel.classList.remove('active');
+        }
+    });
+    
+    // Prevent clicks inside panel from closing it
+    contactPanel.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+    
+    // Form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-function removeItem(index) {
-    if (confirm('Remove this item from cart?')) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'remove_from_cart.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    location.reload();
-                }
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+
+            if (data.email && data.message) {
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+
+                submitBtn.textContent = 'SENT ✓';
+                submitBtn.style.background = 'var(--black)';
+
+                contactForm.reset();
+
+                setTimeout(() => {
+                    contactToggle.classList.remove('active');
+                    contactPanel.classList.remove('active');
+
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.style.background = 'var(--accent)';
+                    }, 1000);
+                }, 1500);
+
+                console.log('Form submitted:', data);
             }
-        };
-        
-        xhr.send(`index=${index}`);
+        });
+    }
+
+    // Prevent panel from closing when form is clicked
+    if (contactForm) {
+        contactForm.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
     }
 }
 
-function checkout() {
-    alert('Checkout functionality would be implemented here with payment gateway integration.');
-    // In a real application, this would redirect to a checkout page
-    // window.location.href = 'checkout.php';
-}
+});
+
 </script>
 
-<!-- Floating Contact Form -->
-<div class="floating-contact-container">
-    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
-        ✉️
-    </button>
-    
-    <div class="contact-panel" id="contactPanel">
-        <button class="contact-close" id="contactClose">&times;</button>
-        
-        <h3>CONTACT ARCHIVES</h3>
-        <p>Send us a message directly or connect through our social channels.</p>
-        
-        <form class="contact-form" id="contactForm">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Your Message..." required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-        
-        <div class="social-links">
-            <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                📸
-            </a>
-            <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                𝕏
-            </a>
-            <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                🎵
-            </a>
-            <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                ▶️
-            </a>
-            <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                ✉️
-            </a>
-        </div>
-    </div>
-</div>
-
-<script src="../js/main.js"></script>
 </body>
 </html>

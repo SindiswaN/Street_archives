@@ -1100,9 +1100,10 @@ if (document.readyState === 'complete') {
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.php">Home</a>
-  <a href="shop.php">Shop</a>
-  <a href="media.php">Media</a>
+  <a href="about.php">About Us</a>
+  <a href="fashion.php">Fashion</a>
   <a href="music.php">Music</a>
+  <a href="cart.php">Cart</a>
 </div>
 
 <section class="media-hero">
@@ -1250,47 +1251,7 @@ if (document.readyState === 'complete') {
 <div id="toast"></div>
 <div id="back-to-top">↑</div>
 
-<script>
-// Video play function
-function playVideo(title, description) {
-    alert('Playing: ' + title + '\n\n' + description);
-}
 
-// Mobile menu toggle
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-
-if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        mobileMenu.classList.toggle('active');
-    });
-}
-
-// Theme toggle
-const themeToggle = document.getElementById('theme-toggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', function() {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-}
-
-// Load saved theme
-if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark');
-}
-
-// Search functionality
-const searchInput = document.getElementById('search');
-if (searchInput) {
-    searchInput.addEventListener('input', function(e) {
-        const query = e.target.value.toLowerCase();
-        // Search logic can be added here
-        console.log('Searching for:', query);
-    });
-}
-</script>
 
 <script src="../js/main.js"></script>
 

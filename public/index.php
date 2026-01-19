@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Home';
 require_once(__DIR__ . '/../app/config.php');
-$cartCount = getCartCount(); // Get cart count
+$cartCount = getCartCount();
 ?>
 
 
@@ -889,12 +889,14 @@ body.dark .social-link {
       <span></span>
       <span></span>
     </div>
-    <div class="cart">CART (0)</div>
+  <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
+  </div>
   </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="shop.php" onclick="toggleMenu()">Shop</a>
+  <a href="fashion.php" onclick="toggleMenu()">About Us</a>
+  <a href="about.php" onclick="toggleMenu()">Fashion</a>
   <a href="media.php" onclick="toggleMenu()">Media</a>
   <a href="music.php" onclick="toggleMenu()">Music</a>
   <a href="cart.php" onclick="toggleMenu()">Cart (<?php echo $cartCount; ?>)</a>

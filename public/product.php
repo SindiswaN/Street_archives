@@ -1,9 +1,12 @@
 <?php
 $pageTitle = 'Product';
-require_once 'config.php';
+$pageTitle = 'Home';
+require_once(__DIR__ . '/../app/config.php');
 
 // Get product ID from URL
-$productId = isset($_GET['id']) ? $_GET['id'] : '014';
+$productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Get product from database
 $product = getProductById($productId);
 
 if (!$product) {
@@ -12,6 +15,19 @@ if (!$product) {
     exit();
 }
 
+// Get product images
+$db = $database->getConnection();
+$stmt = $db->prepare("SELECT image_url FROM product_images WHERE product_id = :id ORDER BY display_order");
+$stmt->bindParam(':id', $productId, PDO::PARAM_INT);
+$stmt->execute();
+$productImages = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+// Get available sizes
+$stmt = $db->prepare("SELECT size_label FROM product_sizes WHERE product_id = :id AND stock_quantity > 0 ORDER BY size_label");
+$stmt->bindParam(':id', $productId, PDO::PARAM_INT);
+$stmt->execute();
+$availableSizes = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
 $cartCount = getCartCount();
 ?>
 <!doctype html>
@@ -19,7 +35,7 @@ $cartCount = getCartCount();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>STREETS ARCHIVES - <?php echo $pageTitle; ?></title>
+<title>STREETS ARCHIVES - <?php echo htmlspecialchars($product['name']); ?></title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -1141,37 +1157,52 @@ body.dark .social-link {
 
 <section class="product-detail-container">
     <div class="product-gallery">
-        <img id="main-image" src="images/<?php echo $product['images'][0]; ?>" alt="<?php echo $product['name']; ?>" class="main-image">
-        <div class="thumbnail-grid">
-            <?php foreach ($product['images'] as $index => $image): ?>
-            <img src="images/<?php echo $image; ?>" 
-                 alt="Thumbnail <?php echo $index + 1; ?>" 
-                 class="thumbnail <?php echo $index === 0 ? 'active' : ''; ?>"
-                 data-image="images/<?php echo $image; ?>">
-            <?php endforeach; ?>
-        </div>
+        <?php if (!empty($productImages)): ?>
+            <img id="main-image" src="<?php echo htmlspecialchars($productImages[0]); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="main-image">
+            <div class="thumbnail-grid">
+                <?php foreach ($productImages as $index => $image): ?>
+                <img src="<?php echo htmlspecialchars($image); ?>" 
+                     alt="Thumbnail <?php echo $index + 1; ?>" 
+                     class="thumbnail <?php echo $index === 0 ? 'active' : ''; ?>"
+                     data-image="<?php echo htmlspecialchars($image); ?>">
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <!-- Default image if no images in database -->
+            <img id="main-image" src="images/default-product.jpg" alt="<?php echo htmlspecialchars($product['name']); ?>" class="main-image">
+        <?php endif; ?>
     </div>
     
     <div class="product-info">
-        <div class="product-category"><?php echo strtoupper($product['category'] ?? 'ARCHIVE'); ?> • <?php echo strtoupper($product['type']); ?></div>
-        <h1 class="product-name"><?php echo $product['name']; ?></h1>
-        <div class="product-price-large"><?php echo $product['price']; ?></div>
+        <div class="product-category">
+            <?php 
+            if (isset($product['category_name'])) {
+                echo strtoupper($product['category_name']);
+            } elseif (isset($product['is_digital']) && $product['is_digital']) {
+                echo 'DIGITAL MUSIC';
+            } else {
+                echo 'ARCHIVE';
+            }
+            ?>
+        </div>
+        <h1 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h1>
+        <div class="product-price-large">R <?php echo number_format($product['price'], 2); ?></div>
         
         <div class="product-description-long">
-            <p><?php echo $product['description']; ?></p>
+            <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
             <p>Each archive piece is unique and will never be reproduced. This item comes with a certificate of authenticity and archive documentation.</p>
         </div>
         
         <div class="product-attributes">
-            <?php if ($product['type'] === 'fashion'): ?>
+            <?php if ($product['is_digital'] == 0 && !empty($availableSizes)): ?>
             <div class="attribute">
                 <label>SIZE</label>
                 <div class="size-options">
-                    <div class="size-option" data-size="XS">XS</div>
-                    <div class="size-option selected" data-size="S">S</div>
-                    <div class="size-option" data-size="M">M</div>
-                    <div class="size-option" data-size="L">L</div>
-                    <div class="size-option disabled" data-size="XL">XL</div>
+                    <?php foreach ($availableSizes as $size): ?>
+                    <div class="size-option <?php echo $size === 'M' ? 'selected' : ''; ?>" data-size="<?php echo htmlspecialchars($size); ?>">
+                        <?php echo htmlspecialchars($size); ?>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <?php endif; ?>
@@ -1179,7 +1210,9 @@ body.dark .social-link {
             <?php if (isset($product['condition'])): ?>
             <div class="attribute">
                 <label>CONDITION</label>
-                <div style="font-weight: 600; color: var(--accent);"><?php echo $product['condition']; ?></div>
+                <div style="font-weight: 600; color: var(--accent);">
+                    <?php echo ucfirst(htmlspecialchars($product['condition'])); ?>
+                </div>
             </div>
             <?php endif; ?>
             
@@ -1187,7 +1220,7 @@ body.dark .social-link {
                 <label>QUANTITY</label>
                 <div class="quantity-selector">
                     <button class="quantity-btn" id="decrease-qty">-</button>
-                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                    <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="<?php echo htmlspecialchars($product['stock_quantity']); ?>">
                     <button class="quantity-btn" id="increase-qty">+</button>
                 </div>
             </div>
@@ -1199,29 +1232,36 @@ body.dark .social-link {
         </div>
         
         <div class="product-meta-info">
-            <?php if (isset($product['location'])): ?>
+            <?php if (isset($product['location_found'])): ?>
             <div class="meta-item">
                 <span class="meta-label">LOCATION:</span>
-                <span><?php echo $product['location']; ?>, South Africa</span>
+                <span><?php echo htmlspecialchars($product['location_found']); ?>, South Africa</span>
             </div>
             <?php endif; ?>
             
             <div class="meta-item">
                 <span class="meta-label">RECOVERED:</span>
-                <span>December 2025</span>
+                <span><?php echo date('F Y', strtotime($product['created_at'])); ?></span>
             </div>
             
             <?php if (isset($product['material'])): ?>
             <div class="meta-item">
                 <span class="meta-label">MATERIAL:</span>
-                <span><?php echo $product['material']; ?></span>
+                <span><?php echo htmlspecialchars($product['material']); ?></span>
             </div>
             <?php endif; ?>
             
             <div class="meta-item">
                 <span class="meta-label">ARCHIVE #:</span>
-                <span>SA-2025-<?php echo $productId; ?></span>
+                <span><?php echo htmlspecialchars($product['sku']); ?></span>
             </div>
+            
+            <?php if (isset($product['era'])): ?>
+            <div class="meta-item">
+                <span class="meta-label">ERA:</span>
+                <span><?php echo htmlspecialchars($product['era']); ?></span>
+            </div>
+            <?php endif; ?>
             
             <div class="meta-item">
                 <span class="meta-label">SHIPPING:</span>
@@ -1232,15 +1272,25 @@ body.dark .social-link {
 </section>
 
 <?php 
-// Get related products (same category, excluding current)
-$relatedProducts = array_filter($products, function($p) use ($product) {
-    return $p['id'] !== $product['id'] && 
-           (isset($product['category']) ? $p['category'] === $product['category'] : true) &&
-           $p['type'] === $product['type'];
-});
-
-// Limit to 4 products
-$relatedProducts = array_slice($relatedProducts, 0, 4);
+// Get related products (same category)
+if (isset($product['category_id'])) {
+    $stmt = $db->prepare("SELECT 
+                            p.*, 
+                            pi.image_url 
+                          FROM products p
+                          LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+                          WHERE p.category_id = :category_id 
+                            AND p.id != :product_id 
+                            AND p.is_active = 1
+                          ORDER BY p.created_at DESC 
+                          LIMIT 4");
+    $stmt->bindParam(':category_id', $product['category_id'], PDO::PARAM_INT);
+    $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
+    $stmt->execute();
+    $relatedProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    $relatedProducts = [];
+}
 ?>
 
 <?php if (!empty($relatedProducts)): ?>
@@ -1250,9 +1300,17 @@ $relatedProducts = array_slice($relatedProducts, 0, 4);
         <div class="grid">
             <?php foreach ($relatedProducts as $relatedProduct): ?>
             <div class="product" onclick="window.location.href='product.php?id=<?php echo $relatedProduct['id']; ?>'">
-                <img src="images/<?php echo $relatedProduct['images'][0]; ?>" loading="lazy" alt="<?php echo $relatedProduct['name']; ?>">
-                <p><?php echo $relatedProduct['name']; ?><br>Found in <?php echo $relatedProduct['location']; ?><br>One of One</p>
-                <strong><?php echo $relatedProduct['price']; ?></strong>
+                <?php if ($relatedProduct['image_url']): ?>
+                <img src="<?php echo htmlspecialchars($relatedProduct['image_url']); ?>" loading="lazy" alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
+                <?php else: ?>
+                <img src="images/default-product.jpg" loading="lazy" alt="Default image">
+                <?php endif; ?>
+                <p><?php echo htmlspecialchars($relatedProduct['name']); ?><br>
+                   <?php if ($relatedProduct['location_found']): ?>
+                   Found in <?php echo htmlspecialchars($relatedProduct['location_found']); ?><br>
+                   <?php endif; ?>
+                   One of One</p>
+                <strong>R <?php echo number_format($relatedProduct['price'], 2); ?></strong>
             </div>
             <?php endforeach; ?>
         </div>
@@ -1286,6 +1344,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Quantity selector
     const quantityInput = document.getElementById('quantity');
+    const maxQuantity = parseInt(quantityInput.max);
+    
     document.getElementById('decrease-qty').addEventListener('click', () => {
         if (quantityInput.value > 1) {
             quantityInput.value = parseInt(quantityInput.value) - 1;
@@ -1293,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     document.getElementById('increase-qty').addEventListener('click', () => {
-        if (quantityInput.value < parseInt(quantityInput.max)) {
+        if (quantityInput.value < maxQuantity) {
             quantityInput.value = parseInt(quantityInput.value) + 1;
         }
     });
@@ -1308,22 +1368,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add to cart
     document.getElementById('add-to-cart').addEventListener('click', function() {
-        const productId = '<?php echo $productId; ?>';
+        const productId = <?php echo $productId; ?>;
         const productName = '<?php echo addslashes($product['name']); ?>';
-        const price = '<?php echo $product['price']; ?>';
-        const image = 'images/<?php echo $product['images'][0]; ?>';
-        const type = '<?php echo $product['type']; ?>';
+        const price = <?php echo $product['price']; ?>;
+        const image = '<?php echo !empty($productImages[0]) ? addslashes($productImages[0]) : 'images/default-product.jpg'; ?>';
         
         let size = 'M';
-        if (type === 'fashion') {
+        if (document.querySelector('.size-option.selected')) {
             size = document.querySelector('.size-option.selected').getAttribute('data-size');
-        } else {
+        } else if (<?php echo $product['is_digital']; ?> == 1) {
             size = 'Digital';
         }
         
         const quantity = parseInt(quantityInput.value);
         
-        addToCart(productId, productName, price, image, size, quantity, type);
+        addToCart(productId, productName, price, image, size, quantity);
         
         // Show success message
         const originalText = this.textContent;
@@ -1351,8 +1410,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add to cart function (same as shop.php)
-function addToCart(productId, name, price, image, size, quantity, type) {
+// Add to cart function
+function addToCart(productId, name, price, image, size, quantity) {
     // Create form data
     const formData = new FormData();
     formData.append('product_id', productId);
@@ -1361,7 +1420,6 @@ function addToCart(productId, name, price, image, size, quantity, type) {
     formData.append('image', image);
     formData.append('size', size);
     formData.append('quantity', quantity);
-    formData.append('type', type);
     
     // Send AJAX request
     fetch('add_to_cart.php', {
@@ -1391,7 +1449,7 @@ function addToCart(productId, name, price, image, size, quantity, type) {
     });
 }
 
-// COPY ALL YOUR EXISTING JAVASCRIPT FUNCTIONS FROM INDEX.PHP HERE
+// Include your existing JavaScript functions from main.js
 </script>
 
 <!-- Floating Contact Form -->

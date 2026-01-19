@@ -98,9 +98,26 @@ body.dark header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.header-left { display: flex; align-items: center; gap: 12px; }
-.header-center { flex: 1; display: flex; justify-content: center; }
-.header-right { display: flex; align-items: center; gap: 12px; }
+.header-left { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  flex: 1;
+}
+
+.header-center { 
+  display: flex; 
+  justify-content: center; 
+  flex: 1;
+}
+
+.header-right { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  flex: 1;
+  justify-content: flex-end;
+}
 
 .logo-container {
   perspective: 1200px;
@@ -127,6 +144,41 @@ body.dark header {
 @keyframes rotate3D {
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
+}
+
+/* Search Bar */
+#search {
+    padding: 10px 15px;
+    border: 1px solid var(--grey);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    width: 200px;
+    transition: all 0.3s var(--transition);
+}
+
+#search::placeholder {
+    color: var(--grey);
+    opacity: 0.7;
+}
+
+#search:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(255, 60, 0, 0.1);
+    width: 250px;
+}
+
+body.dark #search {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+body.dark #search::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 #theme-toggle {
@@ -156,6 +208,15 @@ body.dark header {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.cart:hover {
+    background: rgba(255, 60, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 /* Hamburger Button */
@@ -1330,6 +1391,36 @@ footer p:last-child {
     left: 20px;
     padding: 10px;
   }
+  
+  /* Responsive header */
+  header {
+    flex-wrap: wrap;
+  }
+  
+  .header-left, .header-center, .header-right {
+    flex: none;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .header-left {
+    order: 1;
+  }
+  
+  .header-center {
+    order: 2;
+  }
+  
+  .header-right {
+    order: 3;
+    margin-bottom: 0;
+  }
+  
+  #search {
+    width: 100%;
+    max-width: 300px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1373,6 +1464,10 @@ footer p:last-child {
   .video-controls {
     display: none;
   }
+  
+  #search {
+    max-width: 200px;
+  }
 }
 </style>
 </head>
@@ -1390,6 +1485,8 @@ footer p:last-child {
 
 <header>
   <div class="header-left">
+    <!-- ADDED SEARCH BAR HERE -->
+    <input type="text" id="search" placeholder="Search archives...">
     <button id="theme-toggle" aria-label="Toggle dark mode">🌑</button>
   </div>
   <div class="header-center">
@@ -1403,12 +1500,13 @@ footer p:last-child {
       <span></span>
       <span></span>
     </div>
-    <div class="cart">ABOUT</div>
+    <!-- FIXED CART LINK -->
+    <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
   </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Home</a>
+  <a href="index.php">Home</a>
   <a href="#vision">Vision</a>
   <a href="#manifesto">Manifesto</a>
   <a href="#founder">Founder</a>
@@ -1416,6 +1514,7 @@ footer p:last-child {
   <a href="#gallery">Gallery</a>
   <a href="#pillars">Pillars</a>
   <a href="#scope">Scope</a>
+  <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
 </div>
 
 <section class="about-hero">
@@ -1445,13 +1544,13 @@ footer p:last-child {
   <!-- Vision & Mission Section -->
   <section class="vision-mission" id="vision">
     <div class="vision-card">
-      <div class="vision-icon">👁️</div>
+      <div class="vision-icon"></div>
       <h2>OUR VISION</h2>
       <p>To become the definitive archive of street culture, preserving and amplifying authentic urban narratives through fashion, sound, and visual media for generations to come.</p>
     </div>
     
     <div class="mission-card">
-      <div class="mission-icon">🎯</div>
+      <div class="mission-icon"></div>
       <h2>OUR MISSION</h2>
       <p>To curate, document, and distribute the raw essence of street culture through sustainable fashion, underground media, and authentic storytelling that transcends trends.</p>
     </div>
@@ -1694,62 +1793,6 @@ window.addEventListener('load', () => {
     }, 500);
 });
 
-// FIXED Video Background Controls - SIMPLIFIED
-const heroVideo = document.getElementById('heroVideo');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const muteBtn = document.getElementById('muteBtn');
-
-// Initialize video controls
-if (heroVideo && playPauseBtn && muteBtn) {
-    // Set initial button states
-    playPauseBtn.textContent = '⏸';
-    muteBtn.textContent = '🔊';
-    
-    // Try to autoplay the video
-    const playPromise = heroVideo.play();
-    
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.log('Autoplay prevented, showing play button');
-            playPauseBtn.textContent = '⏵';
-        });
-    }
-    
-    // Play/Pause functionality
-    playPauseBtn.addEventListener('click', () => {
-        if (heroVideo.paused) {
-            heroVideo.play().then(() => {
-                playPauseBtn.textContent = '⏸';
-            }).catch(error => {
-                console.log('Play failed:', error);
-            });
-        } else {
-            heroVideo.pause();
-            playPauseBtn.textContent = '⏵';
-        }
-    });
-
-    // Mute/Unmute functionality
-    muteBtn.addEventListener('click', () => {
-        heroVideo.muted = !heroVideo.muted;
-        muteBtn.textContent = heroVideo.muted ? '🔇' : '🔊';
-    });
-
-    // Update button state when video ends
-    heroVideo.addEventListener('ended', () => {
-        heroVideo.currentTime = 0; // Reset to start
-        heroVideo.play(); // Auto-restart
-    });
-}
-
-// Fallback if video fails to load
-if (heroVideo) {
-    heroVideo.addEventListener('error', () => {
-        console.log('Video failed to load, showing fallback');
-        // The poster image will show automatically
-    });
-}
-
 // Toggle Mobile Menu
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -1806,6 +1849,100 @@ if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+}
+
+// Search functionality
+const searchInput = document.getElementById('search');
+if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        // Search logic - you can add specific search for About page
+        console.log('Searching for:', query);
+        
+        // Example: Highlight matching text on page
+        if (query.length > 2) {
+            highlightSearch(query);
+        } else {
+            removeHighlight();
+        }
+    });
+    
+    // Add search on enter key
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            performSearch(this.value);
+        }
+    });
+}
+
+function highlightSearch(query) {
+    // Remove previous highlights
+    removeHighlight();
+    
+    // Search in text content
+    const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+    );
+    
+    let node;
+    while (node = walker.nextNode()) {
+        if (node.parentElement.tagName === 'SCRIPT' || 
+            node.parentElement.tagName === 'STYLE' ||
+            node.parentElement.classList.contains('no-search')) {
+            continue;
+        }
+        
+        const text = node.textContent;
+        const regex = new RegExp(`(${query})`, 'gi');
+        if (text.match(regex)) {
+            const span = document.createElement('span');
+            span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+            span.classList.add('search-result');
+            node.parentNode.replaceChild(span, node);
+        }
+    }
+}
+
+function removeHighlight() {
+    document.querySelectorAll('.search-result').forEach(el => {
+        const parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        parent.normalize();
+    });
+}
+
+function performSearch(query) {
+    if (query.trim() === '') return;
+    
+    // You can customize this search logic
+    const searchableSections = [
+        { id: 'vision', title: 'Vision & Mission' },
+        { id: 'manifesto', title: 'Manifesto' },
+        { id: 'founder', title: 'Founder' },
+        { id: 'timeline', title: 'Timeline' },
+        { id: 'pillars', title: 'Pillars' },
+        { id: 'scope', title: 'Scope of Work' }
+    ];
+    
+    // Simple search - scroll to first matching section
+    for (const section of searchableSections) {
+        const element = document.getElementById(section.id);
+        if (element && element.textContent.toLowerCase().includes(query.toLowerCase())) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Add visual feedback
+            element.style.boxShadow = '0 0 0 3px var(--accent)';
+            setTimeout(() => {
+                element.style.boxShadow = '';
+            }, 2000);
+            return;
+        }
+    }
+    
+    // If no match found
+    alert(`No results found for "${query}"`);
 }
 
 // Newsletter form submission
@@ -1924,6 +2061,18 @@ stats.forEach(stat => {
         statsObserver.observe(stat);
     }
 });
+
+// Add search highlight style
+const style = document.createElement('style');
+style.textContent = `
+    .search-highlight {
+        background-color: rgba(255, 60, 0, 0.3);
+        padding: 2px 4px;
+        border-radius: 2px;
+        font-weight: 600;
+    }
+`;
+document.head.appendChild(style);
 </script>
 
 </body>
