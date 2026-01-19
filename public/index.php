@@ -895,8 +895,8 @@ body.dark .social-link {
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="fashion.php" onclick="toggleMenu()">About Us</a>
-  <a href="about.php" onclick="toggleMenu()">Fashion</a>
+  <a href="about.php" onclick="toggleMenu()">About Us</a>
+  <a href="fashion.php" onclick="toggleMenu()">Fashion</a>
   <a href="media.php" onclick="toggleMenu()">Media</a>
   <a href="music.php" onclick="toggleMenu()">Music</a>
   <a href="cart.php" onclick="toggleMenu()">Cart (<?php echo $cartCount; ?>)</a>
