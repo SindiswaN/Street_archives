@@ -102,9 +102,47 @@ body.dark .btn:hover {
 }
 
 /* ---------- TOP BAR ---------- */
-.top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
-@keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+.top-bar {
+  background: var(--black); 
+  color: var(--bg); 
+  padding: 10px 0; 
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-bar p {
+  animation: scrollText 35s linear infinite; 
+  font-size: 14px; 
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-family: 'Space Mono', monospace;
+  color: inherit; 
+}
+
+@keyframes scrollText { 
+  0% { transform: translateX(100%); } 
+  100% { transform: translateX(-100%); } 
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+body.dark .top-bar {
+  background: #ffffff; 
+  color: #111111; 
+}
 
 /* ---------- HEADER & HAMBURGER ---------- */
 header{
@@ -206,6 +244,24 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   font-weight: 800;
   text-transform: uppercase;
 }
+
+.cart {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.cart:hover {
+    background: rgba(255, 60, 0, 0.1);
+    transform: translateY(-2px);
+}
+
 /* ---------- ENHANCED MUSIC HERO ---------- */
 .music-hero {
     height: 80vh;

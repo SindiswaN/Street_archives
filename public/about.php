@@ -13,7 +13,8 @@ $cartCount = getCartCount();
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <style>
 /* ---------- GLOBAL ---------- */
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -54,91 +55,79 @@ body.dark {
 }
 
 /* ---------- TOP BAR ---------- */
-.top-bar{
+.top-bar {
   background: var(--black); 
-  color: white; 
-  padding: 12px 0; 
+  color: var(--bg); 
+  padding: 10px 0; 
   overflow: hidden;
-  position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.top-bar p{
-  animation: scrollText 40s linear infinite; 
-  font-size: 13px; 
+.top-bar p {
+  animation: scrollText 35s linear infinite; 
+  font-size: 14px; 
   white-space: nowrap;
   font-weight: 500;
   letter-spacing: 0.5px;
   font-family: 'Space Mono', monospace;
-  color: rgba(255, 255, 255, 0.9);
+  color: inherit; 
 }
 
-@keyframes scrollText{ 
-  0%{ transform: translateX(100%); } 
-  100%{ transform: translateX(-100%); } 
+@keyframes scrollText { 
+  0% { transform: translateX(100%); } 
+  100% { transform: translateX(-100%); } 
 }
 
-/* ---------- HEADER ---------- */
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+body.dark .top-bar {
+  background: #ffffff; 
+  color: #111111; 
+}
+
+/* ---------- HEADER & HAMBURGER ---------- */
 header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 5%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 5%;
+  border-bottom:1px solid #ddd;
   background: var(--header-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: all 0.3s var(--transition);
 }
 
-body.dark header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.header-left { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
-  flex: 1;
-}
-
-.header-center { 
-  display: flex; 
-  justify-content: center; 
-  flex: 1;
-}
-
-.header-right { 
-  display: flex; 
-  align-items: center; 
-  gap: 12px; 
-  flex: 1;
-  justify-content: flex-end;
-}
+.header-left { display: flex; align-items: center; gap: 10px; }
+.header-center { flex: 1; display: flex; justify-content: center; }
+.header-right { display: flex; align-items: center; gap: 10px; }
 
 .logo-container {
   perspective: 1200px;
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s var(--transition);
-}
-
-.logo-container:hover {
-  transform: scale(1.05);
 }
 
 .logo-3d {
   width: 100%;
   height: auto;
-  animation: rotate3D 15s linear infinite;
+  animation: rotate3D 10s linear infinite;
   transform-style: preserve-3d;
-  filter: grayscale(100%) contrast(120%);
 }
 
 @keyframes rotate3D {
@@ -146,60 +135,67 @@ body.dark header {
   100% { transform: rotateY(360deg); }
 }
 
-/* Search Bar */
-#search {
-    padding: 10px 15px;
-    border: 1px solid var(--grey);
-    border-radius: 8px;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    width: 200px;
-    transition: all 0.3s var(--transition);
-}
-
-#search::placeholder {
-    color: var(--grey);
-    opacity: 0.7;
-}
-
-#search:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(255, 60, 0, 0.1);
-    width: 250px;
-}
-
-body.dark #search {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-body.dark #search::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
+nav ul{list-style:none; display:none; gap:28px;}
+nav a{text-decoration:none; color:#111; font-weight:600; text-transform: uppercase; font-size: 13px;}
+.cart{font-weight:700;}
 #theme-toggle {
     background: transparent;
-    border: 1px solid var(--grey);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    border: none;
+    font-size: 20px;
     cursor: pointer;
-    transition: all 0.3s var(--transition);
+    transition: 0.3s;
     color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+}
+#theme-toggle:hover { transform: scale(1.1); }
+
+#search {
+    padding: 8px 12px;
+    border: 1px solid var(--black);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+}
+#search::placeholder { color: var(--black); }
+
+/* Hamburger Button */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 2000;
+}
+.hamburger span {
+  width: 25px;
+  height: 2px;
+  background-color: var(--black);
+  transition: 0.3s;
 }
 
-#theme-toggle:hover { 
-  transform: scale(1.1); 
-  border-color: var(--accent);
-  background: rgba(255, 60, 0, 0.1);
+/* Mobile Menu Overlay */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1500;
+}
+.mobile-menu.active { right: 0; }
+.mobile-menu a {
+  text-decoration: none;
+  color: var(--black);
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .cart {
@@ -219,31 +215,37 @@ body.dark #search::placeholder {
     transform: translateY(-2px);
 }
 
-/* Hamburger Button */
+
+/* Hamburger Menu */
 .hamburger {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   cursor: pointer;
   z-index: 2000;
-  padding: 10px;
-  border-radius: 8px;
-  transition: background 0.3s var(--transition);
-}
-
-.hamburger:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-body.dark .hamburger:hover {
-  background: rgba(255, 255, 255, 0.05);
+  width: 25px;
+  height: 20px;
+  justify-content: space-between;
 }
 
 .hamburger span {
-  width: 24px;
+  width: 100%;
   height: 2px;
   background-color: var(--text);
-  transition: 0.3s var(--transition);
+  transition: all 0.3s var(--transition);
+  transform-origin: left;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(2px);
 }
 
 /* Mobile Menu Overlay */
@@ -253,52 +255,47 @@ body.dark .hamburger:hover {
   right: -100%;
   width: 100%;
   height: 100vh;
-  background: var(--header-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 25px;
-  transition: 0.5s var(--transition);
+  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 1500;
+  padding: 20px;
 }
 
-.mobile-menu.active { right: 0; }
+.mobile-menu.active { 
+  right: 0; 
+}
 
 .mobile-menu a {
   text-decoration: none;
   color: var(--text);
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.3s var(--transition);
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 0;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
 .mobile-menu a:hover {
   color: var(--accent);
-  background: rgba(255, 60, 0, 0.1);
+  transform: translateX(-10px);
 }
 
-/* Hamburger Animation */
-.hamburger.active span:nth-child(1) { 
-  transform: rotate(45deg) translate(6px, 6px); 
-}
-.hamburger.active span:nth-child(2) { 
-  opacity: 0; 
-}
-.hamburger.active span:nth-child(3) { 
-  transform: rotate(-45deg) translate(6px, -6px); 
+body.dark .mobile-menu a {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* ---------- ABOUT HERO WITH VIDEO BACKGROUND ---------- */
+/* ---------- ABOUT HERO ---------- */
 .about-hero {
-  height: 100vh;
-  min-height: 800px;
+  height: 90vh;
+  min-height: 700px;
   background: var(--black);
   position: relative;
   display: flex;
@@ -309,7 +306,6 @@ body.dark .hamburger:hover {
   padding: 0 5%;
 }
 
-/* Video Background - FIXED */
 .hero-video-background {
   position: absolute;
   top: 0;
@@ -321,33 +317,14 @@ body.dark .hamburger:hover {
   filter: grayscale(100%) contrast(120%) brightness(0.4);
 }
 
-/* Video Overlay - Simplified */
 .hero-video-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(0,0,0,0.4));
   z-index: 2;
-}
-
-/* Scanlines effect - optional, keeping it minimal */
-.about-hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
-  );
-  background-size: 100% 4px;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.15;
 }
 
 .about-hero-content {
@@ -380,7 +357,6 @@ body.dark .hamburger:hover {
   margin: 0 auto 40px;
   font-weight: 400;
   letter-spacing: 0.3px;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 .hero-terminal {
@@ -398,6 +374,7 @@ body.dark .hamburger:hover {
   padding: 15px;
   border-radius: 8px;
   backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .hero-terminal span { 
@@ -408,36 +385,6 @@ body.dark .hamburger:hover {
 .hero-terminal span:hover {
   opacity: 1;
   color: var(--accent);
-}
-
-/* Video Controls */
-.video-controls {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  z-index: 10;
-  display: flex;
-  gap: 10px;
-}
-
-.video-btn {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s var(--transition);
-  backdrop-filter: blur(5px);
-}
-
-.video-btn:hover {
-  background: var(--accent);
-  transform: scale(1.1);
 }
 
 /* ---------- MAIN CONTENT ---------- */
@@ -487,6 +434,7 @@ body.dark .hamburger:hover {
 .vision-icon, .mission-icon {
   font-size: 48px;
   margin-bottom: 25px;
+  color: var(--accent);
   display: inline-block;
   animation: float 3s ease-in-out infinite;
 }
@@ -530,11 +478,6 @@ body.dark .hamburger:hover {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-.manifesto-about > * {
-  position: relative;
-  z-index: 1;
-}
-
 .manifesto-about h2 {
   font-size: 40px;
   font-weight: 800;
@@ -576,58 +519,6 @@ body.dark .hamburger:hover {
   border-radius: 0 8px 8px 0;
   font-style: italic;
   color: var(--black);
-  position: relative;
-  z-index: 1;
-}
-
-.manifesto-image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 50px;
-  position: relative;
-  z-index: 1;
-}
-
-.manifesto-image {
-  height: 300px;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-
-.manifesto-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s var(--transition);
-  filter: grayscale(100%) contrast(120%);
-}
-
-.manifesto-image:hover img {
-  transform: scale(1.05);
-  filter: grayscale(0%) contrast(100%);
-}
-
-.image-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 15px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0;
-  transform: translateY(100%);
-  transition: all 0.3s var(--transition);
-}
-
-.manifesto-image:hover .image-caption {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* Founder Section */
@@ -645,8 +536,6 @@ body.dark .hamburger:hover {
   grid-template-columns: 300px 1fr;
   gap: 50px;
   padding: 50px;
-  position: relative;
-  z-index: 1;
 }
 
 .founder-image {
@@ -805,26 +694,6 @@ body.dark .hamburger:hover {
   opacity: 0.8;
 }
 
-.timeline-image {
-  margin-top: 15px;
-  border-radius: 8px;
-  overflow: hidden;
-  height: 200px;
-}
-
-.timeline-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s var(--transition);
-  filter: grayscale(100%) contrast(120%);
-}
-
-.timeline-item:hover .timeline-image img {
-  transform: scale(1.05);
-  filter: grayscale(0%) contrast(100%);
-}
-
 /* Pillars Section */
 .pillars-section {
   background: var(--offwhite);
@@ -832,11 +701,6 @@ body.dark .hamburger:hover {
   padding: 70px;
   margin: 100px 0;
   border-radius: 16px;
-  z-index: 1;
-}
-
-.pillars-section > * {
-  position: relative;
   z-index: 1;
 }
 
@@ -864,6 +728,7 @@ body.dark .hamburger:hover {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  text-align: center;
 }
 
 .pillar::before {
@@ -892,7 +757,8 @@ body.dark .hamburger:hover {
 .pillar-icon {
   font-size: 40px;
   margin-bottom: 25px;
-  opacity: 0.9;
+  color: var(--accent);
+  display: block;
 }
 
 .pillar h3 {
@@ -994,11 +860,6 @@ body.dark .hamburger:hover {
   z-index: 1;
 }
 
-.stats-grid > * {
-  position: relative;
-  z-index: 1;
-}
-
 .stat-item {
   text-align: center;
   padding: 30px 20px;
@@ -1053,11 +914,6 @@ body.dark .hamburger:hover {
   border-radius: 16px;
   position: relative;
   overflow: hidden;
-  z-index: 1;
-}
-
-.scope-content > * {
-  position: relative;
   z-index: 1;
 }
 
@@ -1120,11 +976,6 @@ body.dark .hamburger:hover {
   z-index: 1;
 }
 
-.newsletter > * {
-  position: relative;
-  z-index: 1;
-}
-
 .newsletter h3 {
   font-size: 32px;
   font-weight: 800;
@@ -1166,22 +1017,6 @@ body.dark .hamburger:hover {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(255, 60, 0, 0.1);
-}
-
-.newsletter .btn {
-  margin: 0;
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 16px 35px;
-  font-weight: 700;
-  transition: all 0.3s var(--transition);
-}
-
-.newsletter .btn:hover {
-  background: var(--black);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(255, 60, 0, 0.2);
 }
 
 /* Footer */
@@ -1237,6 +1072,10 @@ footer p:last-child {
   position: relative;
   overflow: hidden;
   background: transparent;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn::before {
@@ -1289,8 +1128,8 @@ footer p:last-child {
 /* Back to Top Button */
 #back-to-top {
   position: fixed;
-  bottom: 40px;
-  right: 40px;
+  bottom: 30px;
+  right: 30px;
   width: 50px;
   height: 50px;
   background: var(--accent);
@@ -1303,8 +1142,8 @@ footer p:last-child {
   z-index: 100;
   box-shadow: 0 8px 25px rgba(255, 60, 0, 0.3);
   transition: all 0.3s var(--transition);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
 }
 
 #back-to-top:hover {
@@ -1313,8 +1152,12 @@ footer p:last-child {
   background: var(--black);
 }
 
-/* Responsive */
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
 @media (max-width: 1024px) {
+  /* Tablet adjustments */
   .main-content { width: 90%; }
   .manifesto-about, .pillars-section, .scope-content, .newsletter { padding: 50px; }
   
@@ -1325,15 +1168,23 @@ footer p:last-child {
   
   .founder-image {
     height: 300px;
+    max-width: 400px;
+    margin: 0 auto;
   }
   
   .stats-grid { padding: 50px; }
+  
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
+  /* Mobile adjustments */
   .main-content { width: 95%; }
   .manifesto-about, .pillars-section, .scope-content, .newsletter { padding: 30px; }
   
+  /* Timeline Mobile Fix */
   .timeline-container::before { left: 30px; }
   .timeline-item { 
     width: calc(100% - 80px); 
@@ -1358,7 +1209,11 @@ footer p:last-child {
   }
   
   .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: 1fr;
+  }
+  
+  .gallery-item {
+    height: 350px;
   }
   
   .newsletter-form {
@@ -1370,62 +1225,7 @@ footer p:last-child {
     width: 100%;
   }
   
-  .about-hero-content h1 {
-    font-size: clamp(36px, 12vw, 60px);
-  }
-  
-  .manifesto-about h2,
-  .timeline h2,
-  .pillars-section h2,
-  .scope-section h2 {
-    font-size: 32px;
-  }
-  
-  .video-controls {
-    bottom: 20px;
-    right: 20px;
-  }
-  
-  .hero-terminal {
-    top: 20px;
-    left: 20px;
-    padding: 10px;
-  }
-  
-  /* Responsive header */
-  header {
-    flex-wrap: wrap;
-  }
-  
-  .header-left, .header-center, .header-right {
-    flex: none;
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  
-  .header-left {
-    order: 1;
-  }
-  
-  .header-center {
-    order: 2;
-  }
-  
-  .header-right {
-    order: 3;
-    margin-bottom: 0;
-  }
-  
-  #search {
-    width: 100%;
-    max-width: 300px;
-  }
-}
-
-@media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr; }
-  
+  /* Hero Section Mobile */
   .about-hero {
     height: 80vh;
     min-height: 500px;
@@ -1436,10 +1236,49 @@ footer p:last-child {
     padding: 20px;
   }
   
+  .about-hero-content h1 {
+    font-size: clamp(36px, 12vw, 60px);
+  }
+  
+  .about-hero-content p {
+    font-size: 16px;
+  }
+  
   .hero-terminal {
-    top: 15px;
-    left: 15px;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
     font-size: 10px;
+  }
+  
+  /* Typography Mobile */
+  .manifesto-about h2,
+  .timeline h2,
+  .pillars-section h2,
+  .scope-section h2,
+  .newsletter h3 {
+    font-size: 32px;
+  }
+  
+  .vision-card h2, 
+  .mission-card h2 {
+    font-size: 24px;
+  }
+  
+  .founder-info h2 {
+    font-size: 28px;
+  }
+  
+  /* Cards and Sections Mobile */
+  .vision-mission {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .vision-card, 
+  .mission-card,
+  .founder-section {
+    padding: 30px;
   }
   
   .scope-tab {
@@ -1448,26 +1287,271 @@ footer p:last-child {
     font-size: 11px;
   }
   
+  /* Back to Top Button Mobile */
+  #back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  /* Header Mobile */
+  header {
+    padding: 12px 4%;
+    flex-wrap: wrap;
+  }
+  
+  .logo-container {
+    width: 60px;
+    height: 60px;
+  }
+  
+  /* Mobile Menu Fix */
+  .mobile-menu a {
+    font-size: 20px;
+    padding: 15px 0;
+  }
+  
+  /* Stats Mobile */
+  .stat-number {
+    font-size: 48px;
+  }
+  
+  .stat-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile adjustments */
+  .stats-grid { 
+    grid-template-columns: 1fr; 
+    padding: 25px;
+    gap: 15px;
+  }
+  
+  .about-hero {
+    height: 70vh;
+    min-height: 400px;
+  }
+  
+  .about-hero-content h1 {
+    font-size: 32px;
+    letter-spacing: -1px;
+  }
+  
+  .about-hero-content p {
+    font-size: 14px;
+  }
+  
+  .hero-terminal {
+    display: none; /* Hide terminal on very small screens */
+  }
+  
+  .scope-content,
+  .pillars-section,
+  .manifesto-about {
+    padding: 25px;
+  }
+  
   .newsletter {
     padding: 40px 20px;
     width: 95%;
+  }
+  
+  .manifesto-highlight {
+    font-size: 18px;
+    padding: 20px;
+    margin: 30px 0;
+  }
+  
+  .founder-quote {
+    font-size: 18px;
   }
   
   .gallery-item {
     height: 300px;
   }
   
-  .vision-mission {
-    grid-template-columns: 1fr;
+  /* Button Mobile */
+  .btn {
+    padding: 14px 25px;
+    font-size: 12px;
   }
   
-  .video-controls {
-    display: none;
+  /* Typography Mobile Small */
+  .manifesto-about h2,
+  .timeline h2,
+  .pillars-section h2,
+  .scope-section h2,
+  .newsletter h3 {
+    font-size: 28px;
   }
   
-  #search {
-    max-width: 200px;
+  .vision-icon, 
+  .mission-icon,
+  .pillar-icon {
+    font-size: 36px;
   }
+  
+  /* Footer Mobile */
+  footer {
+    padding: 50px 5%;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Extra small devices */
+  .about-hero-content h1 {
+    font-size: 28px;
+  }
+  
+  .about-hero-content p {
+    font-size: 13px;
+  }
+  
+  .btn {
+    padding: 12px 20px;
+    font-size: 11px;
+  }
+  
+  .newsletter input {
+    padding: 14px 20px;
+  }
+  
+  .gallery-item {
+    height: 250px;
+  }
+}
+
+/* Mobile landscape orientation */
+@media (max-height: 600px) and (orientation: landscape) {
+  .about-hero {
+    height: 100vh;
+    min-height: auto;
+  }
+  
+  .mobile-menu {
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+  
+  .mobile-menu a {
+    font-size: 18px;
+    padding: 10px 0;
+  }
+  
+  .about-hero-content h1 {
+    font-size: 42px;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Improve touch targets */
+button,
+.btn,
+.pillar,
+.gallery-item,
+.timeline-item,
+.stat-item {
+  min-height: 44px;
+}
+
+/* Ensure buttons are properly clickable on mobile */
+button, 
+.btn {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Adjust input font size for mobile to prevent zoom */
+@media (max-width: 768px) {
+  input[type="email"],
+  input[type="text"],
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Smooth transitions for mobile performance */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Loading state for images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Video Controls for Mobile */
+.video-controls {
+  display: none; /* Hide on mobile for cleaner interface */
+}
+
+/* Manifesto Image Grid Mobile */
+.manifesto-image-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.manifesto-image {
+  height: 250px;
+}
+
+/* Dark mode adjustments */
+body.dark .vision-card,
+body.dark .mission-card,
+body.dark .manifesto-about,
+body.dark .pillars-section,
+body.dark .scope-content,
+body.dark .newsletter,
+body.dark .founder-section,
+body.dark .timeline-item,
+body.dark .pillar,
+body.dark .stat-item {
+  background: var(--offwhite);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .mobile-menu {
+  background: var(--bg);
+}
+
+body.dark .newsletter input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+body.dark .newsletter input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Animation for scroll reveal */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s var(--transition), transform 0.6s var(--transition);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
 </head>
@@ -1483,27 +1567,7 @@ footer p:last-child {
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
-<header>
-  <div class="header-left">
-    <!-- ADDED SEARCH BAR HERE -->
-    <input type="text" id="search" placeholder="Search archives...">
-    <button id="theme-toggle" aria-label="Toggle dark mode">🌑</button>
-  </div>
-  <div class="header-center">
-    <div class="logo-container">
-      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Streets Archives Logo">
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="hamburger" id="hamburger" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <!-- FIXED CART LINK -->
-    <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
-  </div>
-</header>
+<?php require_once(__DIR__ . '/../includes/header.php'); ?>
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.php">Home</a>
@@ -1511,94 +1575,76 @@ footer p:last-child {
   <a href="#manifesto">Manifesto</a>
   <a href="#founder">Founder</a>
   <a href="#timeline">Timeline</a>
-  <a href="#gallery">Gallery</a>
   <a href="#pillars">Pillars</a>
   <a href="#scope">Scope</a>
   <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
 </div>
 
 <section class="about-hero">
-  <!-- Video Background - SIMPLE PATH -->
   <video autoplay muted loop playsinline class="hero-video-background" id="heroVideo">
-        <source src="images/about.mp4" type="video/mp4">
+    <source src="images/about.mp4" type="video/mp4">
     Your browser does not support HTML5 video.
   </video>
   
   <div class="hero-video-overlay"></div>
   
   <div class="hero-terminal">
-    <span>ABOUT_ARCHIVE.EXE</span>
-    <span>STATUS: ACTIVE</span>
-    <span>ENCRYPTION: AES-256</span>
-    <span>CULTURE OVER COMMODITY</span>
+    <span><i class="bi bi-file-earmark-text"></i> ABOUT_ARCHIVE.EXE</span>
+    <span><i class="bi bi-check-circle"></i> STATUS: ACTIVE</span>
+    <span><i class="bi bi-shield-lock"></i> ENCRYPTION: AES-256</span>
+    <span><i class="bi bi-heart-fill"></i> CULTURE OVER COMMODITY</span>
   </div>
   
   <div class="about-hero-content">
     <h1>STREETS<br>ARCHIVES</h1>
     <p>The fashion-forward division of Street Jewels Connections — a dynamic multimedia collective pushing the boundaries of creativity across music, fashion, film, media, and events.</p>
-    <a href="#manifesto" class="btn btn-accent">Explore Our Story</a>
+    <a href="#manifesto" class="btn btn-accent">Explore Our Story <i class="bi bi-arrow-down"></i></a>
   </div>
 </section>
 
 <div class="main-content">
   <!-- Vision & Mission Section -->
-  <section class="vision-mission" id="vision">
+  <section class="vision-mission fade-in" id="vision">
     <div class="vision-card">
-      <div class="vision-icon"></div>
+      <div class="vision-icon"><i class="bi bi-eye"></i></div>
       <h2>OUR VISION</h2>
       <p>To become the definitive archive of street culture, preserving and amplifying authentic urban narratives through fashion, sound, and visual media for generations to come.</p>
     </div>
     
     <div class="mission-card">
-      <div class="mission-icon"></div>
+      <div class="mission-icon"><i class="bi bi-bullseye"></i></div>
       <h2>OUR MISSION</h2>
       <p>To curate, document, and distribute the raw essence of street culture through sustainable fashion, underground media, and authentic storytelling that transcends trends.</p>
     </div>
   </section>
 
   <!-- Manifesto Section -->
-  <section class="manifesto-about" id="manifesto">
+  <section class="manifesto-about fade-in" id="manifesto">
     <h2>MANIFESTO</h2>
     <div class="manifesto-text">
       <p>Rooted in the vibrant streets and inspired by the raw energy of urban culture, Streets Archives curates and sells unique thrifted clothing that tells stories of individuality and expression.</p>
       
       <div class="manifesto-highlight">
-        We believe in culture over commodity. We live by the code: LIVE FREE, DIE WITH MONEY. Every piece in our archive carries a story, a memory, a fragment of the streets that birthed it.
+        <i class="bi bi-quote"></i> We believe in culture over commodity. We live by the code: LIVE FREE, DIE WITH MONEY. Every piece in our archive carries a story, a memory, a fragment of the streets that birthed it.
       </div>
       
       <p>Our mission is to preserve the authentic spirit of street culture through curated fashion, documented media, and archived sound. We're not just selling clothes — we're archiving moments, movements, and memories before they disappear into the digital ether.</p>
     </div>
-    
-    <!-- Image Grid -->
-    <div class="manifesto-image-grid">
-      <div class="manifesto-image">
-        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Street fashion collection">
-        <div class="image-caption">VINTAGE CURATION</div>
-      </div>
-      <div class="manifesto-image">
-        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Recording session">
-        <div class="image-caption">SOUND ARCHIVES</div>
-      </div>
-      <div class="manifesto-image">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Street photography">
-        <div class="image-caption">VISUAL DOCUMENTATION</div>
-      </div>
-    </div>
   </section>
 
   <!-- Founder Section -->
-  <section class="founder-section" id="founder">
+  <section class="founder-section fade-in" id="founder">
     <div class="founder-content">
       <div class="founder-image">
         <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Founder of Streets Archives">
       </div>
       <div class="founder-info">
-        <h2>THE ARCHITECT</h2>
+        <h2><i class="bi bi-person-badge"></i> THE ARCHITECT</h2>
         <div class="founder-title">FOUNDER & CREATIVE DIRECTOR</div>
         <p>With a background in urban anthropology and a passion for authentic storytelling, our founder envisioned Streets Archives as a living museum of street culture. Starting from the pavements of Johannesburg to the underground scenes of Cape Town, the mission has always been clear: document the real before it's commercialized.</p>
         
         <div class="founder-quote">
-          "We don't follow trends — we archive movements. Every piece we curate, every sound we capture, every moment we document is a timestamp of authentic street culture."
+          <i class="bi bi-chat-quote"></i> "We don't follow trends — we archive movements. Every piece we curate, every sound we capture, every moment we document is a timestamp of authentic street culture."
         </div>
         
         <p>Under this vision, Streets Archives has grown from a personal collection of vintage finds to a multimedia archive that collaborates with emerging artists, musicians, and designers across South Africa.</p>
@@ -1607,17 +1653,14 @@ footer p:last-child {
   </section>
 
   <!-- Timeline Section -->
-  <section class="timeline" id="timeline">
-    <h2>OUR TIMELINE</h2>
+  <section class="timeline fade-in" id="timeline">
+    <h2><i class="bi bi-clock-history"></i> OUR TIMELINE</h2>
     <div class="timeline-container">
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-year">2022</div>
         <div class="timeline-title">STREET JEWELS CONNECTIONS</div>
         <div class="timeline-desc">The multimedia collective is born, merging music, fashion, and visual media into a cohesive cultural force.</div>
-        <div class="timeline-image">
-          <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Early collective days">
-        </div>
       </div>
       
       <div class="timeline-item">
@@ -1625,9 +1668,6 @@ footer p:last-child {
         <div class="timeline-year">2023</div>
         <div class="timeline-title">STREETS RADIO 3000</div>
         <div class="timeline-desc">Launch of the sonic platform amplifying underground sounds and emerging voices from South Africa's streets.</div>
-        <div class="timeline-image">
-          <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Radio studio">
-        </div>
       </div>
       
       <div class="timeline-item">
@@ -1635,9 +1675,6 @@ footer p:last-child {
         <div class="timeline-year">2024</div>
         <div class="timeline-title">FASHION DIVISION</div>
         <div class="timeline-desc">Streets Archives emerges as the fashion-forward arm, focusing on curated vintage and second-hand apparel.</div>
-        <div class="timeline-image">
-          <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Fashion archive">
-        </div>
       </div>
       
       <div class="timeline-item">
@@ -1645,9 +1682,6 @@ footer p:last-child {
         <div class="timeline-year">2025</div>
         <div class="timeline-title">MEDIA EXPANSION</div>
         <div class="timeline-desc">Expansion into digital media and content creation focusing on street culture documentation.</div>
-        <div class="timeline-image">
-          <img src="https://images.unsplash.com/photo-1551836026-d5c2a0e1b3c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Media production">
-        </div>
       </div>
       
       <div class="timeline-item">
@@ -1655,37 +1689,34 @@ footer p:last-child {
         <div class="timeline-year">2026</div>
         <div class="timeline-title">ARCHIVE EXPANSION</div>
         <div class="timeline-desc">Official establishment of Streets Archives as a standalone brand within the collective.</div>
-        <div class="timeline-image">
-          <img src="https://images.unsplash.com/photo-1558769132-cb794e42fd54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Expansion event">
-        </div>
       </div>
     </div>
   </section>
 
   <!-- Pillars Section -->
-  <section class="pillars-section" id="pillars">
-    <h2>OUR PILLARS</h2>
+  <section class="pillars-section fade-in" id="pillars">
+    <h2><i class="bi bi-columns-gap"></i> OUR PILLARS</h2>
     <div class="pillars-grid">
       <div class="pillar">
-        <div class="pillar-icon">🧥</div>
+        <div class="pillar-icon"><i class="bi bi-tshirt"></i></div>
         <h3>FASHION ARCHIVE</h3>
         <p>Curated vintage and second-hand garments pulled from real streets and private collections. Each piece carries time, movement, and memory.</p>
       </div>
       
       <div class="pillar">
-        <div class="pillar-icon">🎥</div>
+        <div class="pillar-icon"><i class="bi bi-camera-video"></i></div>
         <h3>VISUAL MEDIA</h3>
         <p>Cinematic documentation of street culture in motion. Editorials, short films, and visual records captured without performance or polish.</p>
       </div>
       
       <div class="pillar">
-        <div class="pillar-icon">🎵</div>
+        <div class="pillar-icon"><i class="bi bi-music-note-beamed"></i></div>
         <h3>SOUND ARCHIVE</h3>
         <p>The sound of the underground, broadcast and preserved. Collaborations, live sessions, and cultural frequencies transmitted through Streets Radio 3000.</p>
       </div>
       
       <div class="pillar">
-        <div class="pillar-icon">🌐</div>
+        <div class="pillar-icon"><i class="bi bi-globe"></i></div>
         <h3>DIGITAL PRESENCE</h3>
         <p>Online platforms and digital archives that document and amplify street culture through web presence and social media.</p>
       </div>
@@ -1693,8 +1724,8 @@ footer p:last-child {
   </section>
 
   <!-- Gallery Section -->
-  <section class="gallery-section" id="gallery">
-    <h2>FROM THE ARCHIVE</h2>
+  <section class="gallery-section fade-in" id="gallery">
+    <h2><i class="bi bi-images"></i> FROM THE ARCHIVE</h2>
     <div class="gallery-grid">
       <div class="gallery-item">
         <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Vintage denim collection">
@@ -1711,13 +1742,6 @@ footer p:last-child {
         </div>
       </div>
       <div class="gallery-item">
-        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Street photography">
-        <div class="gallery-overlay">
-          <h3>URBAN DOCUMENTATION</h3>
-          <p>Capturing authentic moments in Soweto</p>
-        </div>
-      </div>
-      <div class="gallery-item">
         <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Fashion event">
         <div class="gallery-overlay">
           <h3>ARCHIVE POP-UP</h3>
@@ -1728,30 +1752,30 @@ footer p:last-child {
   </section>
 
   <!-- Stats Section -->
-  <section class="stats-grid">
+  <section class="stats-grid fade-in">
     <div class="stat-item">
       <div class="stat-number">300+</div>
-      <div class="stat-label">ARCHIVED PIECES</div>
+      <div class="stat-label"><i class="bi bi-archive"></i> ARCHIVED PIECES</div>
     </div>
     <div class="stat-item">
       <div class="stat-number">50+</div>
-      <div class="stat-label">ARTIST COLLABS</div>
+      <div class="stat-label"><i class="bi bi-people"></i> ARTIST COLLABS</div>
     </div>
     <div class="stat-item">
       <div class="stat-number">12</div>
-      <div class="stat-label">CITIES SCOUTED</div>
+      <div class="stat-label"><i class="bi bi-geo-alt"></i> CITIES SCOUTED</div>
     </div>
     <div class="stat-item">
       <div class="stat-number">∞</div>
-      <div class="stat-label">CULTURAL IMPACT</div>
+      <div class="stat-label"><i class="bi bi-heart"></i> CULTURAL IMPACT</div>
     </div>
   </section>
 
   <!-- Scope of Work Section -->
-  <section class="scope-section" id="scope">
-    <h2>SCOPE OF WORK</h2>
+  <section class="scope-section fade-in" id="scope">
+    <h2><i class="bi bi-briefcase"></i> SCOPE OF WORK</h2>
     <div class="scope-content">
-      <div class="scope-tab">DIR_SCOPE.txt</div>
+      <div class="scope-tab"><i class="bi bi-file-text"></i> DIR_SCOPE.txt</div>
       <ul class="scope-list">
         <li>Currently, our primary focus is on fashion, delivering a curated selection of vintage and second-hand apparel that captures the essence of street style.</li>
         <li>Each piece in our collection is handpicked to reflect authenticity, attitude, and the ever-evolving spirit of the streets.</li>
@@ -1763,34 +1787,38 @@ footer p:last-child {
   </section>
 
   <!-- Newsletter -->
-  <section class="newsletter">
-    <h3>Join the Archive</h3>
+  <section class="newsletter fade-in">
+    <h3><i class="bi bi-envelope"></i> Join the Archive</h3>
     <p>Receive new releases, broadcasts, and recovered pieces before they go public.</p>
     <div class="newsletter-form">
       <input type="email" placeholder="Enter your email">
-      <button class="btn">Subscribe to Archive</button>
+      <button class="btn btn-accent">Subscribe to Archive <i class="bi bi-arrow-right"></i></button>
     </div>
   </section>
 </div>
 
 <footer>
-  <p>STREETS ARCHIVES — SOUTH AFRICA</p>
-  <p>FASHION • SOUND • VISUAL RECORDS</p>
-  <p>EST. 2026</p>
-  <p style="margin-top: 30px;">Privacy • Shipping • Returns • Contact</p>
+  <p><i class="bi bi-geo-alt"></i> STREETS ARCHIVES — SOUTH AFRICA</p>
+  <p><i class="bi bi-collection"></i> FASHION • SOUND • VISUAL RECORDS</p>
+  <p><i class="bi bi-calendar"></i> EST. 2026</p>
+  <p style="margin-top: 30px;"><i class="bi bi-shield-check"></i> Privacy • Shipping • Returns • Contact</p>
   <p>A division of Street Jewels Connections</p>
 </footer>
 
-<button id="back-to-top" aria-label="Back to top">↑</button>
+<button id="back-to-top" aria-label="Back to top"><i class="bi bi-chevron-up"></i></button>
 
 <script>
 // Preloader
 window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');
+    preloader.style.transition = 'opacity 0.5s ease';
     preloader.style.opacity = '0';
     setTimeout(() => {
         preloader.style.display = 'none';
     }, 500);
+    
+    // Initialize animations
+    initScrollAnimations();
 });
 
 // Toggle Mobile Menu
@@ -1798,13 +1826,16 @@ const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
 function toggleMenu() {
-  mobileMenu.classList.toggle('active');
-  hamburger.classList.toggle('active');
-  document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    if (!hamburger || !mobileMenu) return;
+    
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
 }
 
 if (hamburger) {
     hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('touchstart', toggleMenu);
 }
 
 // Close mobile menu when clicking links
@@ -1812,13 +1843,28 @@ document.querySelectorAll('.mobile-menu a').forEach(link => {
     link.addEventListener('click', toggleMenu);
 });
 
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (mobileMenu && mobileMenu.classList.contains('active') && 
+        !mobileMenu.contains(e.target) && 
+        hamburger && !hamburger.contains(e.target)) {
+        toggleMenu();
+    }
+});
+
 // Theme Toggle
 const themeToggle = document.getElementById('theme-toggle');
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark');
-        themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
-        themeToggle.setAttribute('aria-label', document.body.classList.contains('dark') ? 'Switch to light mode' : 'Switch to dark mode');
+        const icon = themeToggle.querySelector('i');
+        if (document.body.classList.contains('dark')) {
+            icon.className = 'bi bi-sun';
+            themeToggle.setAttribute('aria-label', 'Switch to light mode');
+        } else {
+            icon.className = 'bi bi-moon';
+            themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+        }
         
         // Save preference to localStorage
         localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
@@ -1828,7 +1874,8 @@ if (themeToggle) {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !savedTheme)) {
         document.body.classList.add('dark');
-        themeToggle.textContent = '☀';
+        const icon = themeToggle.querySelector('i');
+        if (icon) icon.className = 'bi bi-sun';
         themeToggle.setAttribute('aria-label', 'Switch to light mode');
     }
 }
@@ -1838,8 +1885,6 @@ const backToTopBtn = document.getElementById('back-to-top');
 window.addEventListener('scroll', () => {
     if (window.scrollY > 300) {
         backToTopBtn.style.display = 'flex';
-        backToTopBtn.style.alignItems = 'center';
-        backToTopBtn.style.justifyContent = 'center';
     } else {
         backToTopBtn.style.display = 'none';
     }
@@ -1849,101 +1894,51 @@ if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+    backToTopBtn.addEventListener('touchstart', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 }
 
-// Search functionality
-const searchInput = document.getElementById('search');
-if (searchInput) {
-    searchInput.addEventListener('input', function(e) {
-        const query = e.target.value.toLowerCase();
-        // Search logic - you can add specific search for About page
-        console.log('Searching for:', query);
+// Scroll Animations
+function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
         
-        // Example: Highlight matching text on page
-        if (query.length > 2) {
-            highlightSearch(query);
-        } else {
-            removeHighlight();
+        const target = document.querySelector(targetId);
+        if (target) {
+            // Close mobile menu if open
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                toggleMenu();
+            }
+            
+            // Smooth scroll to target
+            window.scrollTo({
+                top: target.offsetTop - 80,
+                behavior: 'smooth'
+            });
         }
     });
-    
-    // Add search on enter key
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performSearch(this.value);
-        }
-    });
-}
-
-function highlightSearch(query) {
-    // Remove previous highlights
-    removeHighlight();
-    
-    // Search in text content
-    const walker = document.createTreeWalker(
-        document.body,
-        NodeFilter.SHOW_TEXT,
-        null,
-        false
-    );
-    
-    let node;
-    while (node = walker.nextNode()) {
-        if (node.parentElement.tagName === 'SCRIPT' || 
-            node.parentElement.tagName === 'STYLE' ||
-            node.parentElement.classList.contains('no-search')) {
-            continue;
-        }
-        
-        const text = node.textContent;
-        const regex = new RegExp(`(${query})`, 'gi');
-        if (text.match(regex)) {
-            const span = document.createElement('span');
-            span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
-            span.classList.add('search-result');
-            node.parentNode.replaceChild(span, node);
-        }
-    }
-}
-
-function removeHighlight() {
-    document.querySelectorAll('.search-result').forEach(el => {
-        const parent = el.parentNode;
-        parent.replaceChild(document.createTextNode(el.textContent), el);
-        parent.normalize();
-    });
-}
-
-function performSearch(query) {
-    if (query.trim() === '') return;
-    
-    // You can customize this search logic
-    const searchableSections = [
-        { id: 'vision', title: 'Vision & Mission' },
-        { id: 'manifesto', title: 'Manifesto' },
-        { id: 'founder', title: 'Founder' },
-        { id: 'timeline', title: 'Timeline' },
-        { id: 'pillars', title: 'Pillars' },
-        { id: 'scope', title: 'Scope of Work' }
-    ];
-    
-    // Simple search - scroll to first matching section
-    for (const section of searchableSections) {
-        const element = document.getElementById(section.id);
-        if (element && element.textContent.toLowerCase().includes(query.toLowerCase())) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Add visual feedback
-            element.style.boxShadow = '0 0 0 3px var(--accent)';
-            setTimeout(() => {
-                element.style.boxShadow = '';
-            }, 2000);
-            return;
-        }
-    }
-    
-    // If no match found
-    alert(`No results found for "${query}"`);
-}
+});
 
 // Newsletter form submission
 const newsletterInput = document.querySelector('.newsletter input');
@@ -1954,10 +1949,12 @@ if (newsletterBtn && newsletterInput) {
         e.preventDefault();
         if (newsletterInput.value && newsletterInput.value.includes('@')) {
             newsletterInput.style.borderColor = 'var(--accent)';
-            newsletterBtn.textContent = 'Subscribed ✓';
+            const originalText = newsletterBtn.innerHTML;
+            newsletterBtn.innerHTML = '<i class="bi bi-check"></i> Subscribed!';
             newsletterBtn.style.background = 'var(--black)';
+            
             setTimeout(() => {
-                newsletterBtn.textContent = 'Subscribe to Archive';
+                newsletterBtn.innerHTML = originalText;
                 newsletterBtn.style.background = 'var(--accent)';
                 newsletterInput.value = '';
                 newsletterInput.style.borderColor = 'rgba(0, 0, 0, 0.2)';
@@ -1978,61 +1975,32 @@ if (newsletterBtn && newsletterInput) {
     });
 }
 
-// Intersection Observer for animations
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('animated');
-    }
-  });
-}, observerOptions);
-
-// Observe elements for animation
-document.querySelectorAll('.timeline-item, .pillar, .stat-item, .manifesto-about, .pillars-section, .scope-content, .gallery-item, .vision-card, .mission-card, .founder-section').forEach(el => {
-    if (el) observer.observe(el);
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
 // Header scroll effect
 let lastScroll = 0;
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    const header = document.querySelector('header');
-    
-    if (currentScroll > 100) {
-        if (currentScroll > lastScroll && currentScroll > 200) {
-            header.style.transform = 'translateY(-100%)';
-        } else {
-            header.style.transform = 'translateY(0)';
+const header = document.querySelector('header');
+
+if (header) {
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 100) {
             header.style.backdropFilter = 'blur(20px)';
             header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+        } else {
+            header.style.transform = 'translateY(0)';
+            header.style.backdropFilter = 'blur(10px)';
+            header.style.boxShadow = 'none';
         }
-    } else {
-        header.style.transform = 'translateY(0)';
-        header.style.backdropFilter = 'blur(10px)';
-        header.style.boxShadow = 'none';
-    }
-    
-    lastScroll = currentScroll;
-});
+        
+        lastScroll = currentScroll;
+    });
+}
 
 // Stats counter animation
 const stats = document.querySelectorAll('.stat-number');
@@ -2040,9 +2008,11 @@ const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const stat = entry.target;
+            if (stat.textContent.includes('∞')) return;
+            
             const target = parseInt(stat.textContent);
             let count = 0;
-            const increment = target / 50;
+            const increment = target / 30;
             const timer = setInterval(() => {
                 count += increment;
                 if (count >= target) {
@@ -2050,29 +2020,40 @@ const statsObserver = new IntersectionObserver((entries) => {
                     clearInterval(timer);
                 }
                 stat.textContent = Math.floor(count) + (stat.textContent.includes('+') ? '+' : '');
-            }, 30);
+            }, 50);
             statsObserver.unobserve(stat);
         }
     });
 }, { threshold: 0.5 });
 
 stats.forEach(stat => {
-    if (!stat.textContent.includes('∞')) {
-        statsObserver.observe(stat);
-    }
+    statsObserver.observe(stat);
 });
 
-// Add search highlight style
-const style = document.createElement('style');
-style.textContent = `
-    .search-highlight {
-        background-color: rgba(255, 60, 0, 0.3);
-        padding: 2px 4px;
-        border-radius: 2px;
-        font-weight: 600;
+// Video autoplay for mobile
+const heroVideo = document.getElementById('heroVideo');
+if (heroVideo) {
+    // Ensure video plays on mobile
+    heroVideo.addEventListener('loadedmetadata', () => {
+        heroVideo.muted = true;
+        heroVideo.play().catch(e => {
+            console.log("Video autoplay prevented:", e);
+        });
+    });
+}
+
+// Touch-friendly improvements
+document.addEventListener('touchstart', () => {}, { passive: true });
+
+// Prevent zoom on double-tap
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
     }
-`;
-document.head.appendChild(style);
+    lastTouchEnd = now;
+}, { passive: false });
 </script>
 
 </body>

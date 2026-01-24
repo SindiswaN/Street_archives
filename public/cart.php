@@ -74,12 +74,50 @@ body{
 }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* ---------- TOP BAR (From Music Page) ---------- */
-.top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
-@keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+/* ---------- TOP BAR ---------- */
+.top-bar {
+  background: var(--black); 
+  color: var(--bg); 
+  padding: 10px 0; 
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-/* ---------- HEADER & HAMBURGER (From Music Page) ---------- */
+.top-bar p {
+  animation: scrollText 35s linear infinite; 
+  font-size: 14px; 
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-family: 'Space Mono', monospace;
+  color: inherit; 
+}
+
+@keyframes scrollText { 
+  0% { transform: translateX(100%); } 
+  100% { transform: translateX(-100%); } 
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+body.dark .top-bar {
+  background: #ffffff; 
+  color: #111111; 
+}
+
+/* ---------- HEADER & HAMBURGER ---------- */
 header{
   display:flex;
   align-items:center;
@@ -178,6 +216,23 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   font-size: 24px;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.cart {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.cart:hover {
+    background: rgba(255, 60, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 /* ---------- DARK MODE (From Music Page) ---------- */
@@ -1016,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="cart-empty">
         <h2>YOUR ARCHIVE CART IS EMPTY</h2>
         <p>Browse our collections and add items to preserve in your archive.</p>
-        <a href="../index.php" class="continue-shopping">
+        <a href="fashion.php" class="continue-shopping">
             <i class="bi bi-arrow-left"></i>
             BROWSE ARCHIVE
         </a>
@@ -1094,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', function() {
             PROCEED TO SECURE CHECKOUT
         </button>
         <div style="text-align: center; margin-top: 20px;">
-            <a href="../index.php" class="continue-shopping">
+            <a href="fashion.php" class="continue-shopping">
                 <i class="bi bi-arrow-left"></i>
                 CONTINUE SHOPPING
             </a>
@@ -1181,7 +1236,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <script>
-// Cart Functions
+// Cart Functions - UPDATED VERSION
 function updateQuantity(index, change, newValue = null) {
     let quantity;
     if (newValue !== null) {
@@ -1199,7 +1254,7 @@ function updateQuantity(index, change, newValue = null) {
         currentInput.value = quantity;
     }
     
-    fetch('../app/update_cart.php', {
+    fetch('update_cart.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -1209,16 +1264,18 @@ function updateQuantity(index, change, newValue = null) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            showNotification('Cart updated!');
+            showNotification('Quantity updated!');
             // Update cart count in header
-            const cartElements = document.querySelectorAll('.cart');
-            cartElements.forEach(cart => {
-                cart.textContent = `CART (${data.cartCount})`;
-            });
-            // Reload page to update totals
-            setTimeout(() => location.reload(), 800);
+            updateCartCount(data.cartCount);
+            // Update cart count display on page
+            const cartCountElement = document.querySelector('.cart-count');
+            if (cartCountElement) {
+                cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
+            }
+            // Update price totals
+            updateTotal();
         } else {
-            showNotification('Failed to update cart', true);
+            showNotification('Failed to update quantity', true);
             // Revert input value on error
             if (currentInput) {
                 currentInput.value = quantity - change;
@@ -1237,7 +1294,7 @@ function updateQuantity(index, change, newValue = null) {
 
 function removeItem(index) {
     if (confirm('Remove this item from your archive?')) {
-        fetch('../app/remove_from_cart.php', {
+        fetch('remove_from_cart.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -1247,7 +1304,7 @@ function removeItem(index) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showNotification('Item removed from archive');
+                showNotification('Item removed');
                 // Remove item from DOM
                 const itemElement = document.getElementById(`cart-item-${index}`);
                 if (itemElement) {
@@ -1255,21 +1312,28 @@ function removeItem(index) {
                     itemElement.style.transform = 'translateX(100px)';
                     setTimeout(() => {
                         itemElement.remove();
+                        // Re-index all remaining items after removal
+                        reindexCartItems();
                     }, 300);
                 }
                 // Update cart count
-                const cartElements = document.querySelectorAll('.cart');
-                cartElements.forEach(cart => {
-                    cart.textContent = `CART (${data.cartCount})`;
-                });
-                // Update cart count in header
+                updateCartCount(data.cartCount);
+                // Update cart count display
                 const cartCountElement = document.querySelector('.cart-count');
                 if (cartCountElement) {
-                    cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
+                    if (data.cartItems === 0) {
+                        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> 0 ITEMS`;
+                    } else {
+                        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
+                    }
                 }
+                // Update total
+                updateTotal();
                 // Reload if cart is empty
-                if (data.cartCount === 0) {
-                    setTimeout(() => location.reload(), 1000);
+                if (data.cartItems === 0) {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
                 }
             } else {
                 showNotification('Failed to remove item', true);
@@ -1282,11 +1346,83 @@ function removeItem(index) {
     }
 }
 
-function checkout() {
-    showNotification('Proceeding to checkout...');
-    setTimeout(() => {
-        window.location.href = '../app/checkout.php';
-    }, 1000);
+function updateCartCount(count) {
+    // Update all cart count elements
+    const cartElements = document.querySelectorAll('.cart');
+    cartElements.forEach(cart => {
+        cart.textContent = `CART (${count})`;
+    });
+}
+
+function updateTotal() {
+    // Calculate new total
+    let subtotal = 0;
+    document.querySelectorAll('.cart-item').forEach(item => {
+        const priceElement = item.querySelector('.cart-item-price');
+        const quantityInput = item.querySelector('input[type="number"]');
+        
+        if (priceElement && quantityInput) {
+            const priceText = priceElement.textContent;
+            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+            const quantity = parseInt(quantityInput.value);
+            
+            if (!isNaN(price) && !isNaN(quantity)) {
+                subtotal += price * quantity;
+            }
+        }
+    });
+    
+    // Update subtotal display
+    const subtotalElements = document.querySelectorAll('.summary-row span');
+    if (subtotalElements.length >= 2) {
+        subtotalElements[1].textContent = `R ${subtotal.toFixed(2)}`;
+        subtotalElements[3].textContent = `R ${subtotal.toFixed(2)}`;
+    }
+}
+
+function reindexCartItems() {
+    // Re-index all cart items in the DOM
+    const cartItems = document.querySelectorAll('.cart-item');
+    cartItems.forEach((item, newIndex) => {
+        // Update the id
+        item.id = `cart-item-${newIndex}`;
+        
+        // Update quantity input id and event handlers
+        const quantityInput = item.querySelector('input[type="number"]');
+        if (quantityInput) {
+            quantityInput.id = `quantity-${newIndex}`;
+            // Remove old event listeners
+            quantityInput.replaceWith(quantityInput.cloneNode(true));
+            
+            // Add new event listener to the cloned input
+            const newInput = item.querySelector(`#quantity-${newIndex}`);
+            newInput.addEventListener('change', (e) => {
+                updateQuantity(newIndex, 0, e.target.value);
+            });
+        }
+        
+        // Update button event handlers
+        const buttons = item.querySelectorAll('button');
+        buttons.forEach(button => {
+            // Remove old event listeners by cloning
+            button.replaceWith(button.cloneNode(true));
+        });
+        
+        // Add new event listeners to buttons
+        const decButton = item.querySelector('button:first-child');
+        const incButton = item.querySelector('button:last-child');
+        const removeButton = item.querySelector('.cart-item-remove');
+        
+        if (decButton) {
+            decButton.onclick = () => updateQuantity(newIndex, -1);
+        }
+        if (incButton) {
+            incButton.onclick = () => updateQuantity(newIndex, 1);
+        }
+        if (removeButton) {
+            removeButton.onclick = () => removeItem(newIndex);
+        }
+    });
 }
 
 function showNotification(message, isError = false) {
@@ -1295,12 +1431,42 @@ function showNotification(message, isError = false) {
         notification.innerHTML = `<i class="bi ${isError ? 'bi-x-circle' : 'bi-check-circle'}"></i><span>${message}</span>`;
         notification.style.background = isError ? '#dc3545' : 'var(--accent)';
         notification.style.display = 'flex';
+        notification.style.opacity = '1';
         
-        setTimeout(() => {
-            notification.style.display = 'none';
+        // Auto-hide after 3 seconds
+        clearTimeout(window.notificationTimeout);
+        window.notificationTimeout = setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 300);
         }, 3000);
     }
 }
+
+function checkout() {
+    showNotification('Proceeding to checkout...');
+    setTimeout(() => {
+        window.location.href = 'checkout.php';
+    }, 1000);
+}
+
+// Initialize event listeners on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize quantity inputs
+    document.querySelectorAll('input[type="number"]').forEach((input, index) => {
+        input.addEventListener('change', (e) => {
+            updateQuantity(index, 0, e.target.value);
+        });
+    });
+    
+    // Ensure notification starts hidden
+    const notification = document.getElementById('cartNotification');
+    if (notification) {
+        notification.style.display = 'none';
+        notification.style.opacity = '0';
+    }
+});
 
 // Back to Top
 window.addEventListener('scroll', () => {
@@ -1407,7 +1573,7 @@ const searchInput = document.getElementById('search');
 if (searchInput) {
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && searchInput.value.trim()) {
-            window.location.href = `../shop.php?search=${encodeURIComponent(searchInput.value)}`;
+            window.location.href = `fashion.php?search=${encodeURIComponent(searchInput.value)}`;
         }
     });
 }
