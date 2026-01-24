@@ -1,27 +1,31 @@
 <?php
-class Database {
+// app/database.php
+
+class Database
+{
     private $host = "localhost";
     private $db_name = "streets_archives";
     private $username = "root";
     private $password = "";
-    public $conn;
+    private $conn;
 
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->conn = null;
-        
+
         try {
-            $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
-                $this->username,
-                $this->password
-            );
+            $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
+
+            $this->conn = new PDO($dsn, $this->username, $this->password);
+
+            // PDO settings
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conn->exec("set names utf8mb4");
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            die("❌ Database connection failed: " . $e->getMessage());
         }
-        
+
         return $this->conn;
     }
 }
-?>

@@ -1,6 +1,7 @@
 <?php
 $pageTitle = 'Home';
 require_once(__DIR__ . '/../app/config.php');
+require_once(__DIR__ . '/../app/database.php');
 $cartCount = getCartCount();
 ?>
 
@@ -14,11 +15,7 @@ $cartCount = getCartCount();
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<div id="preloader">
-  <div class="loader"></div>
-  <p>Loading Archive...</p>
-</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -75,6 +72,7 @@ body.dark {
     --text: #fff;
     --header-bg: #111;
 }
+
 body.dark .hero { background: #000; color: #fff; }
 body.dark .top-bar { background: #fff; color: #111; }
 body.dark .mobile-menu { background: #222; }
@@ -83,10 +81,70 @@ body.dark .newsletter { background: #222; border-color: #fff; }
 body.dark .newsletter input { border-color: #fff; color: #fff; background: #333; }
 body.dark footer { background: #222; }
 
+/* FIX: Ensure text is visible in dark mode */
+body.dark .folder-section .folder-body,
+body.dark .folder-section .folder-tab,
+body.dark .manifesto,
+body.dark .process,
+body.dark .categories .category,
+body.dark .products .product,
+body.dark .newsletter {
+    background: var(--offwhite);
+    color: var(--text);
+}
+
+body.dark .btn {
+    color: var(--text);
+    border-color: var(--text);
+}
+
+body.dark .btn:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
 /* ---------- TOP BAR ---------- */
-.top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
-@keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+.top-bar {
+  background: var(--black); 
+  color: var(--bg); 
+  padding: 10px 0; 
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-bar p {
+  animation: scrollText 35s linear infinite; 
+  font-size: 14px; 
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-family: 'Space Mono', monospace;
+  color: inherit; 
+}
+
+@keyframes scrollText { 
+  0% { transform: translateX(100%); } 
+  100% { transform: translateX(-100%); } 
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+body.dark .top-bar {
+  background: #ffffff; 
+  color: #111111; 
+}
 
 /* ---------- HEADER & HAMBURGER ---------- */
 header{
@@ -189,6 +247,24 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   text-transform: uppercase;
 }
 
+.cart {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.cart:hover {
+    background: rgba(255, 60, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+
 /* ---------- NEW MULTIDISCIPLINARY HERO ---------- */
 .hero {
   height: 85vh;
@@ -221,9 +297,9 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 }
 .stream:hover { flex: 1.4; filter: grayscale(0%); opacity: 0.9; }
 
-.s-fashion { background-image: url('images/image6.jpg'); }
-.s-media { background-image: url('images/image5.jpg'); }
-.s-music { background-image: url('images/image1.jpg'); }
+.s-media { background-image: url('images/mediaa (2).jpg'); }
+.s-fashion { background-image: url('images/fashion.jpg'); }
+.s-music { background-image: url('images/music.jpg'); }
 
 .hero::before {
   content: " ";
@@ -277,9 +353,9 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   display: inline-block;
   margin-top: 35px;
   padding: 14px 35px;
-  border: 1px solid #fff;
+  border: 1px solid #000000;
   background: transparent;
-  color: #fff;
+  color: #000000;
   text-decoration: none;
   font-weight: 700;
   text-transform: uppercase;
@@ -287,17 +363,47 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   letter-spacing: 2px;
   transition: 0.3s;
 }
-.btn-hero:hover { background: #fff; color: #000; }
+.btn-hero:hover { 
+  background: #000000; 
+  color: #ffffff; 
+}
+
+/* Dark mode override */
+body.dark .btn-hero {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+body.dark .btn-hero:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+.hero .btn-hero {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.hero .btn-hero:hover {
+  background: #ffffff;
+  color: #000000;
+}
 
 /* ---------- FOLDER BLOCKS ---------- */
 .folder-section {
-  width: 95%;
-  max-width: 1400px;
+  width: 85%;
+  max-width: 1100px;
   margin: 120px auto;
   position: relative;
+
   opacity: 0;
-  transform: translateY(80px);
-  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(70px) scale(0.96);
+  filter: blur(6px);
+
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.9s ease;
 }
 
 .folder-tab {
@@ -364,7 +470,11 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
     margin-bottom: 10px;
 }
 
-.folder-section.show { opacity: 1; transform: translateY(0); }
+.folder-section.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
 
 /* RESTORED ORIGINAL BUTTONS */
 .btn{
@@ -382,28 +492,428 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 .btn:hover{background:var(--black); color:white;}
 
 /* ---------- MUSIC PLAYER ---------- */
-.audio-player {
+/* Enhanced Audio Player */
+.enhanced-audio-player {
   background: #000;
   color: #fff;
-  padding: 15px;
+  padding: 20px;
+  border-radius: 8px;
   margin-top: 20px;
-  border-radius: 4px;
+  border: 1px solid #333;
 }
-.player-controls { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
-.play-btn { background: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: 800; border-radius: 2px; }
-.progress-bar { flex-grow: 1; height: 4px; background: #333; cursor: pointer; position: relative; }
-.progress-fill { width: 0%; height: 100%; background: var(--accent); }
 
-/* ---------- CATEGORIES, PRODUCTS, CAROUSEL ---------- */
-.categories{ width:80%; margin:80px auto; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.category{ background:#f2f2f2; padding:60px 20px; border:1px solid #ddd; text-align:center; font-weight:700; cursor: pointer; transition: .3s;}
-.category:hover{background:#eee; border-color: #000;}
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
 
-.products{width:80%;margin:80px auto;}
-.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
-.product{border:1px solid #ddd; padding:16px; opacity: 0; animation: fadeInUp 0.5s ease-out forwards;}
-.product img{width:100%; margin-bottom: 10px; transition: transform 0.3s;}
-.product:hover img { transform: scale(1.05); }
+.player-header i {
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.station-name {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.frequency {
+  color: #888;
+  margin-left: auto;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #4CAF50;
+}
+
+.status-indicator .dot {
+  width: 8px;
+  height: 8px;
+  background: #4CAF50;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.now-playing {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.track-info {
+  margin-bottom: 10px;
+}
+
+.track-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.track-artist {
+  font-size: 12px;
+  color: #888;
+}
+
+.signal-strength {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 20px;
+}
+
+.signal-bar {
+  width: 4px;
+  background: #444;
+  border-radius: 2px;
+}
+
+.signal-bar.active {
+  background: var(--accent);
+}
+
+.signal-bar:nth-child(1) { height: 6px; }
+.signal-bar:nth-child(2) { height: 9px; }
+.signal-bar:nth-child(3) { height: 12px; }
+.signal-bar:nth-child(4) { height: 15px; }
+.signal-bar:nth-child(5) { height: 18px; }
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.control-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+.play-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--accent);
+}
+
+.play-btn:hover {
+  background: #ff5c33;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.volume-control input[type="range"] {
+  width: 80px;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  outline: none;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.progress-container {
+  margin-top: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0%;
+}
+
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* Playlist */
+.playlist {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.playlist-header {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.track-count {
+  margin-left: auto;
+  color: #888;
+}
+
+.playlist-tracks {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.track-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.track-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.track-item.playing {
+  background: rgba(255, 60, 0, 0.1);
+  border-left: 3px solid var(--accent);
+}
+
+.track-number {
+  width: 25px;
+  color: #888;
+  font-size: 12px;
+}
+
+.track-info-small {
+  flex: 1;
+}
+
+.track-title-small {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.track-artist-small {
+  font-size: 11px;
+  color: #888;
+}
+
+.track-duration {
+  font-size: 11px;
+  color: #888;
+}
+
+/* Dark mode adjustments */
+body.dark .enhanced-audio-player {
+  background: #222;
+}
+
+body.dark .playlist {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- CATEGORIES SECTION ---------- */
+.categories {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.category {
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.category::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+}
+
+.category:hover::before {
+    transform: translateX(0);
+}
+
+.category:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 0px var(--black);
+    border-color: var(--accent);
+}
+
+/* ---------- PRODUCTS SECTION ---------- */
+.products {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+}
+
+.products h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.product {
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.product::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent);
+    transform: translateY(-100%);
+    transition: transform 0.3s;
+}
+
+.product:hover::before {
+    transform: translateY(0);
+}
+
+.product:hover {
+    transform: translateY(-10px);
+    box-shadow: 12px 12px 0px var(--black);
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.product:hover img {
+    transform: scale(1.05);
+}
+
+.product p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.product strong {
+    font-size: 1.2rem;
+    color: var(--accent);
+    display: block;
+    margin-top: 10px;
+    font-weight: 800;
+}
+
+/* ---------- DARK MODE ADJUSTMENTS ---------- */
+body.dark .category {
+    background: #222;
+    color: #fff;
+    border-color: #444;
+}
+
+body.dark .product {
+    background: #222;
+    border-color: #444;
+}
+
+body.dark .product p {
+    color: #fff;
+}
+
+body.dark .product img {
+    border-color: #444;
+}
 
 /* FIXED CAROUSEL - NO DELAY */
 .carousel {
@@ -453,7 +963,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     width: 0%;
     height: 4px;
     background: var(--accent);
-    z-index: 1000;
+    z-index: 9998;
 }
 
 /* Cursor Follower */
@@ -464,7 +974,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: var(--accent);
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 9997;
     transition: transform 0.1s ease-out;
 }
 
@@ -501,7 +1011,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     opacity: 0;
     transform: translateY(100px);
     transition: all 0.3s;
-    z-index: 1500;
+    z-index: 9999;
 }
 #toast.show {
     opacity: 1;
@@ -523,10 +1033,10 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 .hamburger.active span:nth-child(2) { opacity: 0; }
 .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
 
-/* Back to Top Button */
+/* Back to Top Button - FIXED POSITION */
 #back-to-top {
   position: fixed;
-  bottom: 30px;
+  bottom: 100px; /* Moved above contact button */
   right: 30px;
   width: 50px;
   height: 50px;
@@ -537,9 +1047,12 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   font-size: 20px;
   cursor: pointer;
   display: none;
-  z-index: 100;
+  z-index: 9995; /* Below contact form */
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #back-to-top:hover {
   transform: translateY(-3px);
@@ -634,19 +1147,19 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   margin: 0;
 }
 
-/* ---------- FLOATING CONTACT FORM ---------- */
+/* ---------- ENHANCED FLOATING CONTACT FORM ---------- */
 .floating-contact-container {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 10000 !important; /* Increased z-index */
+    z-index: 10000; /* Highest z-index */
 }
 
 .contact-toggle-btn {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent), #ff5c33);
     color: white;
     border: none;
     font-size: 24px;
@@ -656,13 +1169,13 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10001 !important; /* Increased z-index */
+    z-index: 10001;
     position: relative;
 }
 
 .contact-toggle-btn:hover {
-    transform: scale(1.1);
-    background: var(--black);
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, var(--black), #333);
     box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
 }
 
@@ -679,74 +1192,120 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: var(--header-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border: 2px solid var(--black);
+    border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 12px 12px 0px var(--black);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.95);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10000 !important; /* Increased z-index */
+    z-index: 10000;
 }
 
 .contact-panel.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
-.contact-panel h3 {
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent);
-}
-
-.contact-panel p {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.contact-header {
+    text-align: center;
     margin-bottom: 30px;
 }
 
-.contact-form input,
-.contact-form textarea {
-    padding: 14px;
-    background: white;
-    border: 1px solid #ddd;
+.contact-icon {
+    font-size: 40px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.contact-panel h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+.contact-subtitle {
+    font-size: 11px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Form Groups with Icons */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    background: var(--bg);
+    border: 2px solid var(--grey);
     border-radius: 8px;
     color: var(--text);
-    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
-    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
     transition: all 0.3s var(--transition);
 }
 
-.contact-form input:focus,
-.contact-form textarea:focus {
+.form-group input:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
-    background: rgba(255, 60, 0, 0.05);
+    box-shadow: 0 0 0 3px rgba(255, 60, 0, 0.1);
 }
 
-.contact-form textarea {
-    min-height: 100px;
+.form-group textarea {
+    min-height: 120px;
     resize: vertical;
 }
 
-.contact-form button {
+.form-group input:valid,
+.form-group textarea:valid {
+    border-color: #10b981;
+}
+
+.form-group input:invalid:focus,
+.form-group textarea:invalid:focus {
+    border-color: #ef4444;
+}
+
+.form-group input:focus + i,
+.form-group textarea:focus + i {
+    color: var(--accent);
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(-60%); }
+}
+
+.submit-btn {
+    width: 100%;
     background: var(--accent);
     color: white;
-    border: none;
+    border: 2px solid var(--accent);
     padding: 14px;
     border-radius: 8px;
     font-weight: 700;
@@ -754,42 +1313,118 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s var(--transition);
-    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
-    font-size: 13px;
-}
-
-.contact-form button:hover {
-    background: var(--black);
-    transform: translateY(-2px);
-}
-
-.social-links {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    background: var(--black);
+    border-color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--black);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.submit-btn.sending {
+    background: var(--grey);
+    pointer-events: none;
+}
+
+.submit-btn.sending i {
+    animation: spin 1s linear infinite;
+}
+
+/* Transmission Status */
+.transmission-status {
+    margin: 25px 0;
+    padding: 15px;
+    background: rgba(255, 60, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 60, 0, 0.1);
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.response-time {
+    font-size: 10px;
+    opacity: 0.7;
+    text-align: center;
+    margin: 0;
+}
+
+/* Social Links */
+.social-links {
     margin-top: 25px;
     padding-top: 25px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid var(--grey);
+}
+
+.connect-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    text-align: center;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 }
 
 .social-link {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--offwhite);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text);
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     transition: all 0.3s var(--transition);
+    border: 1px solid var(--grey);
 }
 
 .social-link:hover {
     background: var(--accent);
     color: white;
     transform: translateY(-3px);
+    border-color: var(--accent);
 }
 
 .contact-close {
@@ -799,34 +1434,48 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: transparent;
     border: none;
     color: var(--text);
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 0.5;
     transition: all 0.3s var(--transition);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .contact-close:hover {
     opacity: 1;
+    background: rgba(0, 0, 0, 0.1);
     color: var(--accent);
     transform: rotate(90deg);
 }
 
 /* Dark mode adjustments */
 body.dark .contact-panel {
-    background: rgba(10, 10, 10, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(17, 17, 17, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 12px 12px 0px rgba(255, 255, 255, 0.1);
 }
 
-body.dark .contact-form input,
-body.dark .contact-form textarea {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+body.dark .form-group input,
+body.dark .form-group textarea {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
     color: white;
 }
 
 body.dark .social-link {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
     color: white;
+}
+
+body.dark .transmission-status {
+    background: rgba(255, 60, 0, 0.1);
+    border-color: rgba(255, 60, 0, 0.2);
 }
 
 /* Responsive */
@@ -839,6 +1488,20 @@ body.dark .social-link {
     .contact-panel {
         width: 320px;
         right: -10px;
+    }
+    
+    .contact-toggle-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    /* Adjust back-to-top button for mobile */
+    #back-to-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
     }
 }
 
@@ -860,47 +1523,452 @@ body.dark .social-link {
         padding: 25px;
     }
     
-    .contact-panel h3 {
-        font-size: 20px;
+    #back-to-top {
+        bottom: 80px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
     }
+}
+
+/* FIX: Music Player Container in Dark Mode */
+body.dark .audio-player {
+    background: #222;
+    color: #fff;
+}
+
+body.dark .player-controls .progress-bar {
+    background: #444;
+}
+
+body.dark .play-btn {
+    background: #fff;
+    color: #000;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 1024px) {
+  /* Tablet adjustments */
+  .folder-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .carousel img {
+    width: 220px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile adjustments */
+  header {
+    padding: 12px 4%;
+    flex-wrap: wrap;
+  }
+  
+  .header-center {
+    order: 3;
+    width: 100%;
+    margin-top: 10px;
+    display: none; /* Hide desktop nav on mobile */
+  }
+  
+  nav ul {
+    display: none; /* Hide desktop nav */
+  }
+  
+  .hamburger {
+    display: flex; /* Show hamburger */
+  }
+  
+  .header-right {
+    margin-left: auto;
+  }
+  
+  .hero {
+    height: 70vh;
+  }
+  
+  .hero-content h1 {
+    font-size: clamp(30px, 8vw, 60px);
+    line-height: 1;
+  }
+  
+  .terminal-data {
+    top: 15px;
+    left: 15px;
+    font-size: 9px;
+  }
+  
+  .folder-section {
+    width: 95%;
+    margin: 80px auto;
+  }
+  
+  .folder-body {
+    padding: 25px;
+  }
+  
+  .folder-tab {
+    width: 160px;
+    height: 32px;
+    font-size: 10px;
+  }
+  
+  .categories {
+    width: 90%;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .products {
+    width: 90%;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .manifesto,
+  .process {
+    width: 90%;
+    padding: 25px;
+    margin: 60px auto;
+  }
+  
+  .newsletter {
+    width: 90%;
+    padding: 40px 25px;
+    text-align: center;
+  }
+  
+  .newsletter input {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .newsletter .btn {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .carousel-overlay {
+    font-size: 18px;
+    padding: 12px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .carousel img {
+    width: 200px;
+    height: 250px;
+    margin-right: 12px;
+  }
+  
+  footer {
+    padding: 40px 5%;
+    font-size: 11px;
+  }
+  
+  /* Music player mobile adjustments */
+  .enhanced-audio-player {
+    padding: 15px;
+  }
+  
+  .player-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .volume-control {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .playlist {
+    margin-top: 15px;
+  }
+  
+  /* Contact form mobile */
+  .floating-contact-container {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .contact-panel {
+    width: 320px;
+    right: -10px;
+    padding: 25px;
+  }
+  
+  .contact-toggle-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+  }
+  
+  /* Adjust back-to-top button */
+  #back-to-top {
+    bottom: 90px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  /* Hero collage streams */
+  .hero-collage {
+    flex-direction: column;
+  }
+  
+  .stream {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .stream:hover {
+    flex: 1.2;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile adjustments */
+  .hero {
+    height: 65vh;
+  }
+  
+  .hero-content h1 {
+    font-size: clamp(24px, 7vw, 48px);
+  }
+  
+  .hero-content p.tagline {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+  
+  .btn-hero {
+    padding: 12px 25px;
+    font-size: 10px;
+  }
+  
+  .terminal-data {
+    display: none; /* Hide terminal on very small screens */
+  }
+  
+  .folder-body {
+    padding: 20px;
+  }
+  
+  .folder-text h3 {
+    font-size: 24px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 11px;
+  }
+  
+  .carousel-overlay {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .carousel img {
+    width: 180px;
+    height: 220px;
+    margin-right: 10px;
+  }
+  
+  .manifesto,
+  .process {
+    padding: 20px;
+    font-size: 15px;
+  }
+  
+  .manifesto p {
+    font-size: 14px;
+  }
+  
+  .process li {
+    font-size: 14px;
+  }
+  
+  /* Floating contact form for small screens */
+  .floating-contact-container {
+    bottom: 15px;
+    right: 15px;
+  }
+  
+  .contact-toggle-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .contact-panel {
+    width: calc(100vw - 40px);
+    right: -15px;
+    padding: 20px;
+  }
+  
+  #back-to-top {
+    bottom: 80px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  /* Mobile menu improvements */
+  .mobile-menu a {
+    font-size: 20px;
+  }
+  
+  /* Hide cart count on very small screens */
+  .cart {
+    font-size: 12px;
+  }
+  
+  /* Adjust top bar text */
+  .top-bar p {
+    font-size: 12px;
+    animation: scrollText 25s linear infinite;
+  }
+  
+  @keyframes scrollText {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  
+  /* Logo size adjustment */
+  .logo-container {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Extra small devices */
+  .hero-content h1 {
+    font-size: 28px;
+  }
+  
+  .folder-text h3 {
+    font-size: 20px;
+  }
+  
+  .grid {
+    gap: 15px;
+  }
+  
+  .product {
+    padding: 15px;
+  }
+  
+  .product img {
+    height: 180px;
+  }
+  
+  .carousel img {
+    width: 160px;
+    height: 200px;
+  }
+  
+  .contact-panel {
+    width: calc(100vw - 30px);
+    padding: 15px;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 12px 12px 12px 40px;
+    font-size: 12px;
+  }
+}
+
+/* Mobile landscape orientation */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero {
+    height: 100vh;
+  }
+  
+  .mobile-menu {
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+  
+  .mobile-menu a {
+    font-size: 18px;
+    padding: 8px 0;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Improve touch targets on mobile */
+button,
+.btn,
+.control-btn,
+.social-link,
+.product,
+.category {
+  min-height: 44px; /* Apple recommended minimum touch target */
+}
+
+/* Adjust input font size for mobile to prevent zoom */
+@media (max-width: 768px) {
+  input[type="email"],
+  input[type="text"],
+  textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Smooth transitions for mobile */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div id="preloader">
+  <div class="loader"></div>
+  <p>Loading Archive...</p>
+</div>
+
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
-<header>
-  <div class="header-left">
-    <input type="text" id="search" placeholder="Search products...">
-    <button id="theme-toggle">🌑</button>
-  </div>
-  <div class="header-center">
-    <div class="logo-container">
-      <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
-  </div>
-  </div>
-</header>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="about.php" onclick="toggleMenu()">About Us</a>
-  <a href="fashion.php" onclick="toggleMenu()">Fashion</a>
-  <a href="media.php" onclick="toggleMenu()">Media</a>
-  <a href="music.php" onclick="toggleMenu()">Music</a>
-  <a href="cart.php" onclick="toggleMenu()">Cart (<?php echo $cartCount; ?>)</a>
-</div>
+<!-- Include Header -->
+<?php require_once(__DIR__ . '/../includes/header.php'); ?>
 
 <section class="hero">
   <div class="hero-collage">
@@ -935,7 +2003,7 @@ body.dark .social-link {
       <div class="folder-text">
         <h3>Fashion Archive</h3>
         <p>Curated vintage and second-hand garments pulled from real streets and private collections. Each piece carries time, movement, and memory. Once released, it never returns.</p>
-        <a href="shop.php" class="btn-hero">Enter Archive</a>
+        <a href="fashion.php" class="btn-hero">Enter Archive</a>
       </div>
     </div>
   </div>
@@ -959,24 +2027,82 @@ body.dark .social-link {
   <div class="folder-tab"><span>DIR_MUSIC</span></div>
   <div class="folder-body">
     <div class="folder-content">
-      <div class="folder-image"><video src="images/music.mov" autoplay loop muted playsinline></div>
+      <div class="folder-image"><video src="images/music.mov" autoplay loop muted playsinline></video></div>
       <div class="folder-text">
         <h3>Audio Archive</h3>
         <p>The sound of the underground, broadcast and preserved. Collaborations, live sessions, and cultural frequencies transmitted through Streets Radio 3000.</p>
        
-        <div class="audio-player">
-          <p style="font-size: 10px; font-weight: 800; color: #888;">NOW PLAYING: BRAND_TRACK_V1.MP3</p>
-          <p style="font-size: 10px; font-weight: 800; color: #888;">LIVE SIGNAL — SOUTH AFRICA<br>FREQUENCY: 3000<br>STATUS: TRANSMITTING</p>
-          <div class="player-controls">
-            <button class="play-btn" id="master-play">▶️</button>
-            <div class="progress-bar" id="progress-container">
-                <div class="progress-fill" id="progress-bar"></div>
+        <!-- Enhanced Music Player -->
+        <div class="enhanced-audio-player">
+          <div class="player-header">
+            <i class="bi bi-vinyl"></i>
+            <span class="station-name">STREETS RADIO 3000</span>
+            <span class="frequency">FREQ: 3000Hz</span>
+            <span class="status-indicator" id="status-indicator">
+              <span class="dot"></span>
+              LIVE
+            </span>
+          </div>
+          
+          <div class="now-playing" id="now-playing">
+            <div class="track-info">
+              <div class="track-title" id="current-track-title">Loading transmission...</div>
+              <div class="track-artist" id="current-track-artist">Streets Archives</div>
+            </div>
+            <div class="signal-strength">
+              <div class="signal-bar active"></div>
+              <div class="signal-bar active"></div>
+              <div class="signal-bar active"></div>
+              <div class="signal-bar"></div>
+              <div class="signal-bar"></div>
             </div>
           </div>
-          <audio id="main-audio" src="music/brand_track.mp3"></audio>
+          
+          <div class="player-controls">
+            <button class="control-btn" id="prev-btn" title="Previous">
+              <i class="bi bi-skip-backward"></i>
+            </button>
+            <button class="control-btn play-btn" id="play-pause-btn" title="Play/Pause">
+              <i class="bi bi-play-fill" id="play-icon"></i>
+            </button>
+            <button class="control-btn" id="next-btn" title="Next">
+              <i class="bi bi-skip-forward"></i>
+            </button>
+            
+            <div class="volume-control">
+              <i class="bi bi-volume-down"></i>
+              <input type="range" id="volume-slider" min="0" max="100" value="70" title="Volume">
+              <i class="bi bi-volume-up"></i>
+            </div>
+          </div>
+          
+          <div class="progress-container">
+            <div class="progress-bar" id="audio-progress-bar">
+              <div class="progress-fill" id="audio-progress-fill"></div>
+            </div>
+            <div class="time-display">
+              <span id="audio-current-time">0:00</span>
+              <span id="audio-total-time">0:00</span>
+            </div>
+          </div>
+          
+          <!-- Audio element -->
+          <audio id="main-audio-player" preload="metadata"></audio>
+        </div>
+        
+        <!-- Playlist -->
+        <div class="playlist">
+          <div class="playlist-header">
+            <i class="bi bi-music-note-list"></i>
+            <span>TRANSMISSION ARCHIVE</span>
+            <span class="track-count" id="track-count">0 tracks</span>
+          </div>
+          <div class="playlist-tracks" id="playlist-tracks">
+            <!-- Tracks will be loaded here -->
+          </div>
         </div>
 
-        <a href="#" class="btn">Tune In</a>
+        <a href="#" class="btn">View Full Archive</a>
       </div>
     </div>
   </div>
@@ -1048,9 +2174,99 @@ body.dark .social-link {
   </div>
 </div>
 
-<button id="back-to-top">↑</button>
+<button id="back-to-top"><i class="bi bi-chevron-up"></i></button>
+
+<!-- Floating Contact Form -->
+<div class="floating-contact-container">
+    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+    
+    <div class="contact-panel" id="contactPanel">
+        <button class="contact-close" id="contactClose">&times;</button>
+        
+        <div class="contact-header">
+            <i class="bi bi-archive contact-icon"></i>
+            <h3>ARCHIVE TRANSMISSION</h3>
+            <p class="contact-subtitle">Send encrypted message to HQ</p>
+        </div>
+        
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <i class="bi bi-person"></i>
+                <input type="text" placeholder="CALLSIGN" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" placeholder="FREQUENCY (EMAIL)" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-chat-text"></i>
+                <textarea placeholder="ENCRYPTED MESSAGE..." rows="4" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-send"></i>
+                <span>TRANSMIT MESSAGE</span>
+            </button>
+        </form>
+        
+        <div class="transmission-status">
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>LIVE TRANSMISSION</span>
+            </div>
+            <p class="response-time">Response within 24-48 hours</p>
+        </div>
+        
+        <div class="social-links">
+            <p class="connect-title">ALTERNATIVE FREQUENCIES</p>
+            <div class="social-icons">
+                <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
+                    <i class="bi bi-music-note-beamed"></i>
+                </a>
+                <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
+                    <i class="bi bi-youtube"></i>
+                </a>
+                <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
+                    <i class="bi bi-envelope-paper"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
+// Preloader with error handling
+function hidePreloader() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.display = 'none';
+    }
+}
+
+// Set a timeout to hide preloader even if there are errors
+setTimeout(hidePreloader, 3000); // 3 second fallback
+
+// Main initialization when page loads
+window.addEventListener('load', function() {
+    hidePreloader();
+    preloadCarouselImages();
+    
+    // Stagger Products
+    document.querySelectorAll('.product').forEach((el, i) => {
+        el.style.animationDelay = (i * 0.1) + 's';
+    });
+});
+
 // Preload carousel images to prevent delay
 function preloadCarouselImages() {
   const carouselImages = [
@@ -1070,19 +2286,25 @@ const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
 function toggleMenu() {
-  mobileMenu.classList.toggle('active');
+  if (mobileMenu) {
+    mobileMenu.classList.toggle('active');
+  }
 }
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    toggleMenu();
-});
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      toggleMenu();
+  });
+}
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
-  if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target) && mobileMenu.classList.contains('active')) {
-    hamburger.classList.remove('active');
-    mobileMenu.classList.remove('active');
+  if (mobileMenu && hamburger && mobileMenu.classList.contains('active')) {
+    if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    }
   }
 });
 
@@ -1092,75 +2314,68 @@ const folderObserver = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) { entry.target.classList.add("show"); }
   });
 }, { threshold: 0.15 });
+
 document.querySelectorAll(".folder-section").forEach(f => folderObserver.observe(f));
 
-// Audio Player functionality
-const audio = document.getElementById('main-audio');
-const playBtn = document.getElementById('master-play');
-const progressFill = document.getElementById('progress-bar');
-const progressContainer = document.getElementById('progress-container');
+  const folders = document.querySelectorAll('.folder-section');
 
-playBtn.addEventListener('click', () => {
-    if (audio.paused) { 
-      audio.play(); 
-      playBtn.innerText = 'II'; 
-      playBtn.style.background = '#ff3c00';
-      playBtn.style.color = '#fff';
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        } else {
+          entry.target.classList.remove('show');
+        }
+      });
+    },
+    {
+      threshold: 0.25
     }
-    else { 
-      audio.pause(); 
-      playBtn.innerText = '▶️'; 
-      playBtn.style.background = '#fff';
-      playBtn.style.color = '#000';
-    }
-});
+  );
 
-audio.addEventListener('timeupdate', () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressFill.style.width = percent + '%';
-});
-
-progressContainer.addEventListener('click', (e) => {
-    const width = progressContainer.clientWidth;
-    const clickX = e.offsetX;
-    audio.currentTime = (clickX / width) * audio.duration;
-});
+  folders.forEach(folder => observer.observe(folder));
 
 // Typewriter Effect
 const typewriter = document.getElementById('typewriter');
-const lines = ["ARCHIVE THE STREETS", "CULTURE HAS A MEMORY"];
-let lineIndex = 0;
-let charIndex = 0;
+if (typewriter) {
+    const lines = ["ARCHIVE THE STREETS", "CULTURE HAS A MEMORY"];
+    let lineIndex = 0;
+    let charIndex = 0;
 
-function typeWriter() {
-    if (lineIndex < lines.length) {
-        if (charIndex < lines[lineIndex].length) {
-            typewriter.innerHTML += lines[lineIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(typeWriter, 100);
-        } else {
-            typewriter.innerHTML += '<br>';
-            lineIndex++;
-            charIndex = 0;
-            setTimeout(typeWriter, 500);
+    function typeWriter() {
+        if (lineIndex < lines.length) {
+            if (charIndex < lines[lineIndex].length) {
+                typewriter.innerHTML += lines[lineIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 100);
+            } else {
+                typewriter.innerHTML += '<br>';
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeWriter, 500);
+            }
         }
     }
+    typeWriter();
 }
-typeWriter();
 
 // Smooth Scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-            // Close mobile menu if open
-            if (mobileMenu.classList.contains('active')) {
-              hamburger.classList.remove('active');
-              mobileMenu.classList.remove('active');
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                  hamburger.classList.remove('active');
+                  mobileMenu.classList.remove('active');
+                }
             }
         }
     });
@@ -1168,56 +2383,47 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Back to Top Button
 const backToTopBtn = document.getElementById('back-to-top');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopBtn.style.display = 'block';
-    } else {
-        backToTopBtn.style.display = 'none';
-    }
-});
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Preloader
-window.addEventListener('load', () => {
-    document.getElementById('preloader').style.display = 'none';
-    preloadCarouselImages(); // Preload carousel images
-    
-    // Stagger Products
-    document.querySelectorAll('.product').forEach((el, i) => {
-        el.style.animationDelay = (i * 0.1) + 's';
-    });
-});
-
-// Theme Toggle - Changed to use black/white moon/sun emojis
-const themeToggle = document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    // Changed from yellow moon/sun to black/white
-    themeToggle.textContent = document.body.classList.contains('dark') ? '☀' : '🌑';
-    
-    // Show toast
-    const toast = document.getElementById('toast');
-    toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-    
-    // Update audio player background in dark mode
-    const audioPlayer = document.querySelector('.audio-player');
-    if (audioPlayer) {
-        if (document.body.classList.contains('dark')) {
-            audioPlayer.style.background = '#222';
+if (backToTopBtn) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.style.display = 'flex';
         } else {
-            audioPlayer.style.background = '#000';
+            backToTopBtn.style.display = 'none';
         }
-    }
-});
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
-// Initialize theme based on system preference
-if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.body.classList.add('dark');
-    themeToggle.textContent = '☀';
+// Theme Toggle
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        
+        // Update icon
+        if (document.body.classList.contains('dark')) {
+            themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+        } else {
+            themeToggle.innerHTML = '<i class="bi bi-moon"></i>';
+        }
+        
+        // Show toast
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = document.body.classList.contains('dark') ? 'Dark Mode Activated' : 'Light Mode Activated';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+    });
+
+    // Initialize theme based on system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+        themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+    }
 }
 
 // Product Modal
@@ -1227,31 +2433,47 @@ document.querySelectorAll('.product').forEach(product => {
         const title = product.querySelector('p').textContent;
         const price = product.querySelector('strong').textContent;
         
-        document.getElementById('modalImg').src = img;
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalPrice').textContent = price;
-        document.getElementById('modalDesc').textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalDesc = document.getElementById('modalDesc');
+        const productModal = document.getElementById('productModal');
         
-        document.getElementById('productModal').classList.add('show');
-    });
-});
-
-document.getElementById('closeModal').addEventListener('click', () => {
-    document.getElementById('productModal').classList.remove('show');
-});
-
-// Search Functionality
-document.getElementById('search').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    document.querySelectorAll('.product').forEach(product => {
-        const title = product.querySelector('p').textContent.toLowerCase();
-        if (title.includes(query)) {
-            product.style.display = 'block';
-        } else {
-            product.style.display = 'none';
+        if (modalImg && modalTitle && modalPrice && modalDesc && productModal) {
+            modalImg.src = img;
+            modalTitle.textContent = title;
+            modalPrice.textContent = price;
+            modalDesc.textContent = 'Detailed description of ' + title + '. High-quality fashion item from our archive.';
+            productModal.classList.add('show');
         }
     });
 });
+
+const closeModal = document.getElementById('closeModal');
+if (closeModal) {
+    closeModal.addEventListener('click', () => {
+        const productModal = document.getElementById('productModal');
+        if (productModal) {
+            productModal.classList.remove('show');
+        }
+    });
+}
+
+// Search Functionality
+const searchInput = document.getElementById('search');
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        document.querySelectorAll('.product').forEach(product => {
+            const title = product.querySelector('p').textContent.toLowerCase();
+            if (title.includes(query)) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    });
+}
 
 // Parallax Effect
 window.addEventListener('scroll', () => {
@@ -1262,79 +2484,252 @@ window.addEventListener('scroll', () => {
     }
     // Scroll Progress
     const scrollPercent = (scrolled / (document.body.scrollHeight - window.innerHeight)) * 100;
-    document.getElementById('progress').style.width = scrollPercent + '%';
-});
-
-// Cursor Follower
-document.addEventListener('mousemove', (e) => {
-    const cursor = document.getElementById('cursor');
-    cursor.style.left = e.clientX - 10 + 'px';
-    cursor.style.top = e.clientY - 10 + 'px';
-});
-
-// Add cursor effects on interactive elements
-const interactiveElements = document.querySelectorAll('a, button, .category, .product, .play-btn');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        document.getElementById('cursor').style.transform = 'scale(1.5)';
-        document.getElementById('cursor').style.background = '#fff';
-    });
-    el.addEventListener('mouseleave', () => {
-        document.getElementById('cursor').style.transform = 'scale(1)';
-        document.getElementById('cursor').style.background = 'var(--accent)';
-    });
+    const progress = document.getElementById('progress');
+    if (progress) {
+        progress.style.width = scrollPercent + '%';
+    }
 });
 
 // Newsletter form submission
 const newsletterForm = document.querySelector('.newsletter');
-const newsletterInput = newsletterForm.querySelector('input');
-const newsletterBtn = newsletterForm.querySelector('.btn');
-
-newsletterBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (newsletterInput.value && newsletterInput.value.includes('@')) {
-        alert('Thank you for subscribing to our newsletter!');
-        newsletterInput.value = '';
-    } else {
-        alert('Please enter a valid email address.');
+if (newsletterForm) {
+    const newsletterInput = newsletterForm.querySelector('input');
+    const newsletterBtn = newsletterForm.querySelector('.btn');
+    
+    if (newsletterBtn) {
+        newsletterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (newsletterInput && newsletterInput.value && newsletterInput.value.includes('@')) {
+                alert('Thank you for subscribing to our newsletter!');
+                newsletterInput.value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
     }
-});
-
-// Add enter key support for newsletter
-newsletterInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        newsletterBtn.click();
+    
+    if (newsletterInput) {
+        newsletterInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                if (newsletterBtn) newsletterBtn.click();
+            }
+        });
     }
-});
-
-// Category click effects
-document.querySelectorAll('.category').forEach(category => {
-    category.addEventListener('click', () => {
-        category.style.background = 'var(--accent)';
-        category.style.color = '#fff';
-        category.style.borderColor = 'var(--accent)';
-        setTimeout(() => {
-            category.style.background = '';
-            category.style.color = '';
-            category.style.borderColor = '';
-        }, 300);
-    });
-});
-
-// Prevent right click on images (optional)
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
-});
+}
 
 // Initialize carousel animation
 const carouselTrack = document.querySelector('.carousel-track');
-carouselTrack.style.animation = 'slideImages 20s linear infinite';
+if (carouselTrack) {
+    carouselTrack.style.animation = 'slideImages 20s linear infinite';
+}
+
+// ===== ENHANCED MUSIC PLAYER =====
+function initializeMusicPlayer() {
+    const audioPlayer = document.getElementById('main-audio-player');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const playIcon = document.getElementById('play-icon');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const audioProgressBar = document.getElementById('audio-progress-bar');
+    const audioProgressFill = document.getElementById('audio-progress-fill');
+    const audioCurrentTime = document.getElementById('audio-current-time');
+    const audioTotalTime = document.getElementById('audio-total-time');
+    const currentTrackTitle = document.getElementById('current-track-title');
+    const currentTrackArtist = document.getElementById('current-track-artist');
+    const playlistTracks = document.getElementById('playlist-tracks');
+    const trackCount = document.getElementById('track-count');
+
+    // Check if all music player elements exist
+    if (!audioPlayer || !playPauseBtn || !playIcon) {
+        console.log("Music player elements not found, skipping player setup");
+        return;
+    }
+
+    // Playlist - Updated with your actual songs
+    const playlist = [
+        {
+            title: "Aye",
+            artist: "Davido",
+            file: "music/Aye.mp3",
+            duration: "3:45"
+        },
+        {
+            title: "Abantwana-Bakho",
+            artist: "Kbza De Small",
+            file: "music/Abantwana-Bakho.mp3",
+            duration: "4:20"
+        },
+        {
+            title: "Bengicela",
+            artist: "Mawhoo",
+            file: "music/Bengicela.mp3",
+            duration: "3:15"
+        },
+        {
+            title: "Blessings",
+            artist: "Joeboy",
+            file: "music/Blessings.mp3",
+            duration: "5:10"
+        }
+    ];
+
+    let currentTrackIndex = 0;
+
+    // Format time function
+    function formatTime(seconds) {
+        if (isNaN(seconds)) return "0:00";
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Load track
+    function loadTrack(index) {
+        if (index < 0 || index >= playlist.length) return;
+        
+        currentTrackIndex = index;
+        const track = playlist[index];
+        
+        audioPlayer.src = track.file;
+        if (currentTrackTitle) currentTrackTitle.textContent = track.title;
+        if (currentTrackArtist) currentTrackArtist.textContent = track.artist;
+        
+        // Update playlist UI
+        updatePlaylistUI();
+        
+        // Load metadata
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            if (audioTotalTime) {
+                audioTotalTime.textContent = formatTime(audioPlayer.duration);
+            }
+        }, { once: true });
+        
+        // Auto play
+        audioPlayer.play().catch(e => {
+            console.log("Autoplay prevented:", e);
+            if (playIcon) playIcon.className = 'bi bi-play-fill';
+        });
+        
+        if (playIcon) playIcon.className = 'bi bi-pause-fill';
+    }
+
+    // Update playlist UI
+    function updatePlaylistUI() {
+        if (!playlistTracks) return;
+        
+        playlistTracks.innerHTML = '';
+        
+        playlist.forEach((track, index) => {
+            const trackElement = document.createElement('div');
+            trackElement.className = `track-item ${index === currentTrackIndex ? 'playing' : ''}`;
+            trackElement.innerHTML = `
+                <div class="track-number">${index + 1}</div>
+                <div class="track-info-small">
+                    <div class="track-title-small">${track.title}</div>
+                    <div class="track-artist-small">${track.artist}</div>
+                </div>
+                <div class="track-duration">${track.duration}</div>
+            `;
+            
+            trackElement.addEventListener('click', () => {
+                loadTrack(index);
+            });
+            
+            playlistTracks.appendChild(trackElement);
+        });
+        
+        if (trackCount) {
+            trackCount.textContent = `${playlist.length} tracks`;
+        }
+    }
+
+    // Play/Pause
+    playPauseBtn.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+            if (!audioPlayer.src) {
+                loadTrack(0);
+            } else {
+                audioPlayer.play();
+            }
+            playIcon.className = 'bi bi-pause-fill';
+        } else {
+            audioPlayer.pause();
+            playIcon.className = 'bi bi-play-fill';
+        }
+    });
+
+    // Previous track
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            let newIndex = currentTrackIndex - 1;
+            if (newIndex < 0) newIndex = playlist.length - 1;
+            loadTrack(newIndex);
+        });
+    }
+
+    // Next track
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            let newIndex = currentTrackIndex + 1;
+            if (newIndex >= playlist.length) newIndex = 0;
+            loadTrack(newIndex);
+        });
+    }
+
+    // Volume control
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', () => {
+            audioPlayer.volume = volumeSlider.value / 100;
+        });
+    }
+
+    // Progress bar
+    audioPlayer.addEventListener('timeupdate', () => {
+        if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+            const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            if (audioProgressFill) {
+                audioProgressFill.style.width = `${percent}%`;
+            }
+            if (audioCurrentTime) {
+                audioCurrentTime.textContent = formatTime(audioPlayer.currentTime);
+            }
+        }
+    });
+
+    // Click on progress bar to seek
+    if (audioProgressBar) {
+        audioProgressBar.addEventListener('click', (e) => {
+            if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+                const rect = audioProgressBar.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audioPlayer.currentTime = pos * audioPlayer.duration;
+            }
+        });
+    }
+
+    // Auto play next track
+    audioPlayer.addEventListener('ended', () => {
+        let newIndex = currentTrackIndex + 1;
+        if (newIndex >= playlist.length) newIndex = 0;
+        loadTrack(newIndex);
+    });
+
+    // Initialize playlist
+    updatePlaylistUI();
+
+    // Load first track on page load
+    setTimeout(() => {
+        loadTrack(0);
+    }, 1000);
+}
+
+// Initialize music player after page loads
+window.addEventListener('load', function() {
+    setTimeout(initializeMusicPlayer, 500);
+});
 
 // Floating Contact Form
-document.addEventListener('DOMContentLoaded', () => {
-
 const contactToggle = document.getElementById('contactToggle');
 const contactPanel = document.getElementById('contactPanel');
 const contactClose = document.getElementById('contactClose');
@@ -1380,24 +2775,33 @@ if (contactToggle && contactPanel) {
 
             if (data.email && data.message) {
                 const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
+                const originalHTML = submitBtn.innerHTML;
 
-                submitBtn.textContent = 'SENT ✓';
-                submitBtn.style.background = 'var(--black)';
+                // Show sending state
+                submitBtn.classList.add('sending');
+                submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i><span>TRANSMITTING...</span>';
 
-                contactForm.reset();
-
+                // Simulate API call
                 setTimeout(() => {
-                    contactToggle.classList.remove('active');
-                    contactPanel.classList.remove('active');
+                    // Show success state
+                    submitBtn.classList.remove('sending');
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i><span>TRANSMISSION SENT</span>';
+                    submitBtn.style.background = '#10b981';
+                    
+                    contactForm.reset();
 
+                    // Close panel after success
                     setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.style.background = 'var(--accent)';
-                    }, 1000);
+                        contactToggle.classList.remove('active');
+                        contactPanel.classList.remove('active');
+                        
+                        // Reset button after delay
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalHTML;
+                            submitBtn.style.background = 'var(--accent)';
+                        }, 1000);
+                    }, 1500);
                 }, 1500);
-
-                console.log('Form submitted:', data);
             }
         });
     }
@@ -1409,48 +2813,6 @@ if (contactToggle && contactPanel) {
         });
     }
 }
-
-});
-
 </script>
-
-<!-- Floating Contact Form -->
-<div class="floating-contact-container">
-    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
-        ✉️
-    </button>
-    
-    <div class="contact-panel" id="contactPanel">
-        <button class="contact-close" id="contactClose">&times;</button>
-        
-        <h3>CONTACT ARCHIVES</h3>
-        <p>Send us a message directly or connect through our social channels.</p>
-        
-        <form class="contact-form" id="contactForm">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Your Message..." required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-        
-        <div class="social-links">
-            <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                📸
-            </a>
-            <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                𝕏
-            </a>
-            <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                🎵
-            </a>
-            <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                ▶️
-            </a>
-            <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                ✉️
-            </a>
-        </div>
-    </div>
-</div>
 </body>
 </html>

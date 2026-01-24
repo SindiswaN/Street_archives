@@ -12,6 +12,7 @@ $cartCount = getCartCount();
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -69,6 +70,7 @@ body.dark {
     --text: #fff;
     --header-bg: #111;
 }
+
 body.dark .hero { background: #000; color: #fff; }
 body.dark .top-bar { background: #fff; color: #111; }
 body.dark .mobile-menu { background: #222; }
@@ -77,10 +79,70 @@ body.dark .newsletter { background: #222; border-color: #fff; }
 body.dark .newsletter input { border-color: #fff; color: #fff; background: #333; }
 body.dark footer { background: #222; }
 
+/* FIX: Ensure text is visible in dark mode */
+body.dark .folder-section .folder-body,
+body.dark .folder-section .folder-tab,
+body.dark .manifesto,
+body.dark .process,
+body.dark .categories .category,
+body.dark .products .product,
+body.dark .newsletter {
+    background: var(--offwhite);
+    color: var(--text);
+}
+
+body.dark .btn {
+    color: var(--text);
+    border-color: var(--text);
+}
+
+body.dark .btn:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
 /* ---------- TOP BAR ---------- */
-.top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
-@keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+.top-bar {
+  background: var(--black); 
+  color: var(--bg); 
+  padding: 10px 0; 
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-bar p {
+  animation: scrollText 35s linear infinite; 
+  font-size: 14px; 
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-family: 'Space Mono', monospace;
+  color: inherit; 
+}
+
+@keyframes scrollText { 
+  0% { transform: translateX(100%); } 
+  100% { transform: translateX(-100%); } 
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+}
+
+body.dark .top-bar {
+  background: #ffffff; 
+  color: #111111; 
+}
 
 /* ---------- HEADER & HAMBURGER ---------- */
 header{
@@ -183,449 +245,855 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   text-transform: uppercase;
 }
 
-/* ---------- NEW MULTIDISCIPLINARY HERO ---------- */
-.hero {
-  height: 85vh;
-  background: #000;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: #fff;
+.cart {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
 }
 
-.hero-collage {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex;
-  opacity: 0.5;
-  filter: grayscale(100%) contrast(1.1);
-  z-index: 1;
-  will-change: transform;
+.cart:hover {
+    background: rgba(255, 60, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-.stream {
-  flex: 1;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  border-right: 1px solid rgba(255,255,255,0.1);
-  transition: flex 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.stream:hover { flex: 1.4; filter: grayscale(0%); opacity: 0.9; }
-
-.s-fashion { background-image: url('images/image6.jpg'); }
-.s-media { background-image: url('images/image5.jpg'); }
-.s-music { background-image: url('images/image1.jpg'); }
-
-.hero::before {
-  content: " ";
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
-              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-  background-size: 100% 4px, 3px 100%;
-  z-index: 3;
-  pointer-events: none;
+/* ---------- ENHANCED MUSIC HERO ---------- */
+.music-hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('images/image1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  mix-blend-mode: difference;
+.music-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 60, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 60, 0, 0.05) 0%, transparent 50%);
+    pointer-events: none;
 }
 
-.hero-content h1 {
-  font-size: clamp(40px, 10vw, 90px);
-  font-weight: 800;
-  line-height: 0.85;
-  text-transform: uppercase;
-  letter-spacing: -2px;
+.music-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
 }
 
-.hero-content p.tagline {
-  font-size: 11px;
-  letter-spacing: 5px;
-  margin-top: 20px;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-
-.terminal-data {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  font-family: monospace;
-  font-size: 10px;
-  color: #fff;
-  z-index: 10;
-  text-transform: uppercase;
-  line-height: 1.6;
-  opacity: 0.6;
-}
-.terminal-data span { display: block; }
-
-.btn-hero {
-  display: inline-block;
-  margin-top: 35px;
-  padding: 14px 35px;
-  border: 1px solid #fff;
-  background: transparent;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 2px;
-  transition: 0.3s;
-}
-.btn-hero:hover { background: #fff; color: #000; }
-
-/* ---------- FOLDER BLOCKS ---------- */
-.folder-section {
-  width: 85%;
-  max-width: 1100px;
-  margin: 120px auto;
-  position: relative;
-  opacity: 0;
-  transform: translateY(80px);
-  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.folder-tab {
-  width: 180px;
-  height: 35px;
-  background: var(--offwhite);
-  border: 2px solid var(--black);
-  border-bottom: none;
-  border-radius: 12px 12px 0 0;
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-  font-weight: 800;
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-
-.folder-body {
-  background: var(--offwhite);
-  border: 2px solid var(--black);
-  border-radius: 0 15px 15px 15px;
-  padding: 40px;
-  box-shadow: 12px 12px 0px var(--black);
-  margin-top: -2px;
-  position: relative;
-  z-index: 1;
-  transition: all 0.4s ease;
-}
-
-.folder-section:hover .folder-body {
-  transform: translate(-5px, -5px);
-  box-shadow: 20px 20px 0px var(--black);
-}
-
-.folder-content {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 40px;
-  align-items: center;
-}
-
-.folder-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  display: block;
-  border: 1px solid #ddd;
-}
-
-.folder-image video {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  display: block;
-  border: 1px solid #ddd;
-}
-
-.folder-text h3 {
-    font-size: 32px;
+.music-hero h1 {
+    font-size: 6rem;
     font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: -3px;
+    margin-bottom: 20px;
+    line-height: 0.9;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.music-hero p {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+.music-hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+/* ---------- MANIFESTO ---------- */
+.manifesto {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+    text-align: center;
+    padding: 60px;
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 8px 8px 0px var(--black);
+}
+
+.manifesto::before {
+    content: '〄';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    color: var(--accent);
+    font-size: 2rem;
+    padding: 0 20px;
+}
+
+.manifesto p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+/* Add to your CSS */
+.release-artwork {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    background: linear-gradient(45deg, var(--black), var(--grey));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 2rem;
+}
+
+/* ---------- ENHANCED MUSIC PLAYER ---------- */
+.music-player-large {
+    background: #000;
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin: 60px auto;
+    width: 85%;
+    max-width: 1100px;
+    border: 2px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+}
+
+.music-player-large::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), #ff5c33, var(--accent));
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.player-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.player-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.player-title i {
+    color: var(--accent);
+    font-size: 2rem;
+}
+
+.player-status {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(255,255,255,0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.now-playing-info {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+}
+
+.now-playing-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.now-playing-artist {
+    font-size: 1rem;
+    color: #888;
     margin-bottom: 10px;
 }
 
-.folder-section.show { opacity: 1; transform: translateY(0); }
-
-/* RESTORED ORIGINAL BUTTONS */
-.btn{
-  display:inline-block;
-  margin-top:15px;
-  padding:12px 28px;
-  border:2px solid var(--black);
-  text-decoration:none;
-  color:var(--black);
-  font-weight:700;
-  transition: .3s;
-  text-transform: uppercase;
-  font-size: 12px;
-}
-.btn:hover{background:var(--black); color:white;}
-
-/* ---------- MUSIC PLAYER ---------- */
-.audio-player {
-  background: #000;
-  color: #fff;
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 4px;
-}
-.player-controls { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
-.play-btn { background: #fff; border: none; padding: 5px 12px; cursor: pointer; font-weight: 800; border-radius: 2px; }
-.progress-bar { flex-grow: 1; height: 4px; background: #333; cursor: pointer; position: relative; }
-.progress-fill { width: 0%; height: 100%; background: var(--accent); }
-
-/* ---------- CATEGORIES, PRODUCTS, CAROUSEL ---------- */
-.categories{ width:80%; margin:80px auto; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.category{ background:#f2f2f2; padding:60px 20px; border:1px solid #ddd; text-align:center; font-weight:700; cursor: pointer; transition: .3s;}
-.category:hover{background:#eee; border-color: #000;}
-
-.products{width:80%;margin:80px auto;}
-.grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
-.product{border:1px solid #ddd; padding:16px; opacity: 0; animation: fadeInUp 0.5s ease-out forwards;}
-.product img{width:100%; margin-bottom: 10px; transition: transform 0.3s;}
-.product:hover img { transform: scale(1.05); }
-
-/* FIXED CAROUSEL - NO DELAY */
-.carousel {
-  margin: 100px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-  padding: 20px 0;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+.now-playing-album {
+    font-size: 0.9rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.carousel-track {
-  display: inline-flex;
-  animation: slideImages 20s linear infinite;
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  will-change: transform;
-  backface-visibility: hidden;
+.player-controls-large {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
 }
 
-.carousel img {
-  width: 260px;
-  height: 320px;
-  object-fit: cover;
-  margin-right: 18px;
-  display: block;
-  opacity: 1 !important;
-  visibility: visible !important;
-  flex-shrink: 0;
-}
-
-@keyframes slideImages {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
-}
-
-.newsletter{width:80%; margin:80px auto; padding:60px; background:var(--offwhite); text-align:center; border: 2px solid #000;}
-footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-align: center; font-size: 13px; text-transform: uppercase;}
-
-/* Scroll Progress Bar */
-#progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 4px;
-    background: var(--accent);
-    z-index: 1000;
-}
-
-/* Cursor Follower */
-#cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: var(--accent);
+.control-btn {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease-out;
-}
-
-/* Product Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: 2000;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s;
+    font-size: 1.2rem;
 }
-.modal.show { display: flex; }
-.modal-content {
-    background: var(--bg);
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
+
+.control-btn:hover {
+    background: var(--accent);
+    transform: scale(1.1);
+}
+
+.play-btn-large {
+    width: 70px;
+    height: 70px;
+    background: var(--accent);
+    border: none;
+}
+
+.play-btn-large:hover {
+    background: #ff5c33;
+}
+
+.progress-bar-large {
+    flex-grow: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    cursor: pointer;
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill-large {
+    width: 0%;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.1s;
+    position: relative;
+}
+
+.progress-fill-large::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    transform: translateX(50%);
+}
+
+.time-display {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #888;
+    min-width: 100px;
     text-align: center;
 }
-.modal img { width: 100%; max-height: 300px; object-fit: cover; }
-.close { float: right; font-size: 28px; cursor: pointer; }
 
-/* Toast Notification */
-#toast {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.volume-control i {
+    color: #888;
+    font-size: 1.2rem;
+}
+
+.volume-slider {
+    width: 80px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* ---------- TRACKS SECTION ---------- */
+.tracks-section {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: 2px solid var(--black);
+    background: transparent;
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: var(--black);
+    color: white;
+}
+
+.tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.track-card {
+    background: var(--offwhite);
+    padding: 20px;
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.track-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+}
+
+.track-card:hover::before {
+    transform: translateX(0);
+}
+
+.track-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 0px var(--black);
+    border-color: var(--accent);
+}
+
+.track-card.playing {
     background: var(--accent);
     color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-    opacity: 0;
-    transform: translateY(100px);
-    transition: all 0.3s;
-    z-index: 1500;
+    border-color: var(--accent);
+    animation: pulse 2s infinite;
 }
-#toast.show {
-    opacity: 1;
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 60, 0, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 60, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 60, 0, 0); }
+}
+
+.track-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #888;
+    min-width: 40px;
+    text-align: center;
+    font-family: monospace;
+}
+
+.track-card.playing .track-number {
+    color: rgba(255,255,255,0.8);
+}
+
+.track-info {
+    flex-grow: 1;
+}
+
+.track-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+.track-artist {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.track-card.playing .track-artist {
+    color: rgba(255,255,255,0.8);
+}
+
+.track-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.track-genre {
+    background: rgba(255, 60, 0, 0.1);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.track-duration {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: 600;
+    min-width: 50px;
+    text-align: right;
+}
+
+/* ---------- DIGITAL RELEASES ---------- */
+.releases-section {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+    text-align: center;
+}
+
+.releases-section h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+}
+
+.releases-section p {
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.releases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.release-card {
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.release-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent);
+    transform: translateY(-100%);
+    transition: transform 0.3s;
+}
+
+.release-card:hover::before {
     transform: translateY(0);
 }
 
-/* Hero Content Animation */
-.hero-content { animation: fadeInUp 2s ease-out; }
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(50px); }
-    to { opacity: 1; transform: translateY(0); }
+.release-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 12px 12px 0px var(--black);
 }
 
-/* Carousel Pause on Hover */
-.carousel-track:hover { animation-play-state: paused; }
-
-/* Hamburger Animation */
-.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
-
-/* Back to Top Button */
-#back-to-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  display: none;
-  z-index: 100;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-#back-to-top:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+.release-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    z-index: 2;
 }
 
-/* Manifesto Section */
-.manifesto {
-  width: 80%;
-  margin: 80px auto;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-size: 18px;
-  line-height: 1.6;
-  font-weight: 400;
-  color: var(--text);
-  background: var(--offwhite);
-  padding: 40px;
-  border: 2px solid var(--black);
-  box-shadow: 8px 8px 0px var(--black);
+.release-artwork {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: transform 0.3s;
 }
 
-/* Process Section */
-.process {
-  width: 80%;
-  margin: 80px auto;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  font-weight: 400;
-  color: var(--text);
-  border: 2px solid var(--black);
-  padding: 40px;
-  background: var(--offwhite);
-  box-shadow: 8px 8px 0px var(--black);
-}
-.process h3 {
-  margin-bottom: 20px;
-  font-weight: 600;
-  font-size: 20px;
-}
-.process ol {
-  list-style: none;
-  padding: 0;
-  counter-reset: step-counter;
-}
-.process li {
-  margin-bottom: 10px;
-  font-weight: 400;
-  position: relative;
-  padding-left: 30px;
-  text-align: left;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 400px;
-}
-.process li::before {
-  content: counter(step-counter) ". ";
-  counter-increment: step-counter;
-  position: absolute;
-  left: 0;
-  font-weight: 600;
-  color: var(--accent);
+.release-card:hover .release-artwork {
+    transform: scale(1.05);
 }
 
-/* Carousel Overlay */
-.carousel {
-  position: relative;
+.release-title {
+    font-weight: 800;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-size: 1.1rem;
 }
-.carousel-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-  z-index: 10;
-  pointer-events: none;
-  letter-spacing: 1px;
-  line-height: 1.4;
-  background: rgba(0,0,0,0.4);
-  padding: 15px;
-  border-radius: 6px;
+
+.release-artist {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 10px;
 }
-.carousel-overlay p {
-  margin: 0;
+
+.release-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 15px 0;
+}
+
+.release-date {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--black);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.add-to-cart-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* ---------- MUSIC STREAMING LINKS ---------- */
+.music-links-section {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+    text-align: center;
+}
+
+.music-links-section h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 40px;
+}
+
+.music-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.music-link-card {
+    background: var(--offwhite);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.music-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 0px var(--black);
+    border-color: var(--accent);
+}
+
+.music-link-icon {
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.music-link-card h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.music-link-card p {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.follow-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--black);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.follow-btn:hover {
+    background: var(--accent);
+}
+
+/* ---------- LIVE STREAM SECTION ---------- */
+.live-stream-section {
+    width: 85%;
+    max-width: 1100px;
+    margin: 80px auto;
+}
+
+.live-stream-card {
+    background: #000;
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+}
+
+.live-stream-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 60, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 60, 0, 0.05) 0%, transparent 50%);
+}
+
+.stream-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.stream-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.stream-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    background: #00ff00;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.stream-details {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #888;
+    line-height: 1.8;
+    position: relative;
+    z-index: 2;
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.stream-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.stream-btn {
+    padding: 12px 30px;
+    border: 2px solid var(--accent);
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stream-btn:hover {
+    background: transparent;
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.stream-btn.secondary {
+    background: transparent;
+    color: var(--accent);
+}
+
+.stream-btn.secondary:hover {
+    background: var(--accent);
+    color: white;
 }
 
 /* ---------- FLOATING CONTACT FORM ---------- */
@@ -633,30 +1101,30 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 10000 !important; /* Increased z-index */
+    z-index: 10000;
 }
 
 .contact-toggle-btn {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent), #ff5c33);
     color: white;
     border: none;
-    font-size: 24px;
+    font-size: 1.5rem;
     cursor: pointer;
     box-shadow: 0 8px 30px rgba(255, 60, 0, 0.4);
     transition: all 0.3s var(--transition);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10001 !important; /* Increased z-index */
+    z-index: 10001;
     position: relative;
 }
 
 .contact-toggle-btn:hover {
-    transform: scale(1.1);
-    background: var(--black);
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, var(--black), #333);
     box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
 }
 
@@ -673,507 +1141,24 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: var(--header-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border: 2px solid var(--black);
+    border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 12px 12px 0px var(--black);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.95);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10000 !important; /* Increased z-index */
+    z-index: 10000;
 }
 
 .contact-panel.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
-.contact-panel h3 {
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent);
-}
-
-.contact-panel p {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.contact-form input,
-.contact-form textarea {
-    padding: 14px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
-    font-size: 14px;
-    transition: all 0.3s var(--transition);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    background: rgba(255, 60, 0, 0.05);
-}
-
-.contact-form textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-.contact-form button {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.3s var(--transition);
-    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
-    font-size: 13px;
-}
-
-.contact-form button:hover {
-    background: var(--black);
-    transform: translateY(-2px);
-}
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-    padding-top: 25px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.social-link {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text);
-    text-decoration: none;
-    font-size: 18px;
-    transition: all 0.3s var(--transition);
-}
-
-.social-link:hover {
-    background: var(--accent);
-    color: white;
-    transform: translateY(-3px);
-}
-
-.contact-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: all 0.3s var(--transition);
-}
-
-.contact-close:hover {
-    opacity: 1;
-    color: var(--accent);
-    transform: rotate(90deg);
-}
-
-/* Dark mode adjustments */
-body.dark .contact-panel {
-    background: rgba(10, 10, 10, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-body.dark .contact-form input,
-body.dark .contact-form textarea {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: white;
-}
-
-body.dark .social-link {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .floating-contact-container {
-        bottom: 20px;
-        right: 20px;
-    }
-    
-    .contact-panel {
-        width: 320px;
-        right: -10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .floating-contact-container {
-        bottom: 15px;
-        right: 15px;
-    }
-    
-    .contact-toggle-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-    
-    .contact-panel {
-        width: calc(100vw - 40px);
-        right: -15px;
-        padding: 25px;
-    }
-    
-    .contact-panel h3 {
-        font-size: 20px;
-    }
-}
-.music-hero {
-    height: 70vh;
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('images/image1.jpg');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    margin-bottom: 60px;
-}
-
-.music-hero h1 {
-    font-size: 72px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -2px;
-    margin-bottom: 20px;
-}
-
-.music-hero p {
-    font-size: 14px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    opacity: 0.8;
-}
-
-.music-player-large {
-    background: #000;
-    color: white;
-    padding: 40px;
-    border-radius: 8px;
-    margin: 60px auto;
-    width: 85%;
-    max-width: 1100px;
-}
-
-.player-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.player-title {
-    font-size: 24px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.player-status {
-    font-size: 11px;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.player-controls-large {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.play-btn-large {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: white;
-    color: black;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-}
-
-.play-btn-large:hover {
-    background: var(--accent);
-    color: white;
-}
-
-.progress-bar-large {
-    flex-grow: 1;
-    height: 6px;
-    background: #333;
-    cursor: pointer;
-    position: relative;
-    border-radius: 3px;
-}
-
-.progress-fill-large {
-    width: 0%;
-    height: 100%;
-    background: var(--accent);
-    border-radius: 3px;
-    transition: width 0.1s;
-}
-
-.time-display {
-    font-family: monospace;
-    font-size: 14px;
-    color: #888;
-    min-width: 100px;
-    text-align: center;
-}
-
-.tracks-section {
-    width: 85%;
-    max-width: 1100px;
-    margin: 80px auto;
-}
-
-.tracks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 40px;
-}
-
-.track-card {
-    background: var(--offwhite);
-    padding: 20px;
-    border: 2px solid var(--black);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.track-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 8px 8px 0px var(--black);
-    border-color: var(--accent);
-}
-
-.track-card.playing {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-}
-
-.track-number {
-    font-size: 14px;
-    font-weight: 700;
-    color: #888;
-    min-width: 30px;
-}
-
-.track-card.playing .track-number {
-    color: rgba(255,255,255,0.8);
-}
-
-.track-info {
-    flex-grow: 1;
-}
-
-.track-title {
-    font-weight: 700;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
-.track-artist {
-    font-size: 12px;
-    color: #888;
-}
-
-.track-card.playing .track-artist {
-    color: rgba(255,255,255,0.8);
-}
-
-.track-duration {
-    font-size: 12px;
-    color: #888;
-    font-weight: 600;
-}
-
-.live-stream {
-    background: #000;
-    color: white;
-    padding: 30px;
-    border-radius: 8px;
-    margin: 60px auto;
-    width: 85%;
-    max-width: 1100px;
-    border: 2px solid var(--accent);
-}
-
-.stream-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.stream-title {
-    font-size: 20px;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: var(--accent);
-}
-
-.stream-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-}
-
-.status-indicator {
-    width: 10px;
-    height: 10px;
-    background: #00ff00;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-.stream-details {
-    font-family: monospace;
-    font-size: 12px;
-    color: #888;
-    line-height: 1.8;
-}
-
-.music-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 60px auto;
-    flex-wrap: wrap;
-}
-
-.music-link {
-    padding: 15px 30px;
-    border: 2px solid var(--black);
-    background: var(--black);
-    color: white;
-    text-decoration: none;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 1px;
-    transition: 0.3s;
-}
-
-.music-link:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-.music-link.secondary {
-    background: transparent;
-    color: var(--black);
-}
-
-.releases-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.release-card {
-    background: var(--offwhite);
-    border: 2px solid var(--black);
-    padding: 20px;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.release-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 8px 8px 0px var(--black);
-}
-
-.release-artwork {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-}
-
-.release-title {
-    font-weight: 700;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
-.release-artist {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 10px;
-}
-
-.release-date {
-    font-size: 11px;
-    color: var(--accent);
-    font-weight: 600;
-}
-
-/* Cart notification */
+/* ---------- CART NOTIFICATION ---------- */
 .cart-notification {
     position: fixed;
     top: 20px;
@@ -1181,13 +1166,16 @@ body.dark .social-link {
     background: var(--accent);
     color: white;
     padding: 15px 25px;
-    border-radius: 4px;
+    border-radius: 8px;
     display: none;
     z-index: 2000;
     animation: slideIn 0.3s ease-out;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(255, 60, 0, 0.3);
+    border: 2px solid white;
 }
 
 @keyframes slideIn {
@@ -1199,6 +1187,171 @@ body.dark .social-link {
         transform: translateX(0);
         opacity: 1;
     }
+}
+
+/* ---------- RESPONSIVE DESIGN ---------- */
+@media (max-width: 1024px) {
+    .music-hero h1 {
+        font-size: 4rem;
+    }
+    
+    .tracks-grid,
+    .releases-grid,
+    .music-links-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .music-hero {
+        height: 60vh;
+    }
+    
+    .music-hero h1 {
+        font-size: 3rem;
+    }
+    
+    .music-hero-stats {
+        gap: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    
+    .filter-controls {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .player-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .player-controls-large {
+        flex-wrap: wrap;
+    }
+    
+    .progress-bar-large {
+        order: 3;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .contact-panel {
+        width: calc(100vw - 40px);
+        right: -15px;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .music-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .music-hero p {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+    
+    .tracks-grid,
+    .releases-grid,
+    .music-links-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .track-card,
+    .release-card,
+    .music-link-card {
+        padding: 15px;
+    }
+    
+    .floating-contact-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .contact-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ---------- SCROLL PROGRESS ---------- */
+#progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--accent);
+    z-index: 9998;
+}
+
+/* ---------- BACK TO TOP ---------- */
+#back-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: none;
+    z-index: 9995;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    background: var(--black);
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    background: #111;
+    color: white;
+    padding: 60px 5%;
+    margin-top: 100px;
+    text-align: center;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+footer p {
+    margin: 10px 0;
+    opacity: 0.8;
+}
+
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+footer a:hover {
+    opacity: 0.8;
 }
 </style>
 </head>
@@ -1212,308 +1365,657 @@ body.dark .social-link {
 
 <!-- Preloader hiding script -->
 <script>
-window.addEventListener('load', function() {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        preloader.style.opacity = '0';
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    }, 1000);
 });
-
-if (document.readyState === 'complete') {
-    document.getElementById('preloader').style.display = 'none';
-}
 </script>
 
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
-<header>
-  <div class="header-left">
-    <input type="text" id="search" placeholder="Search tracks...">
-    <button id="theme-toggle">🌑</button>
-  </div>
-  <div class="header-center">
-    <a href="index.php">
-      <div class="logo-container">
-        <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
-      </div>
-    </a>
-  </div>
-  <div class="header-right">
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
-  </div>
-</header>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.php">Home</a>
-  <a href="about.php">About Us</a>
-  <a href="fashion.php">Fashion</a>
-  <a href="media.php">Media</a>
-  <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
-</div>
+<!-- Include Header -->
+<?php require_once(__DIR__ . '/../includes/header.php'); ?>
 
 <section class="music-hero">
-  <div>
+  <div class="music-hero-content">
     <h1>SOUND<br>ARCHIVE</h1>
-    <p>Underground Frequencies</p>
+    <p>Underground Frequencies • South Africa</p>
+    <div class="music-hero-stats">
+      <div class="stat-item">
+        <span class="stat-number">247</span>
+        <span class="stat-label">Live Listeners</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">3000+</span>
+        <span class="stat-label">Tracks</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">24/7</span>
+        <span class="stat-label">Live Stream</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">AES-256</span>
+        <span class="stat-label">Encryption</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="manifesto">
   <p>The sound of the underground, broadcast and preserved. Live sessions, collaborations, and cultural frequencies transmitted from our headquarters in South Africa.</p>
-  <p>Tune in to our live broadcasts or explore the archive of past transmissions.</p>
+  <p>From Amapiano to Electronic, Jazz to Experimental—archive the frequencies that move you.</p>
 </section>
-
-<div class="folder-section show">
-  <div class="folder-tab"><span>STREETS_RADIO_3000</span></div>
-  <div class="folder-body">
-    <div class="folder-content">
-      <div class="folder-text">
-        <h3>LIVE TRANSMISSIONS</h3>
-        <p>24/7 broadcast of underground sounds from South Africa and beyond. Curated mixes, live sessions, and exclusive premieres.</p>
-        <div style="font-size: 11px; margin-top: 20px; color: #888; font-family: monospace;">
-          <div>FREQUENCY: 3000 MHz</div>
-          <div>STATUS: TRANSMITTING</div>
-          <div>LISTENERS: 247 LIVE</div>
-          <div>ENCRYPTION: AES-256</div>
-        </div>
-        <button class="btn" style="margin-top: 20px;" id="live-stream-toggle">▶ LISTEN LIVE</button>
-      </div>
-      <div class="folder-image">
-        <video src="images/music.mov" autoplay loop muted playsinline></video>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="music-player-large">
   <div class="player-header">
-    <div class="player-title">NOW PLAYING</div>
-    <div class="player-status">STREETS RADIO 3000 • LIVE</div>
+    <div class="player-title">
+      <i class="bi bi-vinyl"></i>
+      STREETS RADIO 3000
+    </div>
+    <div class="player-status">
+      <i class="bi bi-circle-fill" style="color: #00ff00; font-size: 0.6rem;"></i>
+      LIVE TRANSMISSION
+    </div>
   </div>
   
-  <div style="margin: 30px 0;">
-    <div style="font-size: 18px; font-weight: 700; margin-bottom: 5px;" id="now-playing-title">UNDERGROUND FREQUENCIES VOL. 1</div>
-    <div style="font-size: 14px; color: #888;" id="now-playing-artist">Mixed by Archive Crew • December 2025</div>
+  <div class="now-playing-info">
+    <div class="now-playing-title" id="now-playing-title">UNDERGROUND FREQUENCIES VOL. 1</div>
+    <div class="now-playing-artist" id="now-playing-artist">Mixed by Archive Crew</div>
+    <div class="now-playing-album" id="now-playing-album">STREETS ARCHIVES • DEC 2025</div>
   </div>
   
   <div class="player-controls-large">
-    <button class="play-btn-large" id="main-play-btn">▶</button>
+    <button class="control-btn" id="prev-btn">
+      <i class="bi bi-skip-backward"></i>
+    </button>
+    <button class="control-btn play-btn-large" id="main-play-btn">
+      <i class="bi bi-play-fill"></i>
+    </button>
+    <button class="control-btn" id="next-btn">
+      <i class="bi bi-skip-forward"></i>
+    </button>
+    
     <div class="progress-bar-large" id="main-progress-container">
       <div class="progress-fill-large" id="main-progress-bar"></div>
     </div>
+    
     <div class="time-display">
       <span id="current-time">0:00</span> / <span id="total-time">45:30</span>
     </div>
-  </div>
-  
-  <div style="margin-top: 20px; font-size: 11px; color: #888; text-transform: uppercase; display: flex; gap: 20px;">
-    <div>BITRATE: 320 KBPS</div>
-    <div>FORMAT: LOSSLESS</div>
-    <div>GENRE: ELECTRONIC / EXPERIMENTAL</div>
-  </div>
-</div>
-
-<div class="live-stream">
-  <div class="stream-info">
-    <div class="stream-title">LIVE STREAM • STREETS RADIO</div>
-    <div class="stream-status">
-      <div class="status-indicator"></div>
-      <span>LIVE NOW</span>
+    
+    <div class="volume-control">
+      <i class="bi bi-volume-down"></i>
+      <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+      <i class="bi bi-volume-up"></i>
     </div>
   </div>
-  <div class="stream-details">
-    <div>HOST: DJ ARCHIVE</div>
-    <div>SHOW: NIGHT SESSIONS</div>
-    <div>TIME: 22:00 - 04:00 (SAST)</div>
-    <div>GENRE: DOWNTEMPO • AMBIENT • EXPERIMENTAL</div>
+  
+  <audio id="main-audio" preload="metadata"></audio>
+</div>
+
+<div class="live-stream-section">
+  <div class="live-stream-card">
+    <div class="stream-header">
+      <div class="stream-title">
+        <i class="bi bi-broadcast"></i>
+        LIVE STREAM
+      </div>
+      <div class="stream-status">
+        <span class="status-indicator"></span>
+        <span>LIVE NOW • 247 LISTENERS</span>
+      </div>
+    </div>
+    
+    <div class="stream-details">
+      <div><strong>HOST:</strong> DJ ARCHIVE</div>
+      <div><strong>SHOW:</strong> NIGHT SESSIONS</div>
+      <div><strong>TIME:</strong> 22:00 - 04:00 (SAST)</div>
+      <div><strong>GENRE:</strong> DOWNTEMPO • AMBIENT • EXPERIMENTAL</div>
+      <div><strong>FREQUENCY:</strong> 3000 MHz</div>
+      <div><strong>ENCRYPTION:</strong> AES-256</div>
+    </div>
+    
+    <div class="stream-actions">
+      <button class="stream-btn" id="listen-live-btn">
+        <i class="bi bi-play-fill"></i>
+        LISTEN LIVE
+      </button>
+      <a href="#tracks" class="stream-btn secondary">
+        <i class="bi bi-music-note-list"></i>
+        BROWSE ARCHIVE
+      </a>
+    </div>
   </div>
 </div>
 
-<section class="tracks-section">
-  <h2 style="margin-bottom: 20px; text-transform: uppercase; font-weight: 800;">ARCHIVE TRACKS</h2>
-  <p style="margin-bottom: 40px; max-width: 600px;">Browse our collection of recorded transmissions and exclusive releases.</p>
+<section class="tracks-section" id="tracks">
+  <div class="section-header">
+    <h2>ARCHIVE TRACKS</h2>
+    <div class="filter-controls">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="electronic">Electronic</button>
+      <button class="filter-btn" data-filter="amapiano">Amapiano</button>
+      <button class="filter-btn" data-filter="experimental">Experimental</button>
+      <button class="filter-btn" data-filter="jazz">Jazz</button>
+    </div>
+  </div>
   
   <div class="tracks-grid" id="tracks-container">
     <!-- Tracks will be loaded by JavaScript -->
   </div>
 </section>
 
-<section class="releases-section">
-  <div style="text-align: center; margin: 80px auto; width: 85%; max-width: 1100px;">
-    <h2 style="margin-bottom: 20px; text-transform: uppercase; font-weight: 800;">DIGITAL RELEASES</h2>
-    <p style="margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">Purchase digital releases from the Streets Archives collective.</p>
-    
-    <div class="grid">
-      <?php if (isset($musicProducts)): ?>
-      <?php foreach ($musicProducts as $music): ?>
-      <div class="product">
-        <img src="images/<?php echo $music['images'][0]; ?>" loading="lazy" alt="<?php echo $music['name']; ?>">
-        <p><?php echo $music['name']; ?><br><?php echo $music['description']; ?></p>
-        <strong><?php echo $music['price']; ?></strong>
-        <button class="add-to-cart-btn" onclick="addToCart('<?php echo $music['id']; ?>', '<?php echo addslashes($music['name']); ?>', '<?php echo $music['price']; ?>', 'images/<?php echo $music['images'][0]; ?>', 'Digital', 1, 'music')">ADD TO CART</button>
-      </div>
-      <?php endforeach; ?>
-      <?php else: ?>
-      <p>No music products available.</p>
-      <?php endif; ?>
-    </div>
+<section class="releases-section" id="releases">
+  <h2>DIGITAL RELEASES</h2>
+  <p>Purchase exclusive digital releases from the Streets Archives collective. All purchases include high-quality WAV files and exclusive artwork.</p>
+  
+  <div class="releases-grid" id="releases-container">
+    <!-- Releases will be loaded by JavaScript -->
   </div>
 </section>
 
-<div class="music-links">
-  <a href="https://soundcloud.com" target="_blank" class="music-link">FOLLOW ON SOUNDCLOUD</a>
-  <a href="https://spotify.com" target="_blank" class="music-link secondary">FOLLOW ON SPOTIFY</a>
-  <a href="https://bandcamp.com" target="_blank" class="music-link secondary">FOLLOW ON BANDCAMP</a>
-  <a href="https://mixcloud.com" target="_blank" class="music-link secondary">FOLLOW ON MIXCLOUD</a>
-</div>
+<section class="music-links-section">
+  <h2>STREAM EVERYWHERE</h2>
+  <div class="music-links-grid">
+    <a href="https://soundcloud.com" target="_blank" class="music-link-card">
+      <div class="music-link-icon">
+        <i class="bi bi-soundwave"></i>
+      </div>
+      <h3>SoundCloud</h3>
+      <p>Exclusive mixes and premieres</p>
+      <span class="follow-btn">Follow</span>
+    </a>
+    
+    <a href="https://spotify.com" target="_blank" class="music-link-card">
+      <div class="music-link-icon">
+        <i class="bi bi-spotify"></i>
+      </div>
+      <h3>Spotify</h3>
+      <p>Official releases and playlists</p>
+      <span class="follow-btn">Follow</span>
+    </a>
+    
+    <a href="https://bandcamp.com" target="_blank" class="music-link-card">
+      <div class="music-link-icon">
+        <i class="bi bi-music-note-beamed"></i>
+      </div>
+      <h3>Bandcamp</h3>
+      <p>Direct support and exclusives</p>
+      <span class="follow-btn">Follow</span>
+    </a>
+    
+    <a href="https://mixcloud.com" target="_blank" class="music-link-card">
+      <div class="music-link-icon">
+        <i class="bi bi-cloud-upload"></i>
+      </div>
+      <h3>Mixcloud</h3>
+      <p>Live sets and radio shows</p>
+      <span class="follow-btn">Follow</span>
+    </a>
+  </div>
+</section>
 
 <footer>
-  <p>STREETS ARCHIVES — SOUTH AFRICA<br>FASHION • SOUND • VISUAL RECORDS<br>EST. 2026</p>
-  <p>Privacy • Shipping • Returns • Contact</p>
+  <p>STREETS ARCHIVES — SOUTH AFRICA</p>
+  <p>FASHION • SOUND • VISUAL RECORDS</p>
+  <p>EST. 2026</p>
+  <p><a href="privacy.php">Privacy</a> • <a href="shipping.php">Shipping</a> • <a href="returns.php">Returns</a> • <a href="contact.php">Contact</a></p>
 </footer>
 
 <div id="progress"></div>
-<div id="cursor"></div>
-<div id="toast"></div>
-<div class="cart-notification" id="cartNotification">Item added to cart!</div>
+<div class="cart-notification" id="cartNotification">
+  <i class="bi bi-check-circle"></i>
+  <span>Item added to cart!</span>
+</div>
 
-<button id="back-to-top">↑</button>
+<button id="back-to-top">
+  <i class="bi bi-chevron-up"></i>
+</button>
 
 <script>
-// Music page specific JavaScript
+// Enhanced Music Player with Real Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const tracks = [
-        { title: 'UNDERGROUND FREQUENCIES', artist: 'Archive Crew', duration: '6:45' },
-        { title: 'NIGHT DRIVE', artist: 'Night Shift', duration: '5:20' },
-        { title: 'COASTAL VIBES', artist: 'Coastal Frequencies', duration: '7:15' },
-        { title: 'URBAN ECHOES', artist: 'Street Sound Collective', duration: '4:55' },
-        { title: 'BASEMENT GROOVE', artist: 'DJ Archive', duration: '8:30' },
-        { title: 'MIDNIGHT TRANSMISSION', artist: 'Archive Crew', duration: '6:10' },
-        { title: 'CITY LIGHTS', artist: 'Urban Explorers', duration: '5:45' },
-        { title: 'STREET FREQUENCIES', artist: 'Various Artists', duration: '7:25' }
+    // Real music data
+    const musicTracks = [
+        {
+            id: 1,
+            title: 'UNDERGROUND FREQUENCIES',
+            artist: 'Archive Crew',
+            album: 'Streets Archives Vol. 1',
+            duration: '6:45',
+            genre: 'electronic',
+            file: 'music/underground_frequencies.mp3',
+            price: 'R 49.99'
+        },
+        {
+            id: 2,
+            title: 'NIGHT DRIVE',
+            artist: 'Night Shift',
+            album: 'City Nights EP',
+            duration: '5:20',
+            genre: 'electronic',
+            file: 'music/night_drive.mp3',
+            price: 'R 39.99'
+        },
+        {
+            id: 3,
+            title: 'AMAPIANO VIBES',
+            artist: 'SA Sessions',
+            album: 'South African Sessions',
+            duration: '7:15',
+            genre: 'amapiano',
+            file: 'music/amapiano_vibes.mp3',
+            price: 'R 59.99'
+        },
+        {
+            id: 4,
+            title: 'URBAN ECHOES',
+            artist: 'Street Sound Collective',
+            album: 'Urban Echoes',
+            duration: '4:55',
+            genre: 'experimental',
+            file: 'music/urban_echoes.mp3',
+            price: 'R 44.99'
+        },
+        {
+            id: 5,
+            title: 'JAZZ FREQUENCIES',
+            artist: 'Cape Town Jazz Quartet',
+            album: 'Live at Archive',
+            duration: '8:30',
+            genre: 'jazz',
+            file: 'music/jazz_frequencies.mp3',
+            price: 'R 69.99'
+        },
+        {
+            id: 6,
+            title: 'DIGITAL DREAMS',
+            artist: 'Digital Collective',
+            album: 'Digital Dreams',
+            duration: '6:10',
+            genre: 'electronic',
+            file: 'music/digital_dreams.mp3',
+            price: 'R 54.99'
+        },
+        {
+            id: 7,
+            title: 'AFRO TECH',
+            artist: 'African Technicians',
+            album: 'Tech Waves',
+            duration: '5:45',
+            genre: 'experimental',
+            file: 'music/afro_tech.mp3',
+            price: 'R 49.99'
+        },
+        {
+            id: 8,
+            title: 'SOUL TRANSMISSION',
+            artist: 'Soul Archive',
+            album: 'Soul Sessions',
+            duration: '7:25',
+            genre: 'jazz',
+            file: 'music/soul_transmission.mp3',
+            price: 'R 59.99'
+        }
     ];
-    
-    // Load tracks
-    const tracksContainer = document.getElementById('tracks-container');
-    tracks.forEach((track, index) => {
-        const trackCard = document.createElement('div');
-        trackCard.className = 'track-card';
-        trackCard.innerHTML = `
-            <div class="track-number">${String(index + 1).padStart(2, '0')}</div>
-            <div class="track-info">
-                <div class="track-title">${track.title}</div>
-                <div class="track-artist">${track.artist}</div>
-            </div>
-            <div class="track-duration">${track.duration}</div>
-        `;
-        
-        trackCard.addEventListener('click', () => {
-            document.querySelectorAll('.track-card').forEach(t => t.classList.remove('playing'));
-            trackCard.classList.add('playing');
-            
-            // Update player
-            document.getElementById('now-playing-title').textContent = track.title;
-            document.getElementById('now-playing-artist').textContent = track.artist;
-            
-            // Start playing
-            playTrack();
-        });
-        
-        tracksContainer.appendChild(trackCard);
-    });
-    
-    // Music player functionality
+
+    const musicReleases = [
+    {
+        id: 101,
+        title: 'UNDERGROUND FREQUENCIES VOL. 1',
+        artist: 'Various Artists',
+        price: 'R 149.99',
+        image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
+        date: 'DEC 2025',
+        genre: 'Electronic',
+        tracks: 12,
+        format: 'WAV/MP3'
+    },
+    {
+        id: 102,
+        title: 'SOUTH AFRICAN SESSIONS',
+        artist: 'SA Collective',
+        price: 'R 129.99',
+        image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
+        date: 'NOV 2025',
+        genre: 'Amapiano',
+        tracks: 10,
+        format: 'WAV/MP3'
+    },
+    {
+        id: 103,
+        title: 'EXPERIMENTAL ARCHIVES',
+        artist: 'Archive Crew',
+        price: 'R 179.99',
+        image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
+        date: 'OCT 2025',
+        genre: 'Experimental',
+        tracks: 8,
+        format: 'WAV/MP3'
+    },
+    {
+        id: 104,
+        title: 'JAZZ FROM THE ARCHIVE',
+        artist: 'Archive Jazz Collective',
+        price: 'R 199.99',
+        image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400&q=80',
+        date: 'SEP 2025',
+        genre: 'Jazz',
+        tracks: 6,
+        format: 'WAV/MP3'
+    }
+];
+
+    // Music Player Elements
+    const audioPlayer = document.getElementById('main-audio');
     const playBtn = document.getElementById('main-play-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
     const progressBar = document.getElementById('main-progress-bar');
+    const progressContainer = document.getElementById('main-progress-container');
     const currentTimeDisplay = document.getElementById('current-time');
     const totalTimeDisplay = document.getElementById('total-time');
+    const volumeSlider = document.getElementById('volume-slider');
+    const nowPlayingTitle = document.getElementById('now-playing-title');
+    const nowPlayingArtist = document.getElementById('now-playing-artist');
+    const nowPlayingAlbum = document.getElementById('now-playing-album');
     
+    // Tracks Container
+    const tracksContainer = document.getElementById('tracks-container');
+    const releasesContainer = document.getElementById('releases-container');
+    
+    let currentTrackIndex = 0;
     let isPlaying = false;
     let currentTime = 0;
-    let totalTime = 45 * 60; // 45 minutes in seconds
-    
+    let totalTime = 0;
+
+    // Format time function
     function formatTime(seconds) {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
-    
-    totalTimeDisplay.textContent = formatTime(totalTime);
-    
-    function playTrack() {
+
+    // Load track
+    function loadTrack(index) {
+        if (index < 0 || index >= musicTracks.length) return;
+        
+        currentTrackIndex = index;
+        const track = musicTracks[index];
+        
+        audioPlayer.src = track.file;
+        nowPlayingTitle.textContent = track.title;
+        nowPlayingArtist.textContent = track.artist;
+        nowPlayingAlbum.textContent = track.album;
+        
+        // Update playlist UI
+        updatePlaylistUI();
+        
+        // Load metadata
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            totalTime = audioPlayer.duration;
+            totalTimeDisplay.textContent = formatTime(totalTime);
+        }, { once: true });
+        
+        // Auto play
+        audioPlayer.play().catch(e => {
+            console.log("Autoplay prevented:", e);
+            playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+        });
+        
+        playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
         isPlaying = true;
-        playBtn.textContent = '⏸';
-        playBtn.style.background = 'var(--accent)';
-        playBtn.style.color = 'white';
-        
-        // Simulate playback
-        const interval = setInterval(() => {
-            if (isPlaying && currentTime < totalTime) {
-                currentTime++;
-                progressBar.style.width = (currentTime / totalTime * 100) + '%';
-                currentTimeDisplay.textContent = formatTime(currentTime);
-            } else {
-                clearInterval(interval);
-                isPlaying = false;
-                playBtn.textContent = '▶';
-                playBtn.style.background = '';
-                playBtn.style.color = '';
-            }
-        }, 1000);
-        
-        // Update button click handler
-        playBtn.onclick = () => {
-            if (isPlaying) {
-                isPlaying = false;
-                playBtn.textContent = '▶';
-                playBtn.style.background = '';
-                playBtn.style.color = '';
-            } else {
-                playTrack();
-            }
-        };
     }
+
+    // Update playlist UI
+    function updatePlaylistUI() {
+        tracksContainer.innerHTML = '';
+        
+        musicTracks.forEach((track, index) => {
+            const trackCard = document.createElement('div');
+            trackCard.className = `track-card ${index === currentTrackIndex ? 'playing' : ''}`;
+            trackCard.setAttribute('data-genre', track.genre);
+            trackCard.innerHTML = `
+                <div class="track-number">${String(index + 1).padStart(2, '0')}</div>
+                <div class="track-info">
+                    <div class="track-title">${track.title}</div>
+                    <div class="track-artist">${track.artist}</div>
+                    <div class="track-meta">
+                        <span class="track-genre">${track.genre.toUpperCase()}</span>
+                        <span class="track-album">${track.album}</span>
+                    </div>
+                </div>
+                <div class="track-duration">${track.duration}</div>
+            `;
+            
+            trackCard.addEventListener('click', () => {
+                loadTrack(index);
+            });
+            
+            tracksContainer.appendChild(trackCard);
+        });
+    }
+
+    // Load releases
+function loadReleases() {
+    releasesContainer.innerHTML = '';
     
-    playBtn.addEventListener('click', playTrack);
-    
-    // Progress bar click to seek
-    document.getElementById('main-progress-container').addEventListener('click', (e) => {
-        const rect = e.target.getBoundingClientRect();
-        const percent = (e.clientX - rect.left) / rect.width;
-        currentTime = Math.floor(percent * totalTime);
-        progressBar.style.width = (currentTime / totalTime * 100) + '%';
-        currentTimeDisplay.textContent = formatTime(currentTime);
+    musicReleases.forEach(release => {
+        // Properly escape the title for the onclick
+        const escapedTitle = release.title.replace(/'/g, "\\'");
+        
+        const releaseCard = document.createElement('div');
+        releaseCard.className = 'release-card';
+        releaseCard.innerHTML = `
+            <div class="release-badge">${release.format}</div>
+            <img src="${release.image}" alt="${release.title}" class="release-artwork" 
+                 onerror="this.src='images/default-music.jpg'">
+            <div class="release-title">${release.title}</div>
+            <div class="release-artist">${release.artist}</div>
+            <div class="release-date">${release.date} • ${release.tracks} TRACKS</div>
+            <div class="release-price">${release.price}</div>
+            <button class="add-to-cart-btn" data-release-id="${release.id}">
+                <i class="bi bi-cart-plus"></i>
+                ADD TO CART
+            </button>
+        `;
+        
+        // Add event listener directly instead of using onclick
+        const addToCartBtn = releaseCard.querySelector('.add-to-cart-btn');
+        addToCartBtn.addEventListener('click', () => {
+            addToCart(
+                release.id,
+                release.title,
+                release.price,
+                release.image,
+                'Digital',
+                1,
+                'music'
+            );
+        });
+        
+        releasesContainer.appendChild(releaseCard);
     });
-    
-    // Live stream toggle
-    document.getElementById('live-stream-toggle').addEventListener('click', function() {
-        const originalText = this.textContent;
-        if (originalText === '▶ LISTEN LIVE') {
-            this.textContent = '⏸ STOP STREAM';
-            this.style.background = 'var(--accent)';
-            this.style.color = 'white';
-            alert('Connecting to live stream... (Simulated)');
+}
+
+    // Play/Pause
+    playBtn.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+            if (!audioPlayer.src) {
+                loadTrack(0);
+            } else {
+                audioPlayer.play();
+            }
+            playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
+            isPlaying = true;
         } else {
-            this.textContent = '▶ LISTEN LIVE';
+            audioPlayer.pause();
+            playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
+            isPlaying = false;
+        }
+    });
+
+    // Previous track
+    prevBtn.addEventListener('click', () => {
+        let newIndex = currentTrackIndex - 1;
+        if (newIndex < 0) newIndex = musicTracks.length - 1;
+        loadTrack(newIndex);
+    });
+
+    // Next track
+    nextBtn.addEventListener('click', () => {
+        let newIndex = currentTrackIndex + 1;
+        if (newIndex >= musicTracks.length) newIndex = 0;
+        loadTrack(newIndex);
+    });
+
+    // Volume control
+    volumeSlider.addEventListener('input', () => {
+        audioPlayer.volume = volumeSlider.value / 100;
+    });
+
+    // Progress bar
+    audioPlayer.addEventListener('timeupdate', () => {
+        if (audioPlayer.duration) {
+            const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressBar.style.width = `${percent}%`;
+            currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+        }
+    });
+
+    // Click on progress bar to seek
+    progressContainer.addEventListener('click', (e) => {
+        if (audioPlayer.duration) {
+            const rect = progressContainer.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = pos * audioPlayer.duration;
+        }
+    });
+
+    // Auto play next track
+    audioPlayer.addEventListener('ended', () => {
+        let newIndex = currentTrackIndex + 1;
+        if (newIndex >= musicTracks.length) newIndex = 0;
+        loadTrack(newIndex);
+    });
+
+    // Filter tracks
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            document.querySelectorAll('.track-card').forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-genre') === filter) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Live stream button
+    document.getElementById('listen-live-btn').addEventListener('click', function() {
+        const originalText = this.innerHTML;
+        if (this.innerHTML.includes('LISTEN LIVE')) {
+            this.innerHTML = '<i class="bi bi-pause-fill"></i> STOP STREAM';
+            this.style.background = 'transparent';
+            this.style.color = 'var(--accent)';
+            
+            // Simulate live stream (in a real app, this would connect to a real stream)
+            const notification = document.getElementById('cartNotification');
+            notification.innerHTML = '<i class="bi bi-broadcast"></i><span>Connecting to live stream...</span>';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.innerHTML = '<i class="bi bi-check-circle"></i><span>Connected to Streets Radio 3000</span>';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }, 1000);
+        } else {
+            this.innerHTML = '<i class="bi bi-play-fill"></i> LISTEN LIVE';
             this.style.background = '';
             this.style.color = '';
-            alert('Stream stopped');
+            
+            const notification = document.getElementById('cartNotification');
+            notification.innerHTML = '<i class="bi bi-broadcast"></i><span>Stream stopped</span>';
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
         }
+    });
+
+    // Initialize
+    updatePlaylistUI();
+    loadReleases();
+    loadTrack(0);
+
+    // Scroll progress
+    window.addEventListener('scroll', () => {
+        const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+        document.getElementById('progress').style.width = scrollPercent + '%';
+        
+        // Back to top button
+        if (window.scrollY > 300) {
+            document.getElementById('back-to-top').style.display = 'flex';
+        } else {
+            document.getElementById('back-to-top').style.display = 'none';
+        }
+    });
+
+    // Back to top
+    document.getElementById('back-to-top').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId && targetId !== '#') {
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
     });
 });
 
-// Add to cart function (same as shop.php)
-function addToCart(productId, name, price, image, size, quantity, type) {
+// Universal addToCart function for music page
+function addToCart(productId, name, price, image, size = 'Digital', quantity = 1, type = 'music') {
+    console.log('Adding to cart:', { productId, name, price, image, size, quantity, type });
+    
+    // Show immediate feedback
+    const notification = document.getElementById('cartNotification');
+    if (notification) {
+        notification.innerHTML = `<i class="bi bi-cart-plus"></i><span>Adding "${name}" to cart...</span>`;
+        notification.style.background = 'var(--accent)';
+        notification.style.display = 'block';
+        
+        // Clear any existing timeout
+        if (notification.timeoutId) {
+            clearTimeout(notification.timeoutId);
+        }
+    }
+    
     // Create form data
     const formData = new FormData();
     formData.append('product_id', productId);
@@ -1524,74 +2026,219 @@ function addToCart(productId, name, price, image, size, quantity, type) {
     formData.append('quantity', quantity);
     formData.append('type', type);
     
-    // Send AJAX request
-    fetch('add_to_cart.php', {
+    // Send request to add_to_cart.php
+    fetch('../app/add_to_cart.php', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Add to cart response:', data);
+        
         if (data.success) {
-            // Update cart count
-            document.querySelectorAll('.cart').forEach(cart => {
-                cart.textContent = `CART (${data.cartCount})`;
-            });
+            // Update cart count in header
+            updateCartCount(data.cartCount);
             
-            // Show notification
-            const notification = document.getElementById('cartNotification');
-            notification.textContent = `${name} added to cart!`;
-            notification.style.display = 'block';
+            // Show success notification
+            if (notification) {
+                notification.innerHTML = `<i class="bi bi-check-circle"></i><span>${name} added to cart!</span>`;
+                notification.style.background = 'var(--black)';
+                
+                // Set timeout to hide notification
+                notification.timeoutId = setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
             
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
+            // Add visual feedback to the button
+            const event = window.event || {};
+            const clickedBtn = event.target?.closest('.add-to-cart-btn') || event.target;
+            if (clickedBtn) {
+                const originalHTML = clickedBtn.innerHTML;
+                clickedBtn.innerHTML = '<i class="bi bi-check2"></i> ADDED';
+                clickedBtn.style.background = '#10b981';
+                clickedBtn.disabled = true;
+                
+                // Revert button after 2 seconds
+                setTimeout(() => {
+                    clickedBtn.innerHTML = originalHTML;
+                    clickedBtn.style.background = '';
+                    clickedBtn.disabled = false;
+                }, 2000);
+            }
+        } else {
+            // Show error notification
+            if (notification) {
+                notification.innerHTML = `<i class="bi bi-x-circle"></i><span>Failed to add item</span>`;
+                notification.style.background = '#dc3545';
+                
+                notification.timeoutId = setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error adding to cart:', error);
+        
+        // Show error notification
+        if (notification) {
+            notification.innerHTML = `<i class="bi bi-x-circle"></i><span>Network error. Please try again.</span>`;
+            notification.style.background = '#dc3545';
+            
+            notification.timeoutId = setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
     });
 }
+
+// Function to update cart count in header
+function updateCartCount(count) {
+    // Update all cart elements
+    document.querySelectorAll('.cart').forEach(cart => {
+        cart.textContent = `CART (${count})`;
+    });
+    
+    // Update cart count in the header if it exists
+    const cartCountElement = document.querySelector('.cart-count');
+    if (cartCountElement) {
+        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${count} ITEMS`;
+    }
+}
+
+// Function to show notification with auto-hide
+function showNotification(message, isError = false) {
+    const notification = document.getElementById('cartNotification');
+    if (!notification) return;
+    
+    // Clear any existing timeout
+    if (notification.timeoutId) {
+        clearTimeout(notification.timeoutId);
+    }
+    
+    // Update notification content
+    notification.innerHTML = `<i class="bi ${isError ? 'bi-x-circle' : 'bi-check-circle'}"></i><span>${message}</span>`;
+    notification.style.background = isError ? '#dc3545' : 'var(--accent)';
+    notification.style.display = 'block';
+    
+    // Set timeout to hide notification
+    notification.timeoutId = setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+// Initialize cart count on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Get cart count from session on page load
+    fetch('../app/get_cart_count.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateCartCount(data.cartCount);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching cart count:', error);
+        });
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+            themeToggle.innerHTML = document.body.classList.contains('dark') 
+                ? '<i class="bi bi-sun"></i>' 
+                : '<i class="bi bi-moon"></i>';
+        });
+        
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+            themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+        }
+    }
+});
+
+// Theme toggle (from header)
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            themeToggle.innerHTML = document.body.classList.contains('dark') 
+                ? '<i class="bi bi-sun"></i>' 
+                : '<i class="bi bi-moon"></i>';
+        });
+    }
+});
 </script>
 
 <!-- Floating Contact Form -->
 <div class="floating-contact-container">
     <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
-        ✉️
+        <i class="bi bi-chat-dots"></i>
     </button>
     
     <div class="contact-panel" id="contactPanel">
         <button class="contact-close" id="contactClose">&times;</button>
         
-        <h3>CONTACT ARCHIVES</h3>
-        <p>Send us a message directly or connect through our social channels.</p>
+        <div class="contact-header">
+            <i class="bi bi-archive contact-icon"></i>
+            <h3>CONTACT ARCHIVES</h3>
+            <p class="contact-subtitle">Send encrypted message to HQ</p>
+        </div>
         
         <form class="contact-form" id="contactForm">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Your Message..." required></textarea>
-            <button type="submit">Send Message</button>
+            <div class="form-group">
+                <i class="bi bi-person"></i>
+                <input type="text" placeholder="CALLSIGN" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" placeholder="FREQUENCY (EMAIL)" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-chat-text"></i>
+                <textarea placeholder="ENCRYPTED MESSAGE..." rows="4" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-send"></i>
+                <span>TRANSMIT MESSAGE</span>
+            </button>
         </form>
         
         <div class="social-links">
-            <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                📸
-            </a>
-            <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                𝕏
-            </a>
-            <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                🎵
-            </a>
-            <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                ▶️
-            </a>
-            <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                ✉️
-            </a>
+            <p class="connect-title">ALTERNATIVE FREQUENCIES</p>
+            <div class="social-icons">
+                <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
+                    <i class="bi bi-music-note-beamed"></i>
+                </a>
+                <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
+                    <i class="bi bi-youtube"></i>
+                </a>
+                <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
+                    <i class="bi bi-envelope-paper"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="../js/main.js"></script>
 </body>
 </html>

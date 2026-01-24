@@ -12,6 +12,7 @@ $cartCount = getCartCount();
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -78,9 +79,33 @@ body.dark .newsletter input { border-color: #fff; color: #fff; background: #333;
 body.dark footer { background: #222; }
 
 /* ---------- TOP BAR ---------- */
-.top-bar{background:var(--black); color:white; padding:10px 0; overflow:hidden;}
-.top-bar p{animation: scrollText 35s linear infinite; font-size:14px; white-space: nowrap;}
-@keyframes scrollText{ 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+.top-bar {
+  background: #111111; 
+  color: #ffffff; 
+  padding: 10px 0; 
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-bar p {
+  animation: scrollText 35s linear infinite; 
+  font-size: 14px; 
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-family: 'Space Mono', monospace;
+  color: inherit; 
+}
+
+@keyframes scrollText { 
+  0% { transform: translateX(100%); } 
+  100% { transform: translateX(-100%); } 
+}
+
+body.dark .top-bar {
+  background: #ffffff; 
+  color: #111111; 
+}
 
 /* ---------- HEADER & HAMBURGER ---------- */
 header{
@@ -183,7 +208,24 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   text-transform: uppercase;
 }
 
-/* ---------- NEW MULTIDISCIPLINARY HERO ---------- */
+.cart {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.cart:hover {
+    background: rgba(255, 60, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ---------- FASHION HERO (Using your requested style) ---------- */
 .hero {
   height: 85vh;
   background: #000;
@@ -543,6 +585,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 /* Manifesto Section */
 .manifesto {
   width: 80%;
+  max-width: 1100px;
   margin: 80px auto;
   text-align: center;
   font-family: 'Poppins', sans-serif;
@@ -559,6 +602,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
 /* Process Section */
 .process {
   width: 80%;
+  max-width: 1100px;
   margin: 80px auto;
   text-align: center;
   font-family: 'Poppins', sans-serif;
@@ -720,7 +764,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     border: 1px solid #ddd;
     border-radius: 8px;
     color: var(--text);
-    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     transition: all 0.3s var(--transition);
 }
@@ -748,7 +792,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s var(--transition);
-    font-family: 'Poppins', sans-serif; /* Changed from 'Inter' */
+    font-family: 'Poppins', sans-serif;
     font-size: 13px;
 }
 
@@ -858,6 +902,7 @@ body.dark .social-link {
         font-size: 20px;
     }
 }
+
 /* Shop Categories */
 .shop-categories {
     width: 85%;
@@ -1080,7 +1125,56 @@ body.dark .sort-select {
         width: 100%;
         justify-content: center;
     }
+    
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero {
+        height: 70vh;
+    }
+    
+    .hero-content h1 {
+        font-size: clamp(30px, 8vw, 60px);
+    }
+}
+
+/* Mobile Menu Improvements */
+@media (max-width: 768px) {
+    .mobile-menu a {
+        font-size: 20px;
+        padding: 15px 0;
+    }
+    
+    .shop-category h3 {
+        font-size: 18px;
+    }
+    
+    .filter-bar {
+        padding: 15px;
+    }
+}
+
+/* FIX: Add proper animations for products */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.product:nth-child(1) { animation-delay: 0.1s; }
+.product:nth-child(2) { animation-delay: 0.2s; }
+.product:nth-child(3) { animation-delay: 0.3s; }
+.product:nth-child(4) { animation-delay: 0.4s; }
+.product:nth-child(5) { animation-delay: 0.5s; }
+.product:nth-child(6) { animation-delay: 0.6s; }
+.product:nth-child(7) { animation-delay: 0.7s; }
+.product:nth-child(8) { animation-delay: 0.8s; }
 </style>
 </head>
 
@@ -1112,27 +1206,7 @@ if (document.readyState === 'complete') {
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
-<header>
-  <div class="header-left">
-    <input type="text" id="search" placeholder="Search products...">
-    <button id="theme-toggle">🌑</button>
-  </div>
-  <div class="header-center">
-    <a href="index.php">
-      <div class="logo-container">
-        <img src="images/NORMALLOGO.jpeg" class="logo-3d" alt="Logo">
-      </div>
-    </a>
-  </div>
-  <div class="header-right">
-    <div class="hamburger" id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="cart" onclick="window.location.href='cart.php'">CART (<?php echo $cartCount; ?>)</div>
-  </div>
-</header>
+<?php require_once(__DIR__ . "/../includes/header.php") ?>
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.php">Home</a>
@@ -1150,9 +1224,9 @@ if (document.readyState === 'complete') {
   </div>
 
   <div class="terminal-data">
-    <span>STATUS: ACTIVE</span>
-    <span>ENCRYPTION: AES-256</span>
-    <span>LOC: SOUTH_AFRICA_HQ</span>
+    <span><i class="bi bi-check-circle"></i> STATUS: ACTIVE</span>
+    <span><i class="bi bi-shield-lock"></i> ENCRYPTION: AES-256</span>
+    <span><i class="bi bi-geo-alt"></i> LOC: SOUTH_AFRICA_HQ</span>
   </div>
 
   <div class="hero-content">
@@ -1168,25 +1242,25 @@ if (document.readyState === 'complete') {
 
 <div class="shop-categories">
     <div class="shop-category" onclick="filterCategory('jackets')">
-        <h3>JACKETS ARCHIVE</h3>
+        <h3><i class="bi bi-jacket"></i> JACKETS ARCHIVE</h3>
         <p>Vintage and contemporary jackets from across South Africa. Denim, leather, and unique outerwear pieces.</p>
         <div class="category-count">24 ITEMS</div>
     </div>
     
     <div class="shop-category" onclick="filterCategory('shirts')">
-        <h3>SHIRTS COLLECTION</h3>
+        <h3><i class="bi bi-tshirt"></i> SHIRTS COLLECTION</h3>
         <p>T-shirts, button-ups, and unique tops with character and history from urban centers.</p>
         <div class="category-count">18 ITEMS</div>
     </div>
     
     <div class="shop-category" onclick="filterCategory('pants')">
-        <h3>PANTS & DENIM</h3>
+        <h3><i class="bi bi-tags"></i> PANTS & DENIM</h3>
         <p>Curated selection of vintage pants, jeans, and trousers with authentic wear patterns.</p>
         <div class="category-count">16 ITEMS</div>
     </div>
     
     <div class="shop-category" onclick="filterCategory('accessories')">
-        <h3>ACCESSORIES</h3>
+        <h3><i class="bi bi-watch"></i> ACCESSORIES</h3>
         <p>Hats, bags, and unique accessories that complete the streetwear aesthetic.</p>
         <div class="category-count">12 ITEMS</div>
     </div>
@@ -1194,67 +1268,156 @@ if (document.readyState === 'complete') {
 
 <div class="filter-bar">
     <div class="filter-options">
-        <button class="filter-btn active" data-filter="all">All Items</button>
-        <button class="filter-btn" data-filter="jackets">Jackets</button>
-        <button class="filter-btn" data-filter="shirts">Shirts</button>
-        <button class="filter-btn" data-filter="pants">Pants</button>
-        <button class="filter-btn" data-filter="accessories">Accessories</button>
+        <button class="filter-btn active" data-filter="all"><i class="bi bi-grid"></i> All Items</button>
+        <button class="filter-btn" data-filter="jackets"><i class="bi bi-jacket"></i> Jackets</button>
+        <button class="filter-btn" data-filter="shirts"><i class="bi bi-tshirt"></i> Shirts</button>
+        <button class="filter-btn" data-filter="pants"><i class="bi bi-tags"></i> Pants</button>
+        <button class="filter-btn" data-filter="accessories"><i class="bi bi-watch"></i> Accessories</button>
     </div>
     
     <select class="sort-select" id="sortSelect">
-        <option value="newest">Newest First</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-        <option value="name">Name A-Z</option>
+        <option value="newest"><i class="bi bi-clock"></i> Newest First</option>
+        <option value="price-low"><i class="bi bi-arrow-up"></i> Price: Low to High</option>
+        <option value="price-high"><i class="bi bi-arrow-down"></i> Price: High to Low</option>
+        <option value="name"><i class="bi bi-sort-alpha-down"></i> Name A-Z</option>
     </select>
 </div>
 
 <section class="products" id="collection">
   <h2 style="margin-bottom: 30px; text-transform: uppercase; font-weight: 800;">Complete Archive</h2>
   <div class="grid" id="products-grid">
-    <?php if (isset($products)): ?>
-    <?php foreach ($products as $product): ?>
-    <div class="product" data-category="<?php echo $product['category']; ?>">
-        <button class="product-quick-add" onclick="addToCart('<?php echo $product['id']; ?>', '<?php echo addslashes($product['name']); ?>', '<?php echo $product['price']; ?>', 'images/<?php echo $product['images'][0]; ?>', 'M', 1, 'fashion')">+</button>
-        <img src="images/<?php echo $product['images'][0]; ?>" loading="lazy" alt="<?php echo $product['name']; ?>">
-        <p><?php echo $product['name']; ?><br>Found in <?php echo $product['location']; ?><br>One of One</p>
-        <strong><?php echo $product['price']; ?></strong>
-        <button class="add-to-cart-btn" onclick="addToCart('<?php echo $product['id']; ?>', '<?php echo addslashes($product['name']); ?>', '<?php echo $product['price']; ?>', 'images/<?php echo $product['images'][0]; ?>', 'M', 1, 'fashion')">ADD TO CART</button>
+    <!-- Products will be loaded here via JavaScript -->
+    <div class="product" data-category="jackets">
+        <button class="product-quick-add" onclick="addToCart('jacket-001', 'VINTAGE DENIM JACKET', 'R 899', 'images/image6.jpg', 'M', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image6.jpg" loading="lazy" alt="Vintage Denim Jacket">
+        <p>ARCHIVE PIECE #014<br>Found in Johannesburg<br>One of One</p>
+        <strong>R 899</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('jacket-001', 'VINTAGE DENIM JACKET', 'R 899', 'images/image6.jpg', 'M', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
     </div>
-    <?php endforeach; ?>
-    <?php else: ?>
-    <p>No products available.</p>
-    <?php endif; ?>
+    
+    <div class="product" data-category="shirts">
+        <button class="product-quick-add" onclick="addToCart('shirt-001', 'GRAPHIC T-SHIRT', 'R 599', 'images/image5.jpg', 'L', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image5.jpg" loading="lazy" alt="Graphic T-Shirt">
+        <p>ARCHIVE PIECE #027<br>Found in Cape Town<br>One of One</p>
+        <strong>R 599</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('shirt-001', 'GRAPHIC T-SHIRT', 'R 599', 'images/image5.jpg', 'L', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
+    
+    <div class="product" data-category="pants">
+        <button class="product-quick-add" onclick="addToCart('pants-001', 'CARGO PANTS', 'R 799', 'images/image7.jpg', '32', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image7.jpg" loading="lazy" alt="Cargo Pants">
+        <p>ARCHIVE PIECE #089<br>Found in Pretoria<br>One of One</p>
+        <strong>R 799</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('pants-001', 'CARGO PANTS', 'R 799', 'images/image7.jpg', '32', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
+    
+    <div class="product" data-category="jackets">
+        <button class="product-quick-add" onclick="addToCart('jacket-002', 'LEATHER JACKET', 'R 1299', 'images/image1.jpg', 'L', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image1.jpg" loading="lazy" alt="Leather Jacket">
+        <p>ARCHIVE PIECE #156<br>Found in Durban<br>One of One</p>
+        <strong>R 1299</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('jacket-002', 'LEATHER JACKET', 'R 1299', 'images/image1.jpg', 'L', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
+    
+    <div class="product" data-category="shirts">
+        <button class="product-quick-add" onclick="addToCart('shirt-002', 'FLANNEL SHIRT', 'R 699', 'images/image2.jpg', 'M', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image2.jpg" loading="lazy" alt="Flannel Shirt">
+        <p>ARCHIVE PIECE #045<br>Found in Soweto<br>One of One</p>
+        <strong>R 699</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('shirt-002', 'FLANNEL SHIRT', 'R 699', 'images/image2.jpg', 'M', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
+    
+    <div class="product" data-category="accessories">
+        <button class="product-quick-add" onclick="addToCart('accessory-001', 'VINTAGE CAP', 'R 399', 'images/image3.jpg', 'One Size', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image3.jpg" loading="lazy" alt="Vintage Cap">
+        <p>ARCHIVE PIECE #112<br>Found in Port Elizabeth<br>One of One</p>
+        <strong>R 399</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('accessory-001', 'VINTAGE CAP', 'R 399', 'images/image3.jpg', 'One Size', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
+    
+    <div class="product" data-category="pants">
+        <button class="product-quick-add" onclick="addToCart('pants-002', 'VINTAGE JEANS', 'R 899', 'images/image4.jpg', '34', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image4.jpg" loading="lazy" alt="Vintage Jeans">
+        <p>ARCHIVE PIECE #078<br>Found in Bloemfontein<br>One of One</p>
+        <strong>R 899</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('pants-002', 'VINTAGE JEANS', 'R 899', 'images/image4.jpg', '34', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
+    
+    <div class="product" data-category="accessories">
+        <button class="product-quick-add" onclick="addToCart('accessory-002', 'LEATHER BELT', 'R 299', 'images/image8.jpg', 'One Size', 1, 'fashion')">
+            <i class="bi bi-plus"></i>
+        </button>
+        <img src="images/image8.jpg" loading="lazy" alt="Leather Belt">
+        <p>ARCHIVE PIECE #201<br>Found in Kimberley<br>One of One</p>
+        <strong>R 299</strong>
+        <button class="add-to-cart-btn" onclick="addToCart('accessory-002', 'LEATHER BELT', 'R 299', 'images/image8.jpg', 'One Size', 1, 'fashion')">
+            <i class="bi bi-cart-plus"></i> ADD TO CART
+        </button>
+    </div>
   </div>
 </section>
 
 <section class="process">
-  <h3>Our Curatorial Process</h3>
+  <h3><i class="bi bi-list-check"></i> Our Curatorial Process</h3>
   <ol>
-    <li><strong>Sourcing:</strong> Hunting for authentic pieces in markets, thrift stores, and private collections across South Africa.</li>
-    <li><strong>Authentication:</strong> Verifying age, origin, and condition of each garment.</li>
-    <li><strong>Documentation:</strong> Photographing, measuring, and recording the story of each piece.</li>
-    <li><strong>Preservation:</strong> Professional cleaning and minimal restoration when necessary.</li>
-    <li><strong>Archiving:</strong> Adding to the digital archive with complete transparency about condition and history.</li>
+    <li><strong><i class="bi bi-search"></i> Sourcing:</strong> Hunting for authentic pieces in markets, thrift stores, and private collections across South Africa.</li>
+    <li><strong><i class="bi bi-shield-check"></i> Authentication:</strong> Verifying age, origin, and condition of each garment.</li>
+    <li><strong><i class="bi bi-camera"></i> Documentation:</strong> Photographing, measuring, and recording the story of each piece.</li>
+    <li><strong><i class="bi bi-brush"></i> Preservation:</strong> Professional cleaning and minimal restoration when necessary.</li>
+    <li><strong><i class="bi bi-archive"></i> Archiving:</strong> Adding to the digital archive with complete transparency about condition and history.</li>
   </ol>
 </section>
 
 <section class="newsletter">
-  <h3>Join the Archive</h3>
+  <h3><i class="bi bi-envelope"></i> Join the Archive</h3>
   <p style="margin-bottom: 20px; font-size: 14px;">Receive new releases, broadcasts, and recovered pieces before they go public.</p>
   <input type="email" id="newsletter-email" placeholder="Enter your email" style="padding:15px; border:1px solid #000; width:250px;">
-  <button class="btn" id="subscribe-btn" style="margin-top:0; margin-left: 10px; background: #000; color: #fff; border: none;">Subscribe to Archive</button>
+  <button class="btn" id="subscribe-btn" style="margin-top:0; margin-left: 10px; background: #000; color: #fff; border: none;">
+    <i class="bi bi-send"></i> Subscribe to Archive
+  </button>
 </section>
 
 <footer>
-  <p>STREETS ARCHIVES — SOUTH AFRICA<br>FASHION • SOUND • VISUAL RECORDS<br>EST. 2026</p>
-  <p>Privacy • Shipping • Returns • Contact</p>
+  <p><i class="bi bi-geo-alt"></i> STREETS ARCHIVES — SOUTH AFRICA</p>
+  <p><i class="bi bi-collection"></i> FASHION • SOUND • VISUAL RECORDS</p>
+  <p><i class="bi bi-calendar"></i> EST. 2026</p>
+  <p><i class="bi bi-shield-check"></i> Privacy • Shipping • Returns • Contact</p>
 </footer>
 
 <div id="progress"></div>
 <div id="cursor"></div>
 <div id="toast"></div>
-<div class="cart-notification" id="cartNotification">Item added to cart!</div>
+<div class="cart-notification" id="cartNotification">
+  <i class="bi bi-check-circle"></i> <span>Item added to cart!</span>
+</div>
 
 <div class="modal" id="productModal">
   <div class="modal-content">
@@ -1266,7 +1429,7 @@ if (document.readyState === 'complete') {
   </div>
 </div>
 
-<button id="back-to-top">↑</button>
+<button id="back-to-top"><i class="bi bi-chevron-up"></i></button>
 
 <script>
 // Shop page specific JavaScript
@@ -1325,7 +1488,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create array of products with their data
         const productData = products.map(product => {
-            const price = parseInt(product.querySelector('strong').textContent.replace('R ', ''));
+            const priceElement = product.querySelector('strong');
+            const priceText = priceElement ? priceElement.textContent : 'R 0';
+            const price = parseInt(priceText.replace(/[^0-9]/g, ''));
             const name = product.querySelector('p').textContent;
             const category = product.getAttribute('data-category') || '';
             return { element: product, price, name, category };
@@ -1367,24 +1532,41 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('subscribe-btn').addEventListener('click', function() {
         const email = document.getElementById('newsletter-email').value;
         if (email && email.includes('@')) {
-            alert('Thank you for subscribing to our newsletter!');
-            document.getElementById('newsletter-email').value = '';
+            // Show success message
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="bi bi-check"></i> Subscribed!';
+            this.style.background = 'var(--accent)';
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.style.background = '#000';
+                document.getElementById('newsletter-email').value = '';
+            }, 2000);
         } else {
             alert('Please enter a valid email address.');
         }
     });
     
     // Search functionality
-    document.getElementById('search').addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        document.querySelectorAll('.product').forEach(product => {
-            const title = product.querySelector('p').textContent.toLowerCase();
-            if (title.includes(query)) {
-                product.style.display = 'block';
-            } else {
-                product.style.display = 'none';
-            }
+    const searchInput = document.getElementById('search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.product').forEach(product => {
+                const title = product.querySelector('p').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
         });
+    }
+    
+    // Initialize product animations
+    const productsElements = document.querySelectorAll('.product');
+    productsElements.forEach((product, index) => {
+        product.style.animationDelay = `${index * 0.1}s`;
     });
 });
 
@@ -1401,7 +1583,7 @@ function addToCart(productId, name, price, image, size, quantity, type) {
     formData.append('type', type);
     
     // Send AJAX request
-    fetch('add_to_cart.php', {
+    fetch('../app/add_to_cart.php', {
         method: 'POST',
         body: formData
     })
@@ -1413,61 +1595,211 @@ function addToCart(productId, name, price, image, size, quantity, type) {
                 cart.textContent = `CART (${data.cartCount})`;
             });
             
+            // Update cart count in mobile menu
+            const mobileCart = document.querySelector('.mobile-menu a[href="cart.php"]');
+            if (mobileCart) {
+                mobileCart.textContent = `Cart (${data.cartCount})`;
+            }
+            
             // Show notification
             const notification = document.getElementById('cartNotification');
-            notification.textContent = `${name} added to cart!`;
+            notification.innerHTML = `<i class="bi bi-check-circle"></i> <span>${name} added to cart!</span>`;
             notification.style.display = 'block';
             
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 3000);
+        } else {
+            alert('Failed to add item to cart. Please try again.');
         }
     })
     .catch(error => {
         console.error('Error:', error);
+        alert('Network error. Please check your connection.');
     });
 }
+
+// Floating Contact Form
+const contactToggle = document.getElementById('contactToggle');
+const contactPanel = document.getElementById('contactPanel');
+const contactClose = document.getElementById('contactClose');
+const contactForm = document.getElementById('contactForm');
+
+if (contactToggle && contactPanel) {
+    // Replace emoji with Bootstrap icon
+    contactToggle.innerHTML = '<i class="bi bi-chat-dots"></i>';
+    
+    contactToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        contactToggle.classList.toggle('active');
+        contactPanel.classList.toggle('active');
+    });
+    
+    if (contactClose) {
+        contactClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            contactToggle.classList.remove('active');
+            contactPanel.classList.remove('active');
+        });
+    }
+    
+    document.addEventListener('click', (e) => {
+        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
+            contactToggle.classList.remove('active');
+            contactPanel.classList.remove('active');
+        }
+    });
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            if (data.email && data.message) {
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalHTML = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Sending...';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Sent!';
+                    submitBtn.style.background = '#10b981';
+                    
+                    contactForm.reset();
+                    
+                    setTimeout(() => {
+                        contactToggle.classList.remove('active');
+                        contactPanel.classList.remove('active');
+                        
+                        setTimeout(() => {
+                            submitBtn.innerHTML = originalHTML;
+                            submitBtn.style.background = 'var(--accent)';
+                        }, 1000);
+                    }, 1500);
+                }, 1500);
+            }
+        });
+    }
+}
+
+// Back to Top functionality
+window.addEventListener('scroll', () => {
+    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    const progress = document.getElementById('progress');
+    if (progress) {
+        progress.style.width = scrollPercent + '%';
+    }
+    
+    // Back to top button
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        if (window.scrollY > 300) {
+            backToTopBtn.style.display = 'flex';
+            backToTopBtn.style.alignItems = 'center';
+            backToTopBtn.style.justifyContent = 'center';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    }
+});
+
+document.getElementById('back-to-top').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Theme toggle functionality
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        
+        // Update icon
+        const icon = themeToggle.querySelector('i');
+        if (icon) {
+            if (document.body.classList.contains('dark')) {
+                icon.className = 'bi bi-sun';
+                themeToggle.setAttribute('aria-label', 'Switch to light mode');
+            } else {
+                icon.className = 'bi bi-moon';
+                themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+            }
+        }
+    });
+    
+    // Load saved theme
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        const icon = themeToggle.querySelector('i');
+        if (icon) {
+            icon.className = 'bi bi-sun';
+            themeToggle.setAttribute('aria-label', 'Switch to light mode');
+        }
+    }
+}
+
+// Mobile menu toggle
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+function toggleMenu() {
+    if (hamburger && mobileMenu) {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    }
+}
+
+if (hamburger) {
+    hamburger.addEventListener('click', toggleMenu);
+}
+
+// Close mobile menu when clicking links
+document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', toggleMenu);
+});
 </script>
 
-<!-- Floating Contact Form -->
+<!-- Floating Contact Form (Fixed with Bootstrap Icons) -->
 <div class="floating-contact-container">
     <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
-        ✉️
+        <i class="bi bi-chat-dots"></i>
     </button>
     
     <div class="contact-panel" id="contactPanel">
         <button class="contact-close" id="contactClose">&times;</button>
         
-        <h3>CONTACT ARCHIVES</h3>
+        <h3><i class="bi bi-archive"></i> CONTACT ARCHIVES</h3>
         <p>Send us a message directly or connect through our social channels.</p>
         
         <form class="contact-form" id="contactForm">
             <input type="text" placeholder="Your Name" required>
             <input type="email" placeholder="Email Address" required>
             <textarea placeholder="Your Message..." required></textarea>
-            <button type="submit">Send Message</button>
+            <button type="submit"><i class="bi bi-send"></i> Send Message</button>
         </form>
         
         <div class="social-links">
             <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                📸
+                <i class="bi bi-instagram"></i>
             </a>
             <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                𝕏
+                <i class="bi bi-twitter-x"></i>
             </a>
             <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                🎵
+                <i class="bi bi-music-note-beamed"></i>
             </a>
             <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                ▶️
+                <i class="bi bi-youtube"></i>
             </a>
             <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                ✉️
+                <i class="bi bi-envelope"></i>
             </a>
         </div>
     </div>
 </div>
 
-<script src="../js/main.js"></script>
 </body>
 </html>
