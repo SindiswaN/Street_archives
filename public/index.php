@@ -291,8 +291,8 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 
 /* ---------- FOLDER BLOCKS ---------- */
 .folder-section {
-  width: 85%;
-  max-width: 1100px;
+  width: 95%;
+  max-width: 1400px;
   margin: 120px auto;
   position: relative;
   opacity: 0;
@@ -301,8 +301,8 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 }
 
 .folder-tab {
-  width: 180px;
-  height: 35px;
+  width: 220px;
+  height: 45px;
   background: var(--offwhite);
   border: 2px solid var(--black);
   border-bottom: none;
@@ -321,8 +321,8 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   background: var(--offwhite);
   border: 2px solid var(--black);
   border-radius: 0 15px 15px 15px;
-  padding: 40px;
-  box-shadow: 12px 12px 0px var(--black);
+  padding: 60px;
+ box-shadow: 15px 15px 0px var(--black);
   margin-top: -2px;
   position: relative;
   z-index: 1;
@@ -336,8 +336,8 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 
 .folder-content {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 40px;
+ grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
   align-items: center;
 }
 
@@ -358,7 +358,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 }
 
 .folder-text h3 {
-    font-size: 32px;
+    font-size: 42px;
     font-weight: 800;
     text-transform: uppercase;
     margin-bottom: 10px;
@@ -945,7 +945,7 @@ body.dark .social-link {
   <div class="folder-tab"><span>DIR_MEDIA</span></div>
   <div class="folder-body">
     <div class="folder-content">
-      <div class="folder-image"><video src="images/media.mp4" autoplay loop muted playsinline></video></div>
+      <div class="folder-image"><video src="images/video1.mp4" autoplay loop muted playsinline></video></div>
       <div class="folder-text">
         <h3>Visual Media</h3>
         <p>Cinematic documentation of street culture in motion. Editorials, short films, and visual records captured without performance or polish. Raw, intentional, honest.</p>
