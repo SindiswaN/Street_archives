@@ -1,5 +1,7 @@
 <?php
 $cartCount = getCartCount(); // Make sure this function is available
+require_once(__DIR__ . '/../app/config.php');
+require_once(__DIR__ . '/../app/database.php');
 ?>
 
 <!-- Header Component -->
@@ -24,10 +26,57 @@ $cartCount = getCartCount(); // Make sure this function is available
 </header>
 
 <!-- Mobile Menu -->
+<!-- Mobile Menu HTML -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
 <div class="mobile-menu" id="mobileMenu">
-  <a href="about.php" onclick="toggleMenu()">About Us</a>
-  <a href="fashion.php" onclick="toggleMenu()">Fashion</a>
-  <a href="media.php" onclick="toggleMenu()">Media</a>
-  <a href="music.php" onclick="toggleMenu()">Music</a>
-  <a href="cart.php" onclick="toggleMenu()">Cart (<span id="mobile-cart-count"><?php echo $cartCount; ?></span>)</a>
+  <div class="mobile-menu-header">
+    <h3>MENU</h3>
+    <button class="mobile-menu-close" id="mobileMenuClose">
+      <i class="bi bi-x"></i>
+    </button>
+  </div>
+  
+  <nav class="mobile-menu-nav">
+    <a href="index.php">
+      <i class="bi bi-house"></i>
+      Home
+    </a>
+    <a href="about.php">
+      <i class="bi bi-info-circle"></i>
+      About
+    </a>
+    <a href="fashion.php">
+      <i class="bi bi-tshirt"></i>
+      Fashion
+    </a>
+    <a href="music.php">
+      <i class="bi bi-music-note-beamed"></i>
+      Music
+    </a>
+    <a href="media.php">
+      <i class="bi bi-camera-video"></i>
+      Media
+    </a>
+    <a href="cart.php">
+      <i class="bi bi-cart"></i>
+      Cart
+      <span class="mobile-cart-badge" id="mobileCartCount"><?php echo $cartCount; ?></span>
+    </a>
+  </nav>
+  
+  <div class="mobile-menu-footer">
+    <p>Follow Archives</p>
+    <div class="mobile-social-links">
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+        <i class="bi bi-instagram"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+        <i class="bi bi-twitter-x"></i>
+      </a>
+      <a href="https://soundcloud.com" target="_blank" aria-label="SoundCloud">
+        <i class="bi bi-music-note-beamed"></i>
+      </a>
+    </div>
+  </div>
 </div>

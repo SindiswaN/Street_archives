@@ -1,6 +1,8 @@
 <?php
 $pageTitle = 'About';
 require_once(__DIR__ . '/../app/config.php');
+require_once(__DIR__ . '/../app/database.php');
+
 $cartCount = getCartCount(); 
 ?>
 
@@ -15,6 +17,8 @@ $cartCount = getCartCount();
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="menustyle.css" rel="stylesheet">
+
 <style>
 /* ---------- GLOBAL ---------- */
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -156,7 +160,7 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
     color: var(--text);
     font-size: 14px;
 }
-#search::placeholder { color: var(--black); }
+#search::placeholder { color: var(--grey); }
 
 /* Hamburger Button */
 .hamburger {
@@ -171,31 +175,6 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   height: 2px;
   background-color: var(--black);
   transition: 0.3s;
-}
-
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1500;
-}
-.mobile-menu.active { right: 0; }
-.mobile-menu a {
-  text-decoration: none;
-  color: var(--black);
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
 }
 
 .cart {
@@ -246,50 +225,6 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
 
 .hamburger.active span:nth-child(3) {
   transform: rotate(-45deg) translateY(2px);
-}
-
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1500;
-  padding: 20px;
-}
-
-.mobile-menu.active { 
-  right: 0; 
-}
-
-.mobile-menu a {
-  text-decoration: none;
-  color: var(--text);
-  font-size: 22px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 12px 0;
-  width: 100%;
-  text-align: center;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.mobile-menu a:hover {
-  color: var(--accent);
-  transform: translateX(-10px);
-}
-
-body.dark .mobile-menu a {
-  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 /* ---------- ABOUT HERO ---------- */
@@ -1125,10 +1060,10 @@ footer p:last-child {
 .mb-40 { margin-bottom: 40px; }
 .highlight { color: var(--accent); }
 
-/* Back to Top Button */
+/* Back to Top Button - FIXED POSITION */
 #back-to-top {
   position: fixed;
-  bottom: 30px;
+  bottom: 100px; /* Moved above contact button */
   right: 30px;
   width: 50px;
   height: 50px;
@@ -1139,18 +1074,413 @@ footer p:last-child {
   font-size: 20px;
   cursor: pointer;
   display: none;
-  z-index: 100;
-  box-shadow: 0 8px 25px rgba(255, 60, 0, 0.3);
-  transition: all 0.3s var(--transition);
+  z-index: 9995; /* Below contact form */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
-
 #back-to-top:hover {
-  transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 12px 30px rgba(255, 60, 0, 0.4);
-  background: var(--black);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
 }
+/* Scroll Progress Bar */
+#progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--accent);
+    z-index: 1000;
+}
+
+/* Cursor Follower */
+#cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease-out;
+}
+
+/* Toast Notification */
+#toast {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: var(--accent);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.3s;
+    z-index: 1500;
+}
+#toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---------- ENHANCED FLOATING CONTACT FORM ---------- */
+.floating-contact-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000;
+}
+
+.contact-toggle-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff5c33);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(255, 60, 0, 0.4);
+    transition: all 0.3s var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    position: relative;
+}
+
+.contact-toggle-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, var(--black), #333);
+    box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
+}
+
+.contact-toggle-btn.active {
+    transform: rotate(45deg);
+    background: var(--black);
+}
+
+/* FIXED: Contact panel positioned ABOVE the button */
+.contact-panel {
+    position: absolute;
+    bottom: 70px; /* This positions it above the button */
+    right: 0;
+    width: 380px;
+    background: var(--header-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 12px 12px 0px var(--black);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.contact-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-icon {
+    font-size: 40px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.contact-panel h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+.contact-subtitle {
+    font-size: 11px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Form Groups with Icons */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    background: var(--bg);
+    border: 2px solid var(--grey);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    transition: all 0.3s var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 60, 0, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    border: 2px solid var(--accent);
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    background: var(--black);
+    border-color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--black);
+}
+
+.social-links {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid var(--grey);
+}
+
+.connect-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    text-align: center;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--offwhite);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s var(--transition);
+    border: 1px solid var(--grey);
+}
+
+.social-link:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-3px);
+    border-color: var(--accent);
+}
+
+.contact-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s var(--transition);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.contact-close:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--accent);
+    transform: rotate(90deg);
+}
+
+/* Dark mode adjustments */
+body.dark .contact-panel {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .form-group input,
+body.dark .form-group textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+body.dark .social-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-contact-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .contact-panel {
+        width: calc(100vw - 40px);
+        right: -15px;
+        padding: 25px;
+    }
+    
+    .contact-toggle-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    /* Adjust back-to-top button for mobile */
+    #back-to-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-contact-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .contact-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+/* About Page Menu (Table of Contents style) */
+.about-page-menu {
+  background: linear-gradient(135deg, var(--black), #222);
+  color: white;
+  width: 320px;
+}
+
+.about-page-menu a {
+  color: white !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  font-size: 16px !important;
+  padding: 10px 0 !important;
+  text-align: left !important;
+  padding-left: 20px !important;
+}
+
+.about-page-menu a:hover {
+  color: var(--accent) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  transform: translateX(10px) !important;
+}
+
+/* About Menu Toggle Button */
+.about-menu-toggle {
+  position: fixed;
+  bottom: 100px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 9996;
+  box-shadow: 0 4px 12px rgba(255, 60, 0, 0.3);
+  transition: all 0.3s var(--transition);
+}
+
+.about-menu-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(255, 60, 0, 0.4);
+}
+
+.about-menu-toggle i {
+  transition: transform 0.3s var(--transition);
+}
+
+.about-menu-toggle.active i {
+  transform: rotate(45deg);
+}
+
+/* Dark mode adjustment */
+body.dark .about-page-menu {
+  background: linear-gradient(135deg, #111, #333);
+}
+
+
 
 /* ============================================
    MOBILE RESPONSIVE STYLES
@@ -1563,21 +1893,39 @@ body.dark .newsletter input::placeholder {
   <p>Loading Archive...</p>
 </div>
 
+<!-- Preloader hiding script -->
+<script>
+window.addEventListener('load', function() {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.style.opacity = '0';
+        setTimeout(() => {
+            preloader.style.display = 'none';
+        }, 500);
+    }
+});
+
+if (document.readyState === 'complete') {
+    document.getElementById('preloader').style.display = 'none';
+}
+</script>
+
 <div class="top-bar">
   <p>CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE ~ CULTURE OVER COMMODITY ~ LIVE FREE, DIE WITH MONEY ~ FASHION • MEDIA • SOUND ARCHIVE</p>
 </div>
 
 <?php require_once(__DIR__ . '/../includes/header.php'); ?>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.php">Home</a>
+
+<!-- ABOUT Mobile Menu (page navigation) -->
+<div class="mobile-menu about-page-menu" id="aboutPageMenu">
   <a href="#vision">Vision</a>
   <a href="#manifesto">Manifesto</a>
   <a href="#founder">Founder</a>
   <a href="#timeline">Timeline</a>
   <a href="#pillars">Pillars</a>
   <a href="#scope">Scope</a>
-  <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
+  <a href="#gallery">Gallery</a>
 </div>
 
 <section class="about-hero">
@@ -1805,80 +2153,15 @@ body.dark .newsletter input::placeholder {
   <p>A division of Street Jewels Connections</p>
 </footer>
 
-<button id="back-to-top" aria-label="Back to top"><i class="bi bi-chevron-up"></i></button>
+<div id="progress"></div>
+<div id="cursor"></div>
+<div id="toast"></div>
+<button id="back-to-top">
+  <i class="bi bi-chevron-up"></i>
+</button>
 
 <script>
-// Preloader
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    preloader.style.transition = 'opacity 0.5s ease';
-    preloader.style.opacity = '0';
-    setTimeout(() => {
-        preloader.style.display = 'none';
-    }, 500);
-    
-    // Initialize animations
-    initScrollAnimations();
-});
 
-// Toggle Mobile Menu
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-
-function toggleMenu() {
-    if (!hamburger || !mobileMenu) return;
-    
-    hamburger.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-}
-
-if (hamburger) {
-    hamburger.addEventListener('click', toggleMenu);
-    hamburger.addEventListener('touchstart', toggleMenu);
-}
-
-// Close mobile menu when clicking links
-document.querySelectorAll('.mobile-menu a').forEach(link => {
-    link.addEventListener('click', toggleMenu);
-});
-
-// Close menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (mobileMenu && mobileMenu.classList.contains('active') && 
-        !mobileMenu.contains(e.target) && 
-        hamburger && !hamburger.contains(e.target)) {
-        toggleMenu();
-    }
-});
-
-// Theme Toggle
-const themeToggle = document.getElementById('theme-toggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        const icon = themeToggle.querySelector('i');
-        if (document.body.classList.contains('dark')) {
-            icon.className = 'bi bi-sun';
-            themeToggle.setAttribute('aria-label', 'Switch to light mode');
-        } else {
-            icon.className = 'bi bi-moon';
-            themeToggle.setAttribute('aria-label', 'Switch to dark mode');
-        }
-        
-        // Save preference to localStorage
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-
-    // Initialize theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark' || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !savedTheme)) {
-        document.body.classList.add('dark');
-        const icon = themeToggle.querySelector('i');
-        if (icon) icon.className = 'bi bi-sun';
-        themeToggle.setAttribute('aria-label', 'Switch to light mode');
-    }
-}
 
 // Back to Top Button
 const backToTopBtn = document.getElementById('back-to-top');
@@ -2042,6 +2325,52 @@ if (heroVideo) {
     });
 }
 
+// About Page Menu Toggle
+const aboutMenuToggle = document.getElementById('aboutMenuToggle');
+const aboutPageMenu = document.getElementById('aboutPageMenu');
+
+function toggleAboutMenu() {
+    aboutMenuToggle.classList.toggle('active');
+    aboutPageMenu.classList.toggle('active');
+}
+
+if (aboutMenuToggle && aboutPageMenu) {
+    aboutMenuToggle.addEventListener('click', toggleAboutMenu);
+    
+    // Close menu when clicking on a link
+    aboutPageMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (aboutPageMenu.classList.contains('active')) {
+                toggleAboutMenu();
+            }
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (aboutPageMenu.classList.contains('active') && 
+            !aboutPageMenu.contains(e.target) && 
+            !aboutMenuToggle.contains(e.target)) {
+            toggleAboutMenu();
+        }
+    });
+}
+
+// Make sure menus don't conflict
+document.addEventListener('click', (e) => {
+    // If main menu is open and about menu button is clicked, close main menu first
+    if (mobileMenu && mobileMenu.classList.contains('active') && 
+        aboutMenuToggle && aboutMenuToggle.contains(e.target)) {
+        toggleMenu(); // Close main menu
+    }
+    
+    // If about menu is open and hamburger is clicked, close about menu first
+    if (aboutPageMenu && aboutPageMenu.classList.contains('active') && 
+        hamburger && hamburger.contains(e.target)) {
+        toggleAboutMenu(); // Close about menu
+    }
+});
+
 // Touch-friendly improvements
 document.addEventListener('touchstart', () => {}, { passive: true });
 
@@ -2056,5 +2385,72 @@ document.addEventListener('touchend', (e) => {
 }, { passive: false });
 </script>
 
+<!-- Include main.js - This handles hamburger menu and contact form -->
+<script src="../js/main.js"></script>
+
+<!-- Floating Contact Form -->
+<div class="floating-contact-container">
+    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+    
+    <div class="contact-panel" id="contactPanel">
+        <button class="contact-close" id="contactClose">&times;</button>
+        
+        <div class="contact-header">
+            <i class="bi bi-archive contact-icon"></i>
+            <h3>CONTACT ARCHIVES</h3>
+            <p class="contact-subtitle">Send encrypted message to HQ</p>
+        </div>
+        
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <i class="bi bi-person"></i>
+                <input type="text" placeholder="CALLSIGN" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" placeholder="FREQUENCY (EMAIL)" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-chat-text"></i>
+                <textarea placeholder="ENCRYPTED MESSAGE..." rows="4" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-send"></i>
+                <span>TRANSMIT MESSAGE</span>
+            </button>
+        </form>
+        
+        <div class="social-links">
+            <p class="connect-title">ALTERNATIVE FREQUENCIES</p>
+            <div class="social-icons">
+                <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
+                    <i class="bi bi-music-note-beamed"></i>
+                </a>
+                <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
+                    <i class="bi bi-youtube"></i>
+                </a>
+                <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
+                    <i class="bi bi-envelope-paper"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Page Menu Toggle Button -->
+<button class="about-menu-toggle" id="aboutMenuToggle" aria-label="Open about page menu">
+  <i class="bi bi-list"></i>
+</button>
 </body>
 </html>
