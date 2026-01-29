@@ -174,17 +174,14 @@ header{
 }
 /* REDUCED LOGO SIZE */
 .logo-3d {
-  width: 50px; /* Reduced from 80% to 50px */
-  height: 50px; /* Reduced to match width */
+  width: 120px; /* Reduced from 80% to 50px */
+  height: 70px; /* Reduced to match width */
   object-fit: cover;
   animation: rotate3D 10s linear infinite;
   transform-style: preserve-3d;
 }
 
-@keyframes rotate3D {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
+
 
 nav ul{list-style:none; display:none; gap:28px;}
 nav a{text-decoration:none; color:#111; font-weight:600; text-transform: uppercase; font-size: 13px;}
