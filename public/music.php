@@ -1,6 +1,7 @@
 <?php
 $pageTitle = 'Music';
 require_once(__DIR__ . '/../app/config.php');
+require_once(__DIR__ . '/../app/database.php');
 $cartCount = getCartCount();
 ?>
 <!doctype html>
@@ -13,6 +14,7 @@ $cartCount = getCartCount();
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="menustyle.css" rel="stylesheet">
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -218,31 +220,6 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   height: 2px;
   background-color: var(--black);
   transition: 0.3s;
-}
-
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1500;
-}
-.mobile-menu.active { right: 0; }
-.mobile-menu a {
-  text-decoration: none;
-  color: var(--black);
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
 }
 
 .cart {
@@ -903,6 +880,298 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
     transform: translateY(-2px);
 }
 
+/* ---------- ENHANCED FLOATING CONTACT FORM ---------- */
+.floating-contact-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000;
+}
+
+.contact-toggle-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff5c33);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(255, 60, 0, 0.4);
+    transition: all 0.3s var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    position: relative;
+}
+
+.contact-toggle-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, var(--black), #333);
+    box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
+}
+
+.contact-toggle-btn.active {
+    transform: rotate(45deg);
+    background: var(--black);
+}
+
+/* FIXED: Contact panel positioned ABOVE the button */
+.contact-panel {
+    position: absolute;
+    bottom: 70px; /* This positions it above the button */
+    right: 0;
+    width: 380px;
+    background: var(--header-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 12px 12px 0px var(--black);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.contact-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-icon {
+    font-size: 40px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.contact-panel h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+.contact-subtitle {
+    font-size: 11px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Form Groups with Icons */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    background: var(--bg);
+    border: 2px solid var(--grey);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    transition: all 0.3s var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 60, 0, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    border: 2px solid var(--accent);
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    background: var(--black);
+    border-color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--black);
+}
+
+.social-links {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid var(--grey);
+}
+
+.connect-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    text-align: center;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--offwhite);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s var(--transition);
+    border: 1px solid var(--grey);
+}
+
+.social-link:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-3px);
+    border-color: var(--accent);
+}
+
+.contact-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s var(--transition);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.contact-close:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--accent);
+    transform: rotate(90deg);
+}
+
+/* Dark mode adjustments */
+body.dark .contact-panel {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .form-group input,
+body.dark .form-group textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+body.dark .social-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-contact-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .contact-panel {
+        width: calc(100vw - 40px);
+        right: -15px;
+        padding: 25px;
+    }
+    
+    .contact-toggle-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    /* Adjust back-to-top button for mobile */
+    #back-to-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-contact-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .contact-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
 /* ---------- MUSIC STREAMING LINKS ---------- */
 .music-links-section {
     width: 85%;
@@ -1096,67 +1365,6 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
     color: white;
 }
 
-/* ---------- FLOATING CONTACT FORM ---------- */
-.floating-contact-container {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 10000;
-}
-
-.contact-toggle-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), #ff5c33);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 8px 30px rgba(255, 60, 0, 0.4);
-    transition: all 0.3s var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10001;
-    position: relative;
-}
-
-.contact-toggle-btn:hover {
-    transform: scale(1.1) rotate(90deg);
-    background: linear-gradient(135deg, var(--black), #333);
-    box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
-}
-
-.contact-toggle-btn.active {
-    transform: rotate(45deg);
-    background: var(--black);
-}
-
-.contact-panel {
-    position: absolute;
-    bottom: 70px;
-    right: 0;
-    width: 380px;
-    background: var(--header-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 2px solid var(--black);
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 12px 12px 0px var(--black);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10000;
-}
-
-.contact-panel.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-}
 
 /* ---------- CART NOTIFICATION ---------- */
 .cart-notification {
@@ -1580,6 +1788,67 @@ document.addEventListener('DOMContentLoaded', function() {
 <button id="back-to-top">
   <i class="bi bi-chevron-up"></i>
 </button>
+
+
+<!-- Floating Contact Form -->
+<div class="floating-contact-container">
+    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+    
+    <div class="contact-panel" id="contactPanel">
+        <button class="contact-close" id="contactClose">&times;</button>
+        
+        <div class="contact-header">
+            <i class="bi bi-archive contact-icon"></i>
+            <h3>CONTACT ARCHIVES</h3>
+            <p class="contact-subtitle">Send encrypted message to HQ</p>
+        </div>
+        
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <i class="bi bi-person"></i>
+                <input type="text" placeholder="CALLSIGN" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" placeholder="FREQUENCY (EMAIL)" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-chat-text"></i>
+                <textarea placeholder="ENCRYPTED MESSAGE..." rows="4" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-send"></i>
+                <span>TRANSMIT MESSAGE</span>
+            </button>
+        </form>
+        
+        <div class="social-links">
+            <p class="connect-title">ALTERNATIVE FREQUENCIES</p>
+            <div class="social-icons">
+                <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
+                    <i class="bi bi-music-note-beamed"></i>
+                </a>
+                <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
+                    <i class="bi bi-youtube"></i>
+                </a>
+                <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
+                    <i class="bi bi-envelope-paper"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 // Enhanced Music Player with Real Functionality
@@ -2027,7 +2296,7 @@ function addToCart(productId, name, price, image, size = 'Digital', quantity = 1
     formData.append('type', type);
     
     // Send request to add_to_cart.php
-    fetch('../app/add_to_cart.php', {
+    fetch('add_to_cart.php', {
         method: 'POST',
         body: formData
     })
@@ -2180,65 +2449,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Floating Contact Form -->
-<div class="floating-contact-container">
-    <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
-        <i class="bi bi-chat-dots"></i>
-    </button>
-    
-    <div class="contact-panel" id="contactPanel">
-        <button class="contact-close" id="contactClose">&times;</button>
-        
-        <div class="contact-header">
-            <i class="bi bi-archive contact-icon"></i>
-            <h3>CONTACT ARCHIVES</h3>
-            <p class="contact-subtitle">Send encrypted message to HQ</p>
-        </div>
-        
-        <form class="contact-form" id="contactForm">
-            <div class="form-group">
-                <i class="bi bi-person"></i>
-                <input type="text" placeholder="CALLSIGN" required>
-            </div>
-            
-            <div class="form-group">
-                <i class="bi bi-envelope"></i>
-                <input type="email" placeholder="FREQUENCY (EMAIL)" required>
-            </div>
-            
-            <div class="form-group">
-                <i class="bi bi-chat-text"></i>
-                <textarea placeholder="ENCRYPTED MESSAGE..." rows="4" required></textarea>
-            </div>
-            
-            <button type="submit" class="submit-btn">
-                <i class="bi bi-send"></i>
-                <span>TRANSMIT MESSAGE</span>
-            </button>
-        </form>
-        
-        <div class="social-links">
-            <p class="connect-title">ALTERNATIVE FREQUENCIES</p>
-            <div class="social-icons">
-                <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                    <i class="bi bi-instagram"></i>
-                </a>
-                <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                    <i class="bi bi-twitter-x"></i>
-                </a>
-                <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                    <i class="bi bi-music-note-beamed"></i>
-                </a>
-                <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                    <i class="bi bi-youtube"></i>
-                </a>
-                <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                    <i class="bi bi-envelope-paper"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- Include main.js - This handles hamburger menu and contact form -->
+<script src="../js/main.js"></script>
 </body>
 </html>

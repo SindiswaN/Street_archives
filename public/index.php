@@ -16,6 +16,7 @@ $cartCount = getCartCount();
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="menustyle.css" rel="stylesheet">
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -222,30 +223,6 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   transition: 0.3s;
 }
 
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1500;
-}
-.mobile-menu.active { right: 0; }
-.mobile-menu a {
-  text-decoration: none;
-  color: var(--black);
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
 
 .cart {
     font-weight: 700;
@@ -1152,7 +1129,7 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 10000; /* Highest z-index */
+    z-index: 10000;
 }
 
 .contact-toggle-btn {
@@ -1184,9 +1161,10 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: var(--black);
 }
 
+/* FIXED: Contact panel positioned ABOVE the button */
 .contact-panel {
     position: absolute;
-    bottom: 70px;
+    bottom: 70px; /* This positions it above the button */
     right: 0;
     width: 380px;
     background: var(--header-bg);
@@ -1201,6 +1179,8 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     transform: translateY(20px) scale(0.95);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 10000;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
 }
 
 .contact-panel.active {
@@ -1280,27 +1260,6 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     resize: vertical;
 }
 
-.form-group input:valid,
-.form-group textarea:valid {
-    border-color: #10b981;
-}
-
-.form-group input:invalid:focus,
-.form-group textarea:invalid:focus {
-    border-color: #ef4444;
-}
-
-.form-group input:focus + i,
-.form-group textarea:focus + i {
-    color: var(--accent);
-    animation: bounce 0.5s ease;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(-50%); }
-    50% { transform: translateY(-60%); }
-}
-
 .submit-btn {
     width: 100%;
     background: var(--accent);
@@ -1328,61 +1287,6 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     box-shadow: 0 6px 0px var(--black);
 }
 
-.submit-btn:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
-.submit-btn.sending {
-    background: var(--grey);
-    pointer-events: none;
-}
-
-.submit-btn.sending i {
-    animation: spin 1s linear infinite;
-}
-
-/* Transmission Status */
-.transmission-status {
-    margin: 25px 0;
-    padding: 15px;
-    background: rgba(255, 60, 0, 0.05);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 60, 0, 0.1);
-}
-
-.status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-}
-
-.response-time {
-    font-size: 10px;
-    opacity: 0.7;
-    text-align: center;
-    margin: 0;
-}
-
-/* Social Links */
 .social-links {
     margin-top: 25px;
     padding-top: 25px;
@@ -1451,6 +1355,65 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: rgba(0, 0, 0, 0.1);
     color: var(--accent);
     transform: rotate(90deg);
+}
+
+/* Dark mode adjustments */
+body.dark .contact-panel {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .form-group input,
+body.dark .form-group textarea {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+body.dark .social-link {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .floating-contact-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .contact-panel {
+        width: calc(100vw - 40px);
+        right: -15px;
+        padding: 25px;
+    }
+    
+    .contact-toggle-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    /* Adjust back-to-top button for mobile */
+    #back-to-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-contact-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .contact-toggle-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
 }
 
 /* Dark mode adjustments */
@@ -1836,10 +1799,6 @@ body.dark .play-btn {
     font-size: 16px;
   }
   
-  /* Mobile menu improvements */
-  .mobile-menu a {
-    font-size: 20px;
-  }
   
   /* Hide cart count on very small screens */
   .cart {
@@ -2212,14 +2171,6 @@ button,
                 <span>TRANSMIT MESSAGE</span>
             </button>
         </form>
-        
-        <div class="transmission-status">
-            <div class="status-indicator">
-                <span class="status-dot"></span>
-                <span>LIVE TRANSMISSION</span>
-            </div>
-            <p class="response-time">Response within 24-48 hours</p>
-        </div>
         
         <div class="social-links">
             <p class="connect-title">ALTERNATIVE FREQUENCIES</p>

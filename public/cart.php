@@ -26,6 +26,7 @@ $cartCount = count($_SESSION['cart']);
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link href="menustyle.css" rel="stylesheet">
 
 <style>
 /* ---------- GLOBAL ---------- */
@@ -191,31 +192,6 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   height: 2px;
   background-color: var(--black);
   transition: 0.3s;
-}
-
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1500;
-}
-.mobile-menu.active { right: 0; }
-.mobile-menu a {
-  text-decoration: none;
-  color: var(--black);
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
 }
 
 .cart {
@@ -587,6 +563,201 @@ body.dark footer { background: #222; }
     background: var(--black);
     color: white;
     transform: translateY(-2px);
+}
+
+/* ---------- ENHANCED FLOATING CONTACT FORM ---------- */
+.floating-contact-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000; /* Highest z-index */
+}
+
+.contact-toggle-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #ff5c33);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(255, 60, 0, 0.4);
+    transition: all 0.3s var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    position: relative;
+}
+
+.contact-toggle-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, var(--black), #333);
+    box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
+}
+
+.contact-toggle-btn.active {
+    transform: rotate(45deg);
+    background: var(--black);
+}
+
+.contact-panel {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 380px;
+    background: var(--header-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 12px 12px 0px var(--black);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+}
+
+.contact-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contact-icon {
+    font-size: 40px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.contact-panel h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+.contact-subtitle {
+    font-size: 11px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Form Groups with Icons */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    background: var(--bg);
+    border: 2px solid var(--grey);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    transition: all 0.3s var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 60, 0, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-group input:valid,
+.form-group textarea:valid {
+    border-color: #10b981;
+}
+
+.form-group input:invalid:focus,
+.form-group textarea:invalid:focus {
+    border-color: #ef4444;
+}
+
+.form-group input:focus + i,
+.form-group textarea:focus + i {
+    color: var(--accent);
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(-50%); }
+    50% { transform: translateY(-60%); }
+}
+
+.submit-btn {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    border: 2px solid var(--accent);
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s var(--transition);
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    background: var(--black);
+    border-color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--black);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.submit-btn.sending {
+    background: var(--grey);
+    pointer-events: none;
+}
+
+.submit-btn.sending i {
+    animation: spin 1s linear infinite;
 }
 
 /* Dark mode adjustments */
@@ -1031,6 +1202,7 @@ footer a:hover {
 </div>
 
 <script>
+// Preloader (simplified version to not conflict with main.js)
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         const preloader = document.getElementById('preloader');
@@ -1175,6 +1347,208 @@ document.addEventListener('DOMContentLoaded', function() {
   <i class="bi bi-chevron-up"></i>
 </button>
 
+<!-- Cart Functions Only (minimal to avoid conflicts) -->
+<script>
+// Cart Functions (standalone - won't conflict with main.js)
+function updateQuantity(index, change, newValue = null) {
+    let quantity;
+    if (newValue !== null) {
+        quantity = parseInt(newValue);
+        if (quantity < 1) quantity = 1;
+    } else {
+        const currentInput = document.querySelector(`#quantity-${index}`);
+        quantity = parseInt(currentInput.value) + change;
+        if (quantity < 1) quantity = 1;
+    }
+    
+    const currentInput = document.querySelector(`#quantity-${index}`);
+    if (currentInput) {
+        currentInput.value = quantity;
+    }
+    
+    fetch('update_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `index=${index}&quantity=${quantity}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Quantity updated!');
+            updateCartCount(data.cartCount);
+            const cartCountElement = document.querySelector('.cart-count');
+            if (cartCountElement) {
+                cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
+            }
+            updateTotal();
+        } else {
+            showNotification('Failed to update quantity', true);
+            if (currentInput) {
+                currentInput.value = quantity - change;
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Network error', true);
+        if (currentInput) {
+            currentInput.value = quantity - change;
+        }
+    });
+}
+
+function removeItem(index) {
+    if (confirm('Remove this item from your archive?')) {
+        fetch('remove_from_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `index=${index}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Item removed');
+                const itemElement = document.getElementById(`cart-item-${index}`);
+                if (itemElement) {
+                    itemElement.style.opacity = '0';
+                    itemElement.style.transform = 'translateX(100px)';
+                    setTimeout(() => {
+                        itemElement.remove();
+                        reindexCartItems();
+                    }, 300);
+                }
+                updateCartCount(data.cartCount);
+                const cartCountElement = document.querySelector('.cart-count');
+                if (cartCountElement) {
+                    if (data.cartItems === 0) {
+                        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> 0 ITEMS`;
+                    } else {
+                        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
+                    }
+                }
+                updateTotal();
+                if (data.cartItems === 0) {
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }
+            } else {
+                showNotification('Failed to remove item', true);
+            }
+        })
+    }
+}
+
+function updateCartCount(count) {
+    const cartElements = document.querySelectorAll('.cart');
+    cartElements.forEach(cart => {
+        cart.textContent = `CART (${count})`;
+    });
+}
+
+function updateTotal() {
+    let subtotal = 0;
+    document.querySelectorAll('.cart-item').forEach(item => {
+        const priceElement = item.querySelector('.cart-item-price');
+        const quantityInput = item.querySelector('input[type="number"]');
+        
+        if (priceElement && quantityInput) {
+            const priceText = priceElement.textContent;
+            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+            const quantity = parseInt(quantityInput.value);
+            
+            if (!isNaN(price) && !isNaN(quantity)) {
+                subtotal += price * quantity;
+            }
+        }
+    });
+    
+    const subtotalElements = document.querySelectorAll('.summary-row span');
+    if (subtotalElements.length >= 2) {
+        subtotalElements[1].textContent = `R ${subtotal.toFixed(2)}`;
+        subtotalElements[3].textContent = `R ${subtotal.toFixed(2)}`;
+    }
+}
+
+function reindexCartItems() {
+    const cartItems = document.querySelectorAll('.cart-item');
+    cartItems.forEach((item, newIndex) => {
+        item.id = `cart-item-${newIndex}`;
+        
+        const quantityInput = item.querySelector('input[type="number"]');
+        if (quantityInput) {
+            quantityInput.id = `quantity-${newIndex}`;
+            quantityInput.replaceWith(quantityInput.cloneNode(true));
+            
+            const newInput = item.querySelector(`#quantity-${newIndex}`);
+            newInput.addEventListener('change', (e) => {
+                updateQuantity(newIndex, 0, e.target.value);
+            });
+        }
+        
+        const buttons = item.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.replaceWith(button.cloneNode(true));
+        });
+        
+        const decButton = item.querySelector('button:first-child');
+        const incButton = item.querySelector('button:last-child');
+        const removeButton = item.querySelector('.cart-item-remove');
+        
+        if (decButton) {
+            decButton.onclick = () => updateQuantity(newIndex, -1);
+        }
+        if (incButton) {
+            incButton.onclick = () => updateQuantity(newIndex, 1);
+        }
+        if (removeButton) {
+            removeButton.onclick = () => removeItem(newIndex);
+        }
+    });
+}
+
+function showNotification(message, isError = false) {
+    const notification = document.getElementById('cartNotification');
+    if (notification) {
+        notification.innerHTML = `<i class="bi ${isError ? 'bi-x-circle' : 'bi-check-circle'}"></i><span>${message}</span>`;
+        notification.style.background = isError ? '#dc3545' : 'var(--accent)';
+        notification.style.display = 'flex';
+        notification.style.opacity = '1';
+        
+        clearTimeout(window.notificationTimeout);
+        window.notificationTimeout = setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 300);
+        }, 3000);
+    }
+}
+
+function checkout() {
+    showNotification('Proceeding to checkout...');
+    setTimeout(() => {
+        window.location.href = 'checkout.php';
+    }, 1000);
+}
+
+// Initialize notification
+document.addEventListener('DOMContentLoaded', function() {
+    const notification = document.getElementById('cartNotification');
+    if (notification) {
+        notification.style.display = 'none';
+        notification.style.opacity = '0';
+    }
+});
+</script>
+
+<!-- Include main.js - This will handle hamburger menu AND contact form -->
+<script src="../js/main.js"></script>
+
 <!-- Floating Contact Form -->
 <div class="floating-contact-container">
     <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
@@ -1186,7 +1560,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         <div class="contact-header">
             <i class="bi bi-archive contact-icon"></i>
-            <h3>ARCHIVE TRANSMISSION</h3>
+            <h3>CONTACT ARCHIVES</h3>
             <p class="contact-subtitle">Send encrypted message to HQ</p>
         </div>
         
@@ -1235,348 +1609,5 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-<script>
-// Cart Functions - UPDATED VERSION
-function updateQuantity(index, change, newValue = null) {
-    let quantity;
-    if (newValue !== null) {
-        quantity = parseInt(newValue);
-        if (quantity < 1) quantity = 1;
-    } else {
-        const currentInput = document.querySelector(`#quantity-${index}`);
-        quantity = parseInt(currentInput.value) + change;
-        if (quantity < 1) quantity = 1;
-    }
-    
-    // Update immediately for better UX
-    const currentInput = document.querySelector(`#quantity-${index}`);
-    if (currentInput) {
-        currentInput.value = quantity;
-    }
-    
-    fetch('update_cart.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `index=${index}&quantity=${quantity}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification('Quantity updated!');
-            // Update cart count in header
-            updateCartCount(data.cartCount);
-            // Update cart count display on page
-            const cartCountElement = document.querySelector('.cart-count');
-            if (cartCountElement) {
-                cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
-            }
-            // Update price totals
-            updateTotal();
-        } else {
-            showNotification('Failed to update quantity', true);
-            // Revert input value on error
-            if (currentInput) {
-                currentInput.value = quantity - change;
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Network error', true);
-        // Revert input value on error
-        if (currentInput) {
-            currentInput.value = quantity - change;
-        }
-    });
-}
-
-function removeItem(index) {
-    if (confirm('Remove this item from your archive?')) {
-        fetch('remove_from_cart.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `index=${index}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification('Item removed');
-                // Remove item from DOM
-                const itemElement = document.getElementById(`cart-item-${index}`);
-                if (itemElement) {
-                    itemElement.style.opacity = '0';
-                    itemElement.style.transform = 'translateX(100px)';
-                    setTimeout(() => {
-                        itemElement.remove();
-                        // Re-index all remaining items after removal
-                        reindexCartItems();
-                    }, 300);
-                }
-                // Update cart count
-                updateCartCount(data.cartCount);
-                // Update cart count display
-                const cartCountElement = document.querySelector('.cart-count');
-                if (cartCountElement) {
-                    if (data.cartItems === 0) {
-                        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> 0 ITEMS`;
-                    } else {
-                        cartCountElement.innerHTML = `<i class="bi bi-archive"></i> ${data.cartCount} ITEMS`;
-                    }
-                }
-                // Update total
-                updateTotal();
-                // Reload if cart is empty
-                if (data.cartItems === 0) {
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            } else {
-                showNotification('Failed to remove item', true);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Network error', true);
-        });
-    }
-}
-
-function updateCartCount(count) {
-    // Update all cart count elements
-    const cartElements = document.querySelectorAll('.cart');
-    cartElements.forEach(cart => {
-        cart.textContent = `CART (${count})`;
-    });
-}
-
-function updateTotal() {
-    // Calculate new total
-    let subtotal = 0;
-    document.querySelectorAll('.cart-item').forEach(item => {
-        const priceElement = item.querySelector('.cart-item-price');
-        const quantityInput = item.querySelector('input[type="number"]');
-        
-        if (priceElement && quantityInput) {
-            const priceText = priceElement.textContent;
-            const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
-            const quantity = parseInt(quantityInput.value);
-            
-            if (!isNaN(price) && !isNaN(quantity)) {
-                subtotal += price * quantity;
-            }
-        }
-    });
-    
-    // Update subtotal display
-    const subtotalElements = document.querySelectorAll('.summary-row span');
-    if (subtotalElements.length >= 2) {
-        subtotalElements[1].textContent = `R ${subtotal.toFixed(2)}`;
-        subtotalElements[3].textContent = `R ${subtotal.toFixed(2)}`;
-    }
-}
-
-function reindexCartItems() {
-    // Re-index all cart items in the DOM
-    const cartItems = document.querySelectorAll('.cart-item');
-    cartItems.forEach((item, newIndex) => {
-        // Update the id
-        item.id = `cart-item-${newIndex}`;
-        
-        // Update quantity input id and event handlers
-        const quantityInput = item.querySelector('input[type="number"]');
-        if (quantityInput) {
-            quantityInput.id = `quantity-${newIndex}`;
-            // Remove old event listeners
-            quantityInput.replaceWith(quantityInput.cloneNode(true));
-            
-            // Add new event listener to the cloned input
-            const newInput = item.querySelector(`#quantity-${newIndex}`);
-            newInput.addEventListener('change', (e) => {
-                updateQuantity(newIndex, 0, e.target.value);
-            });
-        }
-        
-        // Update button event handlers
-        const buttons = item.querySelectorAll('button');
-        buttons.forEach(button => {
-            // Remove old event listeners by cloning
-            button.replaceWith(button.cloneNode(true));
-        });
-        
-        // Add new event listeners to buttons
-        const decButton = item.querySelector('button:first-child');
-        const incButton = item.querySelector('button:last-child');
-        const removeButton = item.querySelector('.cart-item-remove');
-        
-        if (decButton) {
-            decButton.onclick = () => updateQuantity(newIndex, -1);
-        }
-        if (incButton) {
-            incButton.onclick = () => updateQuantity(newIndex, 1);
-        }
-        if (removeButton) {
-            removeButton.onclick = () => removeItem(newIndex);
-        }
-    });
-}
-
-function showNotification(message, isError = false) {
-    const notification = document.getElementById('cartNotification');
-    if (notification) {
-        notification.innerHTML = `<i class="bi ${isError ? 'bi-x-circle' : 'bi-check-circle'}"></i><span>${message}</span>`;
-        notification.style.background = isError ? '#dc3545' : 'var(--accent)';
-        notification.style.display = 'flex';
-        notification.style.opacity = '1';
-        
-        // Auto-hide after 3 seconds
-        clearTimeout(window.notificationTimeout);
-        window.notificationTimeout = setTimeout(() => {
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 300);
-        }, 3000);
-    }
-}
-
-function checkout() {
-    showNotification('Proceeding to checkout...');
-    setTimeout(() => {
-        window.location.href = 'checkout.php';
-    }, 1000);
-}
-
-// Initialize event listeners on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize quantity inputs
-    document.querySelectorAll('input[type="number"]').forEach((input, index) => {
-        input.addEventListener('change', (e) => {
-            updateQuantity(index, 0, e.target.value);
-        });
-    });
-    
-    // Ensure notification starts hidden
-    const notification = document.getElementById('cartNotification');
-    if (notification) {
-        notification.style.display = 'none';
-        notification.style.opacity = '0';
-    }
-});
-
-// Back to Top
-window.addEventListener('scroll', () => {
-    const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    const progress = document.getElementById('progress');
-    if (progress) {
-        progress.style.width = scrollPercent + '%';
-    }
-    
-    // Back to top button
-    if (window.scrollY > 300) {
-        document.getElementById('back-to-top').style.display = 'flex';
-    } else {
-        document.getElementById('back-to-top').style.display = 'none';
-    }
-});
-
-document.getElementById('back-to-top').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Floating Contact Form
-const contactToggle = document.getElementById('contactToggle');
-const contactPanel = document.getElementById('contactPanel');
-const contactClose = document.getElementById('contactClose');
-const contactForm = document.getElementById('contactForm');
-
-if (contactToggle && contactPanel) {
-    contactToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        contactToggle.classList.toggle('active');
-        contactPanel.classList.toggle('active');
-    });
-    
-    if (contactClose) {
-        contactClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        });
-    }
-    
-    document.addEventListener('click', (e) => {
-        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        }
-    });
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-            
-            if (data.email && data.message) {
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalHTML = submitBtn.innerHTML;
-                
-                submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i><span>TRANSMITTING...</span>';
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i><span>TRANSMISSION SENT</span>';
-                    submitBtn.style.background = '#10b981';
-                    
-                    contactForm.reset();
-                    
-                    setTimeout(() => {
-                        contactToggle.classList.remove('active');
-                        contactPanel.classList.remove('active');
-                        
-                        setTimeout(() => {
-                            submitBtn.innerHTML = originalHTML;
-                            submitBtn.style.background = 'var(--accent)';
-                        }, 1000);
-                    }, 1500);
-                }, 1500);
-            }
-        });
-    }
-}
-
-// Theme toggle functionality
-const themeToggle = document.getElementById('theme-toggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-        themeToggle.innerHTML = document.body.classList.contains('dark') 
-            ? '<i class="bi bi-sun"></i>' 
-            : '<i class="bi bi-moon"></i>';
-    });
-    
-    // Load saved theme
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-        themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
-    }
-}
-
-// Ensure header search works
-const searchInput = document.getElementById('search');
-if (searchInput) {
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && searchInput.value.trim()) {
-            window.location.href = `fashion.php?search=${encodeURIComponent(searchInput.value)}`;
-        }
-    });
-}
-</script>
 </body>
 </html>

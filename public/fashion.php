@@ -1,6 +1,7 @@
 <?php
 $pageTitle = 'Fashion';
 require_once(__DIR__ . '/../app/config.php');
+require_once(__DIR__ . '/../app/database.php');
 $cartCount = getCartCount();
 ?>
 <!doctype html>
@@ -11,9 +12,10 @@ $cartCount = getCartCount();
 <title>STREETS ARCHIVES - <?php echo $pageTitle; ?></title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
+<link href="menustyle.css" rel="stylesheet">
 <style>
 /* ---------- GLOBAL ---------- */
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -183,29 +185,42 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
   transition: 0.3s;
 }
 
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: #fff;
+/* ---------- MOBILE MENU ENHANCED ---------- */
+
+/* Hamburger Button Styling */
+.hamburger {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 1500;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 1001;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.mobile-menu.active { right: 0; }
-.mobile-menu a {
-  text-decoration: none;
-  color: var(--black);
-  font-size: 24px;
-  font-weight: 800;
-  text-transform: uppercase;
+
+.hamburger span {
+  width: 100%;
+  height: 2px;
+  background-color: var(--text);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left center;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translateY(-2px);
+  background-color: var(--accent);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translateY(2px);
+  background-color: var(--accent);
 }
 
 .cart {
@@ -225,106 +240,175 @@ nav a{text-decoration:none; color:#111; font-weight:600; text-transform: upperca
     transform: translateY(-2px);
 }
 
-/* ---------- FASHION HERO (Using your requested style) ---------- */
+/* ---------- FASHION HERO (Styled like Music page) ---------- */
 .hero {
-  height: 85vh;
-  background: #000;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: #fff;
+    height: 70vh;
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('images/herobg1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
 }
-
-.hero-collage {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex;
-  opacity: 0.5;
-  filter: grayscale(100%) contrast(1.1);
-  z-index: 1;
-  will-change: transform;
-}
-
-.stream {
-  flex: 1;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  border-right: 1px solid rgba(255,255,255,0.1);
-  transition: flex 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.stream:hover { flex: 1.4; filter: grayscale(0%); opacity: 0.9; }
-
-.s-fashion { background-image: url('images/image6.jpg'); }
-.s-media { background-image: url('images/image5.jpg'); }
-.s-music { background-image: url('images/image1.jpg'); }
 
 .hero::before {
-  content: " ";
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
-              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-  background-size: 100% 4px, 3px 100%;
-  z-index: 3;
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 60, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 60, 0, 0.05) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .hero-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  mix-blend-mode: difference;
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
 }
 
 .hero-content h1 {
-  font-size: clamp(40px, 10vw, 90px);
-  font-weight: 800;
-  line-height: 0.85;
-  text-transform: uppercase;
-  letter-spacing: -2px;
+    font-size: 6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -3px;
+    margin-bottom: 20px;
+    line-height: 0.9;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.hero-content p.tagline {
-  font-size: 11px;
-  letter-spacing: 5px;
-  margin-top: 20px;
-  text-transform: uppercase;
-  opacity: 0.8;
+.hero-content .tagline {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 40px;
+    font-weight: 300;
 }
 
 .terminal-data {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  font-family: monospace;
-  font-size: 10px;
-  color: #fff;
-  z-index: 10;
-  text-transform: uppercase;
-  line-height: 1.6;
-  opacity: 0.6;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    z-index: 10;
+    text-transform: uppercase;
+    line-height: 1.6;
+    letter-spacing: 1px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.1);
 }
-.terminal-data span { display: block; }
+
+.terminal-data span { 
+    display: block; 
+    transition: opacity 0.3s;
+}
+
+.terminal-data span:hover {
+    opacity: 1;
+    color: var(--accent);
+}
 
 .btn-hero {
-  display: inline-block;
-  margin-top: 35px;
-  padding: 14px 35px;
-  border: 1px solid #fff;
-  background: transparent;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 11px;
-  letter-spacing: 2px;
-  transition: 0.3s;
+    display: inline-block;
+    padding: 14px 35px;
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
-.btn-hero:hover { background: #fff; color: #000; }
 
+.btn-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+.btn-hero:hover {
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.btn-hero:hover::before {
+    left: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .hero-content h1 {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: 70vh;
+        background-attachment: scroll;
+    }
+    
+    .hero-content h1 {
+        font-size: 4rem;
+        letter-spacing: -2px;
+    }
+    
+    .hero-content .tagline {
+        font-size: 1rem;
+        letter-spacing: 3px;
+    }
+    
+    .terminal-data {
+        top: 20px;
+        left: 20px;
+        font-size: 9px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+    
+    .hero-content .tagline {
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+    
+    .btn-hero {
+        padding: 12px 25px;
+        font-size: 10px;
+    }
+}
 /* ---------- FOLDER BLOCKS ---------- */
 .folder-section {
   width: 85%;
@@ -672,19 +756,19 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
   margin: 0;
 }
 
-/* ---------- FLOATING CONTACT FORM ---------- */
+/* ---------- ENHANCED FLOATING CONTACT FORM ---------- */
 .floating-contact-container {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 10000 !important; /* Increased z-index */
+    z-index: 10000;
 }
 
 .contact-toggle-btn {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent), #ff5c33);
     color: white;
     border: none;
     font-size: 24px;
@@ -694,13 +778,13 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10001 !important; /* Increased z-index */
+    z-index: 10001;
     position: relative;
 }
 
 .contact-toggle-btn:hover {
-    transform: scale(1.1);
-    background: var(--black);
+    transform: scale(1.1) rotate(90deg);
+    background: linear-gradient(135deg, var(--black), #333);
     box-shadow: 0 12px 40px rgba(255, 60, 0, 0.6);
 }
 
@@ -709,82 +793,110 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: var(--black);
 }
 
+/* FIXED: Contact panel positioned ABOVE the button */
 .contact-panel {
     position: absolute;
-    bottom: 70px;
+    bottom: 70px; /* This positions it above the button */
     right: 0;
     width: 380px;
     background: var(--header-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border: 2px solid var(--black);
+    border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 12px 12px 0px var(--black);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.95);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 10000 !important; /* Increased z-index */
+    z-index: 10000;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
 }
 
 .contact-panel.active {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
-.contact-panel h3 {
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent);
-}
-
-.contact-panel p {
-    font-size: 14px;
-    opacity: 0.8;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.contact-header {
+    text-align: center;
     margin-bottom: 30px;
 }
 
-.contact-form input,
-.contact-form textarea {
-    padding: 14px;
-    background: white;
-    border: 1px solid #ddd;
+.contact-icon {
+    font-size: 40px;
+    color: var(--accent);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.contact-panel h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+.contact-subtitle {
+    font-size: 11px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+}
+
+/* Form Groups with Icons */
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    background: var(--bg);
+    border: 2px solid var(--grey);
     border-radius: 8px;
     color: var(--text);
     font-family: 'Poppins', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     transition: all 0.3s var(--transition);
 }
 
-.contact-form input:focus,
-.contact-form textarea:focus {
+.form-group input:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
-    background: rgba(255, 60, 0, 0.05);
+    box-shadow: 0 0 0 3px rgba(255, 60, 0, 0.1);
 }
 
-.contact-form textarea {
-    min-height: 100px;
+.form-group textarea {
+    min-height: 120px;
     resize: vertical;
 }
 
-.contact-form button {
+.submit-btn {
+    width: 100%;
     background: var(--accent);
     color: white;
-    border: none;
+    border: 2px solid var(--accent);
     padding: 14px;
     border-radius: 8px;
     font-weight: 700;
@@ -793,41 +905,62 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     cursor: pointer;
     transition: all 0.3s var(--transition);
     font-family: 'Poppins', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-.contact-form button:hover {
+.submit-btn:hover {
     background: var(--black);
+    border-color: var(--black);
     transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--black);
 }
 
 .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
     margin-top: 25px;
     padding-top: 25px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 2px solid var(--grey);
+}
+
+.connect-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    text-align: center;
+    opacity: 0.7;
+    font-weight: 600;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 }
 
 .social-link {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--offwhite);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text);
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     transition: all 0.3s var(--transition);
+    border: 1px solid var(--grey);
 }
 
 .social-link:hover {
     background: var(--accent);
     color: white;
     transform: translateY(-3px);
+    border-color: var(--accent);
 }
 
 .contact-close {
@@ -837,14 +970,21 @@ footer{background:#111; color:white; padding:50px 5%; margin-top:60px; text-alig
     background: transparent;
     border: none;
     color: var(--text);
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 0.5;
     transition: all 0.3s var(--transition);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .contact-close:hover {
     opacity: 1;
+    background: rgba(0, 0, 0, 0.1);
     color: var(--accent);
     transform: rotate(90deg);
 }
@@ -855,8 +995,8 @@ body.dark .contact-panel {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-body.dark .contact-form input,
-body.dark .contact-form textarea {
+body.dark .form-group input,
+body.dark .form-group textarea {
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: white;
@@ -875,8 +1015,23 @@ body.dark .social-link {
     }
     
     .contact-panel {
-        width: 320px;
-        right: -10px;
+        width: calc(100vw - 40px);
+        right: -15px;
+        padding: 25px;
+    }
+    
+    .contact-toggle-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    /* Adjust back-to-top button for mobile */
+    #back-to-top {
+        bottom: 90px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
     }
 }
 
@@ -891,17 +1046,8 @@ body.dark .social-link {
         height: 50px;
         font-size: 20px;
     }
-    
-    .contact-panel {
-        width: calc(100vw - 40px);
-        right: -15px;
-        padding: 25px;
-    }
-    
-    .contact-panel h3 {
-        font-size: 20px;
-    }
 }
+
 
 /* Shop Categories */
 .shop-categories {
@@ -1145,21 +1291,6 @@ body.dark .sort-select {
     }
 }
 
-/* Mobile Menu Improvements */
-@media (max-width: 768px) {
-    .mobile-menu a {
-        font-size: 20px;
-        padding: 15px 0;
-    }
-    
-    .shop-category h3 {
-        font-size: 18px;
-    }
-    
-    .filter-bar {
-        padding: 15px;
-    }
-}
 
 /* FIX: Add proper animations for products */
 @keyframes fadeInUp {
@@ -1208,21 +1339,7 @@ if (document.readyState === 'complete') {
 
 <?php require_once(__DIR__ . "/../includes/header.php") ?>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.php">Home</a>
-  <a href="about.php">About Us</a>
-  <a href="fashion.php">Fashion</a>
-  <a href="music.php">Music</a>
-  <a href="cart.php">Cart (<?php echo $cartCount; ?>)</a>
-</div>
-
 <section class="hero">
-  <div class="hero-collage">
-    <div class="stream s-fashion"></div>
-    <div class="stream s-media"></div>
-    <div class="stream s-music"></div>
-  </div>
-
   <div class="terminal-data">
     <span><i class="bi bi-check-circle"></i> STATUS: ACTIVE</span>
     <span><i class="bi bi-shield-lock"></i> ENCRYPTION: AES-256</span>
@@ -1570,8 +1687,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Add to cart function
+// Add to cart function - FIXED VERSION
 function addToCart(productId, name, price, image, size, quantity, type) {
+    console.log('Adding to cart:', productId, name);
+    
+    // Show loading notification
+    const notification = document.getElementById('cartNotification');
+    if (notification) {
+        notification.innerHTML = '<i class="bi bi-hourglass"></i> Adding...';
+        notification.style.display = 'block';
+        notification.style.background = '#666';
+    }
+    
     // Create form data
     const formData = new FormData();
     formData.append('product_id', productId);
@@ -1582,40 +1709,56 @@ function addToCart(productId, name, price, image, size, quantity, type) {
     formData.append('quantity', quantity);
     formData.append('type', type);
     
-    // Send AJAX request
-    fetch('../app/add_to_cart.php', {
+    // Try the most likely path FIRST
+    fetch('add_to_cart.php', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'same-origin'
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.text();
+    })
+    .then(text => {
+        console.log('Raw response:', text);
+        
+        // Check if response is HTML (error)
+        if (text.trim().startsWith('<')) {
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
+        // Parse JSON
+        const data = JSON.parse(text);
+        console.log('Parsed data:', data);
+        
         if (data.success) {
             // Update cart count
             document.querySelectorAll('.cart').forEach(cart => {
                 cart.textContent = `CART (${data.cartCount})`;
             });
             
-            // Update cart count in mobile menu
-            const mobileCart = document.querySelector('.mobile-menu a[href="cart.php"]');
-            if (mobileCart) {
-                mobileCart.textContent = `Cart (${data.cartCount})`;
+            // Show success
+            if (notification) {
+                notification.innerHTML = `<i class="bi bi-check-circle"></i> ${name} added!`;
+                notification.style.background = 'var(--accent)';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
             }
-            
-            // Show notification
-            const notification = document.getElementById('cartNotification');
-            notification.innerHTML = `<i class="bi bi-check-circle"></i> <span>${name} added to cart!</span>`;
-            notification.style.display = 'block';
-            
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
         } else {
-            alert('Failed to add item to cart. Please try again.');
+            throw new Error(data.error || 'Server error');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('Network error. Please check your connection.');
+        console.error('Error adding to cart:', error);
+        
+        if (notification) {
+            notification.innerHTML = `<i class="bi bi-exclamation-triangle"></i> Error: ${error.message}`;
+            notification.style.background = '#dc3545';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
     });
 }
 
@@ -1709,60 +1852,12 @@ document.getElementById('back-to-top').addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// Theme toggle functionality
-const themeToggle = document.getElementById('theme-toggle');
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-        
-        // Update icon
-        const icon = themeToggle.querySelector('i');
-        if (icon) {
-            if (document.body.classList.contains('dark')) {
-                icon.className = 'bi bi-sun';
-                themeToggle.setAttribute('aria-label', 'Switch to light mode');
-            } else {
-                icon.className = 'bi bi-moon';
-                themeToggle.setAttribute('aria-label', 'Switch to dark mode');
-            }
-        }
-    });
-    
-    // Load saved theme
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark');
-        const icon = themeToggle.querySelector('i');
-        if (icon) {
-            icon.className = 'bi bi-sun';
-            themeToggle.setAttribute('aria-label', 'Switch to light mode');
-        }
-    }
-}
-
-// Mobile menu toggle
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-
-function toggleMenu() {
-    if (hamburger && mobileMenu) {
-        hamburger.classList.toggle('active');
-        mobileMenu.classList.toggle('active');
-        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-    }
-}
-
-if (hamburger) {
-    hamburger.addEventListener('click', toggleMenu);
-}
-
-// Close mobile menu when clicking links
-document.querySelectorAll('.mobile-menu a').forEach(link => {
-    link.addEventListener('click', toggleMenu);
-});
 </script>
 
-<!-- Floating Contact Form (Fixed with Bootstrap Icons) -->
+<!-- Include main.js - This will handle hamburger menu AND contact form -->
+<script src="../js/main.js"></script>
+
+<!-- Floating Contact Form -->
 <div class="floating-contact-container">
     <button class="contact-toggle-btn" id="contactToggle" aria-label="Open contact form">
         <i class="bi bi-chat-dots"></i>
@@ -1771,32 +1866,53 @@ document.querySelectorAll('.mobile-menu a').forEach(link => {
     <div class="contact-panel" id="contactPanel">
         <button class="contact-close" id="contactClose">&times;</button>
         
-        <h3><i class="bi bi-archive"></i> CONTACT ARCHIVES</h3>
-        <p>Send us a message directly or connect through our social channels.</p>
+        <div class="contact-header">
+            <i class="bi bi-archive contact-icon"></i>
+            <h3>CONTACT ARCHIVES</h3>
+            <p class="contact-subtitle">Send encrypted message to HQ</p>
+        </div>
         
         <form class="contact-form" id="contactForm">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Your Message..." required></textarea>
-            <button type="submit"><i class="bi bi-send"></i> Send Message</button>
+            <div class="form-group">
+                <i class="bi bi-person"></i>
+                <input type="text" placeholder="CALLSIGN" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" placeholder="FREQUENCY (EMAIL)" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="bi bi-chat-text"></i>
+                <textarea placeholder="ENCRYPTED MESSAGE..." rows="4" required></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="bi bi-send"></i>
+                <span>TRANSMIT MESSAGE</span>
+            </button>
         </form>
         
         <div class="social-links">
-            <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
-                <i class="bi bi-instagram"></i>
-            </a>
-            <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
-                <i class="bi bi-twitter-x"></i>
-            </a>
-            <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
-                <i class="bi bi-music-note-beamed"></i>
-            </a>
-            <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
-                <i class="bi bi-youtube"></i>
-            </a>
-            <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
-                <i class="bi bi-envelope"></i>
-            </a>
+            <p class="connect-title">ALTERNATIVE FREQUENCIES</p>
+            <div class="social-icons">
+                <a href="https://instagram.com" class="social-link" target="_blank" aria-label="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://twitter.com" class="social-link" target="_blank" aria-label="Twitter">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://soundcloud.com" class="social-link" target="_blank" aria-label="SoundCloud">
+                    <i class="bi bi-music-note-beamed"></i>
+                </a>
+                <a href="https://youtube.com" class="social-link" target="_blank" aria-label="YouTube">
+                    <i class="bi bi-youtube"></i>
+                </a>
+                <a href="mailto:contact@streetsarchives.com" class="social-link" aria-label="Email">
+                    <i class="bi bi-envelope-paper"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>
