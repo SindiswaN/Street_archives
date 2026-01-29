@@ -172,10 +172,11 @@ header{
   align-items: center;
   justify-content: center;
 }
-
+/* REDUCED LOGO SIZE */
 .logo-3d {
-  width: 100%;
-  height: auto;
+  width: 50px; /* Reduced from 80% to 50px */
+  height: 50px; /* Reduced to match width */
+  object-fit: cover;
   animation: rotate3D 10s linear infinite;
   transform-style: preserve-3d;
 }
@@ -1816,10 +1817,10 @@ body.dark .play-btn {
     100% { transform: translateX(-100%); }
   }
   
-  /* Logo size adjustment */
-  .logo-container {
-    width: 60px;
-    height: 60px;
+  /* Logo size adjustment for mobile */
+  .logo-3d {
+    width: 40px; /* Even smaller on mobile */
+    height: 40px;
   }
 }
 
