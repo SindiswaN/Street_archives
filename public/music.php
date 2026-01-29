@@ -1850,93 +1850,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-<script>  
-  // Floating Contact Form
-const contactToggle = document.getElementById('contactToggle');
-const contactPanel = document.getElementById('contactPanel');
-const contactClose = document.getElementById('contactClose');
-const contactForm = document.getElementById('contactForm');
-
-if (contactToggle && contactPanel) {
-    // Toggle contact panel
-    contactToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        contactToggle.classList.toggle('active');
-        contactPanel.classList.toggle('active');
-    });
-    
-    // Close panel with X button
-    if (contactClose) {
-        contactClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        });
-    }
-    
-    // Close panel when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!contactPanel.contains(e.target) && !contactToggle.contains(e.target)) {
-            contactToggle.classList.remove('active');
-            contactPanel.classList.remove('active');
-        }
-    });
-    
-    // Prevent clicks inside panel from closing it
-    contactPanel.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-    
-    // Form submission
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-
-            if (data.email && data.message) {
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalHTML = submitBtn.innerHTML;
-
-                // Show sending state
-                submitBtn.classList.add('sending');
-                submitBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i><span>TRANSMITTING...</span>';
-
-                // Simulate API call
-                setTimeout(() => {
-                    // Show success state
-                    submitBtn.classList.remove('sending');
-                    submitBtn.innerHTML = '<i class="bi bi-check-circle"></i><span>TRANSMISSION SENT</span>';
-                    submitBtn.style.background = '#10b981';
-                    
-                    contactForm.reset();
-
-                    // Close panel after success
-                    setTimeout(() => {
-                        contactToggle.classList.remove('active');
-                        contactPanel.classList.remove('active');
-                        
-                        // Reset button after delay
-                        setTimeout(() => {
-                            submitBtn.innerHTML = originalHTML;
-                            submitBtn.style.background = 'var(--accent)';
-                        }, 1000);
-                    }, 1500);
-                }, 1500);
-            }
-        });
-    }
-
-    // Prevent panel from closing when form is clicked
-    if (contactForm) {
-        contactForm.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-    }
-}
-</script>
-
 <script>
 // Enhanced Music Player with Real Functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -2535,5 +2448,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!-- Include main.js - This handles hamburger menu and contact form -->
+<script src="../js/main.js"></script>
 </body>
 </html>
