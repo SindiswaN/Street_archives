@@ -1,4 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
+
+<?php
 $pageTitle = 'About';
 require_once(__DIR__ . '/../app/config.php');
 require_once(__DIR__ . '/../app/database.php');
@@ -1679,11 +1684,12 @@ body.dark .about-page-menu {
     display: none; /* Hide terminal on very small screens */
   }
   
-  .scope-content,
-  .pillars-section,
-  .manifesto-about {
-    padding: 25px;
-  }
+.scope-content,
+.pillars-section,
+.manifesto-about {
+  padding: 25px;
+}
+
   
   .newsletter {
     padding: 40px 20px;
@@ -1882,6 +1888,79 @@ body.dark .newsletter input::placeholder {
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ========== CRITICAL FIXES ========== */
+/* 1. Fix the hero section position and z-index */
+.about-hero {
+    position: relative !important;
+    z-index: 1 !important;
+    height: 80vh !important;
+    min-height: 500px !important;
+}
+
+/* 2. Ensure main content appears ABOVE hero */
+.main-content {
+    position: relative !important;
+    z-index: 10 !important;
+    background: var(--bg) !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* 3. Force ALL content sections to be visible */
+.vision-mission,
+.manifesto-about,
+.founder-section,
+.timeline,
+.pillars-section,
+.gallery-section,
+.stats-grid,
+.scope-section,
+.newsletter {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* 4. Fix fade-in animations */
+.fade-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: none !important;
+}
+
+.fade-in.visible {
+    opacity: 1 !important;
+}
+
+/* 5. Ensure body allows scrolling */
+body, html {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+    position: relative !important;
+}
+
+/* 6. Remove any display: none from content */
+section:not(.about-hero) {
+    display: block !important;
+}
+
+/* 7. Fix video overlay positioning */
+.hero-video-overlay {
+    z-index: 2 !important;
+}
+
+/* 8. Fix hero content positioning */
+.about-hero-content {
+    z-index: 3 !important;
 }
 </style>
 </head>
